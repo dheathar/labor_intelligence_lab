@@ -1625,6 +1625,7 @@ async function interactSend() {
       const data = await postApi('/api/chat', {
         message: taskMsg,
         domain: State.domain,
+        current_tab: State.activeTab,
         history: (InteractState.histories.assistant || []).slice(-10)
           .filter(m => !m._thinking)
           .map(m => ({ role: m.role, content: m.content })),
@@ -1635,7 +1636,7 @@ async function interactSend() {
       const resp = await fetch('/api/rats/' + targetAgent + '/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: taskMsg }),
+        body: JSON.stringify({ message: taskMsg, current_tab: State.activeTab, domain: State.domain }),
       });
       if (!resp.ok) throw new Error('Rats service offline — run: docker compose up agents');
       const data = await resp.json();

@@ -155,6 +155,20 @@ async def chat_with_rat(rat_name: str, body: dict):
     message = body.get("message", "").strip()
     if not message:
         raise HTTPException(status_code=400, detail="message is required")
+    current_tab = body.get("current_tab", "")
+    domain = body.get("domain", "global")
+    if current_tab:
+        _TAB_LABELS = {
+            "overview": "Overview", "landscape": "Landscape", "papers": "Papers",
+            "datasets": "Datasets", "methods": "Methods", "applications": "Applications",
+            "benchmarks": "Benchmarks", "sources": "Sources", "insights": "Insights",
+            "lab_exp": "Lab Experiments", "projects": "Projects", "oja": "OJA Portals",
+            "lmi_research": "LMI Research", "map": "Map",
+            "impl_portals": "Implementation Portals", "impl_deliverables": "Deliverables",
+            "constitution": "Constitution",
+        }
+        label = _TAB_LABELS.get(current_tab, current_tab)
+        message = f"[User is on the {label} tab · domain: {domain}]\n\n{message}"
 
     # Easter egg: detect activation / deactivation phrases
     msg_lower = message.lower()

@@ -103,6 +103,7 @@ _build_catalog()
 class ChatRequest(BaseModel):
     message: str
     domain: str = "global"
+    current_tab: str = ""
     history: list[dict] = []
 
 
@@ -378,6 +379,23 @@ Today's date: 2026-06-05. Current domain: {domain_name}.
 """
 
 
+_TAB_LABELS = {
+    "overview": "Overview", "landscape": "Landscape", "papers": "Papers",
+    "datasets": "Datasets", "methods": "Methods", "applications": "Applications",
+    "benchmarks": "Benchmarks", "sources": "Sources", "insights": "Insights",
+    "lab_exp": "Lab Experiments", "projects": "Projects", "oja": "OJA Portals",
+    "lmi_research": "LMI Research", "playground": "Playground", "map": "Map",
+    "impl_portals": "Implementation Portals", "impl_deliverables": "Deliverables",
+    "constitution": "Constitution",
+}
+
+def _inject_page_context(message: str, current_tab: str, domain: str) -> str:
+    if not current_tab:
+        return message
+    label = _TAB_LABELS.get(current_tab, current_tab)
+    return f"[User is on the {label} tab · domain: {domain}]\n\n{message}"
+
+
 @app.post("/api/chat")
 def chat(req: ChatRequest) -> dict:
     # Prefer OpenRouter (one key for everything); fall back to Anthropic direct
@@ -392,7 +410,7 @@ def chat(req: ChatRequest) -> dict:
         messages = [{"role": "system", "content": system_prompt}]
         for turn in req.history[-10:]:
             messages.append({"role": turn["role"], "content": turn["content"]})
-        messages.append({"role": "user", "content": req.message})
+        messages.append({"role": "user", "content": _inject_page_context(req.message, req.current_tab, req.domain)})
         try:
             model = os.environ.get("CHAT_MODEL", "google/gemma-3-27b-it")
             resp = client.chat.completions.create(
@@ -413,7 +431,7 @@ def chat(req: ChatRequest) -> dict:
         messages = []
         for turn in req.history[-10:]:
             messages.append({"role": turn["role"], "content": turn["content"]})
-        messages.append({"role": "user", "content": req.message})
+        messages.append({"role": "user", "content": _inject_page_context(req.message, req.current_tab, req.domain)})
         try:
             response = client.messages.create(
                 model="claude-sonnet-4-6",
