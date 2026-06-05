@@ -256,7 +256,6 @@ function openChatDrawer(agent) {
   drawer.classList.add('open');
   drawer.setAttribute('aria-hidden', 'false');
   fab.classList.add('open');
-  document.getElementById('chat-fab-icon').textContent = '✕';
   if (agent) {
     const el = document.querySelector(`.interact-agent[data-agent="${agent}"]`);
     if (el) selectAgent(agent, el);
@@ -279,7 +278,6 @@ function closeChatDrawer() {
   drawer.classList.remove('open');
   drawer.setAttribute('aria-hidden', 'true');
   fab.classList.remove('open');
-  document.getElementById('chat-fab-icon').textContent = '🐀';
 }
 
 function toggleChatDrawer() {

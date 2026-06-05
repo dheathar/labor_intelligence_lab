@@ -1331,7 +1331,7 @@ pre code { background: none; padding: 0; }
   transition: transform .15s, box-shadow .15s;
 }
 .chat-fab:hover { transform: scale(1.08); box-shadow: 0 6px 22px rgba(0,0,0,.4); }
-.chat-fab.open { background: var(--fg-muted); }
+.chat-fab.open { opacity: 0; pointer-events: none; }
 @media (max-width: 600px) {
   .chat-drawer { width: 100vw; height: 90vh; border-radius: 14px 14px 0 0; }
   .interact-sidebar { width: 160px; }
