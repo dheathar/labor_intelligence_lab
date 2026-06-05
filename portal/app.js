@@ -1612,9 +1612,6 @@ async function interactSend() {
   const btn = document.getElementById('interact-send-btn');
   const btnOrigText = btn ? btn.textContent : 'Send';
   if (btn) { btn.disabled = true; btn.textContent = '⏳'; btn.style.opacity = '0.6'; }
-
-  // also disable input while thinking
-  const inp = document.getElementById('interact-input');
   if (inp) inp.disabled = true;
 
   // thinking placeholder
