@@ -1,0 +1,55 @@
+# ── LIVLAB PAPER TEMPLATE ────────────────────────────────────────────────────
+# Constitution rules that apply to this entry type:
+#   [1] Evidence first — every claim must trace to this paper's actual content
+#   [8] Cite your sources — include arXiv ID, DOI, or direct URL; never omit
+#   [9] Version your methods — name specific model versions cited in the paper
+#   [10] Flag data quality — note dataset limitations the paper itself reports
+#
+# REQUIRED fields: slug, title, authors, year, venue, url, topics, domain,
+#                  abstract, key_findings, livlab_relevance
+# OPTIONAL fields: arxiv_id, doi, methods_used, datasets_used, session,
+#                  affiliation, technical_report_url
+# ─────────────────────────────────────────────────────────────────────────────
+
+slug: author-keyword-year                        # lowercase-kebab, unique across papers/
+title: "Full Paper Title As Published"
+authors:
+  - Firstname Lastname
+  - Firstname Lastname
+affiliation: "Institution name (optional)"       # remove if multi-institution
+year: 2025
+venue: "Conference / Journal / arXiv"
+arxiv_id: "2501.XXXXX"                           # omit if not on arXiv
+doi: "10.XXXX/XXXXX"                             # omit if no DOI
+url: "https://..."                               # landing page or PDF link
+session: "Session title at conference (optional)"
+
+topics:
+  - keyword-one                                  # lowercase-kebab tags
+  - keyword-two
+
+domain: global                                   # global | european_union | greece |
+                                                 # emerging_markets | united_states
+
+abstract: |
+  Two to four sentences summarising the paper's research question, method, and
+  main result. Do not copy-paste the abstract verbatim — paraphrase accurately.
+  Preserve the key numbers and claims.
+
+key_findings:
+  - "Finding one — be specific, include numbers where available"
+  - "Finding two"
+  - "Finding three (3–6 bullets; each a complete thought)"
+
+methods_used:                                    # slugs from knowledge/methods/
+  - method-slug-one
+  - method-slug-two
+
+datasets_used:                                   # slugs from knowledge/datasets/
+  - dataset-slug-one
+
+livlab_relevance: |
+  One to three sentences explaining WHY this paper matters to LIVLAB specifically.
+  Connect to active projects (EU-ALMPO, MicroIdea, Growth4Blue, TRAIN4BLUE),
+  target countries (Greece, WB6), or LIVLAB's OJA/ESCO pipeline.
+  If relevance is indirect, say so honestly.

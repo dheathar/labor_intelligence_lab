@@ -1,0 +1,18 @@
+slug: nnose-2024
+title: "NNOSE: Nearest Neighbor Occupational Skill Extraction"
+authors: [Anonymous]
+year: 2024
+venue: arXiv
+arxiv_id: "2401.17092"
+topics: [skill-extraction, occupational-classification, nearest-neighbor, esco]
+domains: [global, european_union]
+abstract: |
+  Novel approach using similarity-based matching for occupational skill extraction.
+  Maps free-text job descriptions to ESCO taxonomy entries using nearest-neighbor
+  retrieval in a shared embedding space. Avoids need for task-specific fine-tuning.
+key_findings:
+  - Nearest-neighbor retrieval competitive with fine-tuned classifiers
+  - Zero-shot generalization to new ESCO taxonomy versions
+  - Computationally efficient compared to generative approaches
+datasets_used: [esco, skillspan]
+methods_used: [nearest-neighbor-retrieval, dense-embeddings, esco-mapping]

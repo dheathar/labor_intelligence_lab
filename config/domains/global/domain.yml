@@ -1,0 +1,31 @@
+slug: global
+name: Global
+display_name: Global Labor Market
+description: >
+  Worldwide labor market overview spanning 190+ countries.
+  Key institutions: ILO, World Bank, WEF, OECD.
+flag: "🌍"
+map:
+  center: [20, 10]
+  zoom: 2
+stats:
+  papers: 25
+  datasets: 22
+  methods: 14
+  applications: 10
+  benchmarks: 5
+sources:
+  - ilostat
+  - world_bank
+  - wef
+  - oecd
+topics:
+  - skills-forecasting
+  - ai-labor-impact
+  - occupational-transitions
+  - wage-inequality
+  - green-skills
+highlights:
+  - "WEF Future of Jobs 2025: 63% of employers cite skill gaps as top barrier to transformation"
+  - "OECD Skills Outlook 2025: 39% of skill sets will be transformed by 2030"
+  - "IMF 2026: ~80% of US workforce exposed to GPT-class model impacts"

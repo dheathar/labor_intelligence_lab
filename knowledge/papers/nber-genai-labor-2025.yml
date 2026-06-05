@@ -1,0 +1,21 @@
+slug: nber-genai-labor-2025
+title: "Early Labor Market Transformation under Generative AI"
+authors: [Autor et al.]
+year: 2025
+venue: NBER Working Paper
+arxiv_id: "w33777"
+topics: [ai-labor-impact, generative-ai, occupational-exposure, wages]
+domains: [global, united_states]
+abstract: |
+  Analyses early-stage transformation of the U.S. labor market by GPT-class
+  generative AI models. Finds approximately 80% of the U.S. workforce could have
+  10% or more of their tasks affected. Particularly strong exposure in professional
+  and clerical occupations. Chatbot adoption associated with occupational switching
+  into higher-wage roles.
+key_findings:
+  - ~80% of US workforce could have 10%+ of tasks affected by GPT-class models
+  - Strongest exposure: professional and clerical occupations
+  - Chatbot adoption linked to occupational switching into higher-wage roles
+  - Effect concentrated in college-educated workers
+datasets_used: [bls-cps, onet]
+methods_used: [task-based-analysis, occupational-exposure-scores]

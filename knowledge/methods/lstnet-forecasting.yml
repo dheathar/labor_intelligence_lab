@@ -1,0 +1,18 @@
+slug: lstnet-forecasting
+name: LSTNet — Long and Short-Term Time-series Network
+category: labor-forecasting
+subcategory: deep-learning
+paper: lstnet-labor-forecasting-2025
+description: |
+  Multi-scale deep learning architecture combining convolutional layers (local
+  temporal patterns) and recurrent layers (long-range dependencies) for labor
+  market time-series forecasting. Applied to BLS CPS+JOLTS data 2006–2024.
+  Outperforms autoregressive baselines at 1- and 6-month horizons.
+strengths:
+  - Captures multi-scale temporal patterns
+  - Handles multiple correlated series simultaneously
+  - Outperforms ARIMA/VAR at medium-term horizons
+weaknesses:
+  - Requires substantial historical data (10+ years)
+  - Sensitive to structural breaks (e.g. COVID)
+sota_benchmarks: []

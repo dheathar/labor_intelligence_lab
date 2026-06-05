@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Labor Intelligence Virtual Lab</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- marked.js -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+
+  <style>
+    /* ===== Grouped tab dropdown nav ===== */
+    .tab-groups-nav {
+      display: flex; align-items: center;
+      flex-wrap: wrap; gap: 2px;
+      padding-bottom: 6px;
+      overflow: visible;
+    }
+    .tab-group-btn {
+      position: relative;
+    }
+    .tab-group-trigger {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 11px; border-radius: 999px;
+      color: var(--fg-muted); font-size: 12px; font-weight: 500;
+      cursor: pointer; user-select: none;
+      transition: background-color 0.15s, color 0.15s;
+      background: transparent;
+    }
+    .tab-group-trigger:hover { background: var(--bg-3); color: var(--fg); }
+    .tab-group-trigger.group-active { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+    .tab-group-trigger .chevron { font-size: 9px; opacity: 0.6; transition: transform 0.15s; }
+    .tab-group-btn.open .chevron { transform: rotate(180deg); }
+    .tab-group-trigger .group-counter {
+      background: var(--bg-3); padding: 0 6px; border-radius: 999px;
+      font-size: 10px; font-weight: 600; color: var(--fg-muted); line-height: 1.5;
+    }
+    .tab-group-trigger.group-active .group-counter { background: var(--accent); color: white; }
+
+    /* Dropdown */
+    .tab-dropdown {
+      display: none; position: absolute; top: calc(100% + 4px); left: 0;
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 4px; min-width: 180px; z-index: 9000;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      animation: fade 0.15s ease;
+    }
+    .tab-group-btn.open .tab-dropdown { display: block; }
+    .dropdown-item {
+      display: flex; align-items: center; gap: 7px;
+      padding: 7px 10px; border-radius: 6px;
+      color: var(--fg-muted); font-size: 13px; font-weight: 500;
+      cursor: pointer; user-select: none;
+      transition: background-color 0.1s, color 0.1s;
+      white-space: nowrap;
+    }
+    .dropdown-item:hover { background: var(--bg-3); color: var(--fg); }
+    .dropdown-item.active { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+    .dropdown-item .di-counter {
+      margin-left: auto; background: var(--bg-3); padding: 0 6px;
+      border-radius: 999px; font-size: 10px; font-weight: 600; color: var(--fg-muted);
+    }
+    .dropdown-item.active .di-counter { background: var(--accent); color: white; }
+
+    /* Nav separator */
+    .nav-sep { display: inline-block; width: 1px; height: 18px; background: var(--border); margin: 0 4px; opacity: 0.5; }
+  </style>
+</head>
+<body>
+
+<!-- ===== Top Nav ===== -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="topnav-left">
+      <span style="font-size:22px; line-height:1;">🧠</span>
+      <span class="brand-livlab">Labor Intelligence Lab</span>
+      <span class="badge badge-lab">v0.1</span>
+    </div>
+    <div class="topnav-right">
+      <label class="domain-selector-label">Domain:</label>
+      <select class="domain-selector" id="domainSelect">
+        <option value="global">🌍 Global</option>
+        <option value="greece">🇬🇷 Greece</option>
+        <option value="european_union">🇪🇺 European Union</option>
+        <option value="united_states">🇺🇸 United States</option>
+        <option value="emerging_markets">🌱 Emerging Markets</option>
+      </select>
+      <button class="theme-toggle" id="themeToggle">🌙</button>
+    </div>
+  </div>
+
+  <!-- Grouped Tab Navigation -->
+  <div class="tab-groups-nav" id="tabGroupsNav">
+
+    <!-- Lab group -->
+    <div class="tab-group-btn" data-group="lab">
+      <div class="tab-group-trigger" onclick="toggleGroup('lab', event)">
+        <span>🏠</span> Lab <span class="chevron">▾</span>
+      </div>
+      <div class="tab-dropdown">
+        <div class="dropdown-item active" data-tab="overview" onclick="activateTab('overview'); closeAllGroups(); event.stopPropagation()">📊 Overview</div>
+        <div class="dropdown-item" data-tab="landscape" onclick="activateTab('landscape'); closeAllGroups(); event.stopPropagation()">🗺️ Landscape</div>
+        <div class="dropdown-item" data-tab="constitution" onclick="activateTab('constitution'); closeAllGroups(); event.stopPropagation()">📜 Constitution</div>
+      </div>
+    </div>
+
+    <div class="nav-sep"></div>
+
+    <!-- Knowledge group -->
+    <div class="tab-group-btn" data-group="knowledge">
+      <div class="tab-group-trigger" onclick="toggleGroup('knowledge', event)">
+        <span>📚</span> Knowledge <span class="group-counter" id="gc-knowledge">—</span> <span class="chevron">▾</span>
+      </div>
+      <div class="tab-dropdown">
+        <div class="dropdown-item" data-tab="papers" onclick="activateTab('papers'); closeAllGroups(); event.stopPropagation()">📄 Papers <span class="di-counter" id="dc-papers">—</span></div>
+        <div class="dropdown-item" data-tab="datasets" onclick="activateTab('datasets'); closeAllGroups(); event.stopPropagation()">🗄️ Datasets <span class="di-counter" id="dc-datasets">—</span></div>
+        <div class="dropdown-item" data-tab="methods" onclick="activateTab('methods'); closeAllGroups(); event.stopPropagation()">⚙️ Methods <span class="di-counter" id="dc-methods">—</span></div>
+        <div class="dropdown-item" data-tab="applications" onclick="activateTab('applications'); closeAllGroups(); event.stopPropagation()">🚀 Applications <span class="di-counter" id="dc-applications">—</span></div>
+        <div class="dropdown-item" data-tab="benchmarks" onclick="activateTab('benchmarks'); closeAllGroups(); event.stopPropagation()">🏆 Benchmarks <span class="di-counter" id="dc-benchmarks">—</span></div>
+      </div>
+    </div>
+
+    <div class="nav-sep"></div>
+
+    <!-- Data group -->
+    <div class="tab-group-btn" data-group="data">
+      <div class="tab-group-trigger" onclick="toggleGroup('data', event)">
+        <span>📡</span> Data <span class="chevron">▾</span>
+      </div>
+      <div class="tab-dropdown">
+        <div class="dropdown-item" data-tab="sources" onclick="activateTab('sources'); closeAllGroups(); event.stopPropagation()">🔌 Sources</div>
+        <div class="dropdown-item" data-tab="insights" onclick="activateTab('insights'); closeAllGroups(); event.stopPropagation()">📈 Insights</div>
+        <div class="dropdown-item" data-tab="lab_exp" onclick="activateTab('lab_exp'); closeAllGroups(); event.stopPropagation()">🧪 Experiments</div>
+      </div>
+    </div>
+
+    <div class="nav-sep"></div>
+
+    <!-- Research group -->
+    <div class="tab-group-btn" data-group="research">
+      <div class="tab-group-trigger" onclick="toggleGroup('research', event)">
+        <span>🔬</span> Research <span class="chevron">▾</span>
+      </div>
+      <div class="tab-dropdown">
+        <div class="dropdown-item" data-tab="projects" onclick="activateTab('projects'); closeAllGroups(); event.stopPropagation()">🗂️ Projects <span class="di-counter" id="dc-projects">—</span></div>
+        <div class="dropdown-item" data-tab="oja" onclick="activateTab('oja'); closeAllGroups(); event.stopPropagation()">📋 OJA Portals</div>
+        <div class="dropdown-item" data-tab="lmi_research" onclick="activateTab('lmi_research'); closeAllGroups(); event.stopPropagation()">🔍 LMI Research</div>
+      </div>
+    </div>
+
+    <div class="nav-sep"></div>
+
+    <!-- Explore group -->
+    <div class="tab-group-btn" data-group="explore">
+      <div class="tab-group-trigger" onclick="toggleGroup('explore', event)">
+        <span>🌐</span> Explore <span class="chevron">▾</span>
+      </div>
+      <div class="tab-dropdown">
+        <div class="dropdown-item" data-tab="playground" onclick="activateTab('playground'); closeAllGroups(); event.stopPropagation()">🐀 Interaction <span class="di-counter pulse" id="dc-playground">AI</span></div>
+        <div class="dropdown-item" data-tab="map" onclick="activateTab('map'); closeAllGroups(); event.stopPropagation()">🗾 Map</div>
+      </div>
+    </div>
+
+    <div class="nav-sep"></div>
+
+    <!-- Implementation group -->
+    <div class="tab-group-btn" data-group="implementation">
+      <div class="tab-group-trigger" onclick="toggleGroup('implementation', event)">
+        <span>⚙️</span> Implementation <span class="chevron">▾</span>
+      </div>
+      <div class="tab-dropdown">
+        <div class="dropdown-item" data-tab="impl_portals" onclick="activateTab('impl_portals'); closeAllGroups(); event.stopPropagation()">🕷 Crawling Portals</div>
+        <div class="dropdown-item" data-tab="impl_deliverables" onclick="activateTab('impl_deliverables'); closeAllGroups(); event.stopPropagation()">📦 Deliverables 2026</div>
+      </div>
+    </div>
+
+  </div><!-- /tab-groups-nav -->
+</nav>
+
+<!-- ===== Main content ===== -->
+<main class="container">
+
+  <!-- 1. OVERVIEW -->
+  <div class="tab-pane active" id="pane-overview">
+    <div class="grid-overview">
+      <div>
+        <div class="readme-card">
+          <div class="card-header">📊 Overview <span class="section-domain-label" id="overview-domain-label"></span></div>
+          <div class="card-body markdown" id="overview-content">
+            <h1>🧠 Labor Intelligence Virtual Lab</h1>
+            <p>A research environment for labor market demand &amp; supply analysis. The lab covers:</p>
+            <ul>
+              <li><strong>Datasets</strong> — 22+ sources from BLS, ESCO, Eurostat, ELSTAT, Cedefop, ILOSTAT</li>
+              <li><strong>Papers</strong> — 15+ indexed research papers (2022–2026)</li>
+              <li><strong>Methods</strong> — Skill extraction, forecasting, wage prediction, OJA intelligence</li>
+              <li><strong>Active OJA crawling</strong> — 12 countries, 50+ job portals</li>
+              <li><strong>Projects</strong> — EU-ALMPO, MicroIdea, Growth4Blue, TRAIN4BLUE</li>
+            </ul>
+            <p>Select a domain above to filter content. Use the grouped nav to explore each section.</p>
+          </div>
+        </div>
+        <div class="readme-card">
+          <div class="card-header">🔑 Domain Highlights</div>
+          <div class="card-body">
+            <ul class="highlight-list" id="domain-highlights"></ul>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="stats-card">
+          <div class="card-header">📦 Catalog Stats</div>
+          <div style="padding:16px;">
+            <ul class="stats-list" id="stats-list">
+              <li><span class="stats-num" id="stat-papers">—</span><span class="stats-lbl">Papers</span></li>
+              <li><span class="stats-num" id="stat-datasets">—</span><span class="stats-lbl">Datasets</span></li>
+              <li><span class="stats-num" id="stat-methods">—</span><span class="stats-lbl">Methods</span></li>
+              <li><span class="stats-num" id="stat-applications">—</span><span class="stats-lbl">Applications</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="about-card">
+          <div class="card-header">🏷️ Domain Topics</div>
+          <div style="padding:16px;">
+            <div class="topic-list" id="domain-topics"></div>
+          </div>
+        </div>
+        <div class="about-card">
+          <div class="card-header">🔬 Active Projects</div>
+          <div style="padding:16px;" id="overview-projects-list">Loading…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. LANDSCAPE -->
+  <div class="tab-pane" id="pane-landscape">
+    <h2 class="section-h">🗺️ Research Landscape <span class="section-domain-label" id="landscape-domain-label"></span></h2>
+    <p class="section-sub">Key themes, state-of-the-art, and open problems in labor market intelligence.</p>
+    <div class="approach-grid" id="landscape-grid">
+      <!-- populated by JS -->
+    </div>
+    <div class="callout callout-info" style="margin-top:24px;">
+      <strong>State of the Art (2025–2026):</strong> LLM-based approaches for skill extraction now competitive with supervised baselines.
+      Cedefop/Eurostat OJA Web Intelligence Hub represents production-scale EU deployment.
+      Foundation models enable wage gap estimation without traditional survey data.
+      Graph neural networks model occupational transitions with high accuracy.
+    </div>
+  </div>
+
+  <!-- 3. PAPERS -->
+  <div class="tab-pane" id="pane-papers">
+    <h2 class="section-h">📄 Research Papers <span class="section-domain-label" id="papers-domain-label"></span></h2>
+    <div class="search-bar">
+      <input type="text" id="papers-search" placeholder="Search papers…" oninput="filterCards('papers')">
+      <select id="papers-year" onchange="filterCards('papers')">
+        <option value="">All years</option>
+        <option value="2026">2026</option>
+        <option value="2025">2025</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+      </select>
+      <select id="papers-topic" onchange="filterCards('papers')">
+        <option value="">All topics</option>
+        <option value="skill-extraction">Skill Extraction</option>
+        <option value="labor-forecasting">Labor Forecasting</option>
+        <option value="ai-labor-impact">AI Labor Impact</option>
+        <option value="skills-forecasting">Skills Forecasting</option>
+        <option value="occupational-classification">Occupational Classification</option>
+        <option value="wage-prediction">Wage Prediction</option>
+        <option value="llm">LLM</option>
+      </select>
+      <span class="search-count" id="papers-count"></span>
+    </div>
+    <div class="detail-layout">
+      <div class="card-grid" id="papers-grid"></div>
+      <div class="detail-panel" id="papers-detail">
+        <div class="detail-empty">← Select a paper to see details</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. DATASETS -->
+  <div class="tab-pane" id="pane-datasets">
+    <h2 class="section-h">🗄️ Datasets <span class="section-domain-label" id="datasets-domain-label"></span></h2>
+    <div class="search-bar">
+      <input type="text" id="datasets-search" placeholder="Search datasets…" oninput="filterCards('datasets')">
+      <select id="datasets-type" onchange="filterCards('datasets')">
+        <option value="">All types</option>
+        <option value="survey">Survey</option>
+        <option value="survey-microdata">Microdata</option>
+        <option value="official-statistics">Official Statistics</option>
+        <option value="occupational-taxonomy">Taxonomy</option>
+        <option value="job-postings">Job Postings</option>
+        <option value="projections">Projections</option>
+        <option value="administrative">Administrative</option>
+      </select>
+      <select id="datasets-access" onchange="filterCards('datasets')">
+        <option value="">All access</option>
+        <option value="free">Free</option>
+        <option value="free-download">Free Download</option>
+        <option value="registration-required">Registration Required</option>
+        <option value="research-request">Research Request</option>
+        <option value="website-portal">Website Portal</option>
+      </select>
+      <span class="search-count" id="datasets-count"></span>
+    </div>
+    <div class="detail-layout">
+      <div class="card-grid" id="datasets-grid"></div>
+      <div class="detail-panel" id="datasets-detail">
+        <div class="detail-empty">← Select a dataset to see details</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. METHODS -->
+  <div class="tab-pane" id="pane-methods">
+    <h2 class="section-h">⚙️ Methods <span class="section-domain-label" id="methods-domain-label"></span></h2>
+    <div class="search-bar">
+      <input type="text" id="methods-search" placeholder="Search methods…" oninput="filterCards('methods')">
+      <select id="methods-cat" onchange="filterCards('methods')">
+        <option value="">All categories</option>
+        <option value="skill-extraction">Skill Extraction</option>
+        <option value="occupational-classification">Occupational Classification</option>
+        <option value="labor-forecasting">Labor Forecasting</option>
+        <option value="wage-prediction">Wage Prediction</option>
+        <option value="occupational-transitions">Occupational Transitions</option>
+        <option value="knowledge-retrieval">Knowledge Retrieval</option>
+        <option value="oja-processing">OJA Processing</option>
+      </select>
+      <span class="search-count" id="methods-count"></span>
+    </div>
+    <div class="detail-layout">
+      <div class="card-grid" id="methods-grid"></div>
+      <div class="detail-panel" id="methods-detail">
+        <div class="detail-empty">← Select a method to see details</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. APPLICATIONS -->
+  <div class="tab-pane" id="pane-applications">
+    <h2 class="section-h">🚀 Applications <span class="section-domain-label" id="applications-domain-label"></span></h2>
+    <div class="search-bar">
+      <input type="text" id="applications-search" placeholder="Search applications…" oninput="filterCards('applications')">
+      <select id="applications-cat" onchange="filterCards('applications')">
+        <option value="">All categories</option>
+        <option value="labor-intelligence">Labor Intelligence</option>
+        <option value="workforce-planning">Workforce Planning</option>
+        <option value="job-recommendation">Job Recommendation</option>
+        <option value="economic-forecasting">Economic Forecasting</option>
+        <option value="wage-analysis">Wage Analysis</option>
+        <option value="data-sources">Data Sources</option>
+      </select>
+      <span class="search-count" id="applications-count"></span>
+    </div>
+    <div class="card-grid" id="applications-grid"></div>
+  </div>
+
+  <!-- 7. BENCHMARKS -->
+  <div class="tab-pane" id="pane-benchmarks">
+    <h2 class="section-h">🏆 Benchmarks</h2>
+    <p class="section-sub">Standard evaluation benchmarks for labor market NLP and forecasting tasks.</p>
+    <div id="benchmarks-list"></div>
+  </div>
+
+  <!-- 8. DATA LIBRARY -->
+  <div class="tab-pane" id="pane-sources">
+    <h2 class="section-h">📚 Data Library</h2>
+    <p class="section-sub">All data sources available to the lab — datasets, OJA portals, APIs, surveys, admin registers. Add new sources as YAML entries in <code>knowledge/datasets/</code>.</p>
+
+    <!-- Sub-tabs within Data Library -->
+    <div class="lib-tabs">
+      <button class="lib-tab active" onclick="switchLibTab('lib-datasets', this)">🗄️ Datasets <span class="lib-tab-count" id="ltc-datasets"></span></button>
+      <button class="lib-tab" onclick="switchLibTab('lib-portals', this)">🕷 OJA Portals <span class="lib-tab-count">41</span></button>
+      <button class="lib-tab" onclick="switchLibTab('lib-connectors', this)">🔌 API Connectors</button>
+      <button class="lib-tab" onclick="switchLibTab('lib-countries', this)">🌍 By Country</button>
+    </div>
+
+    <!-- Datasets sub-pane -->
+    <div class="lib-pane active" id="lib-datasets">
+      <div class="search-bar" style="margin-top:12px">
+        <input type="text" id="lib-datasets-search" placeholder="Search datasets…" oninput="renderLibDatasets()">
+        <select id="lib-datasets-type" onchange="renderLibDatasets()">
+          <option value="">All types</option>
+          <option value="survey">Survey</option>
+          <option value="survey-microdata">Microdata</option>
+          <option value="official-statistics">Official Statistics</option>
+          <option value="occupational-taxonomy">Taxonomy</option>
+          <option value="job-postings">Job Postings</option>
+          <option value="projections">Projections</option>
+          <option value="administrative">Administrative</option>
+        </select>
+        <select id="lib-datasets-access" onchange="renderLibDatasets()">
+          <option value="">All access</option>
+          <option value="free">Free</option>
+          <option value="free-download">Free Download</option>
+          <option value="registration-required">Registration Required</option>
+          <option value="research-request">Research Request</option>
+        </select>
+        <span class="search-count" id="lib-datasets-count"></span>
+      </div>
+      <div class="detail-layout">
+        <div class="card-grid" id="lib-datasets-grid"></div>
+        <div class="detail-panel" id="lib-datasets-detail"><div class="detail-empty">← Select a dataset</div></div>
+      </div>
+    </div>
+
+    <!-- OJA Portals sub-pane -->
+    <div class="lib-pane" id="lib-portals">
+      <div class="search-bar" style="margin-top:12px">
+        <input type="text" id="lib-portals-search" placeholder="Search portals…" oninput="renderLibPortals()">
+        <select id="lib-portals-country" onchange="renderLibPortals()">
+          <option value="">All countries</option>
+          <option value="Greece">🇬🇷 Greece</option>
+          <option value="Italy">🇮🇹 Italy</option>
+          <option value="Spain">🇪🇸 Spain</option>
+          <option value="Cyprus">🇨🇾 Cyprus</option>
+          <option value="Slovenia">🇸🇮 Slovenia</option>
+          <option value="Serbia">🇷🇸 Serbia</option>
+          <option value="Montenegro">🇲🇪 Montenegro</option>
+          <option value="North Macedonia">🇲🇰 N. Macedonia</option>
+          <option value="Denmark">🇩🇰 Denmark</option>
+        </select>
+        <select id="lib-portals-status" onchange="renderLibPortals()">
+          <option value="">All status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+        <span class="search-count" id="lib-portals-count"></span>
+      </div>
+      <div id="lib-portals-body"></div>
+    </div>
+
+    <!-- API Connectors sub-pane -->
+    <div class="lib-pane" id="lib-connectors">
+      <div style="margin-top:12px" id="lib-connectors-body">Loading…</div>
+    </div>
+
+    <!-- By Country sub-pane -->
+    <div class="lib-pane" id="lib-countries">
+      <div style="margin-top:12px" id="lib-countries-body"></div>
+    </div>
+
+    <!-- Lab Rats panel (inside Sources pane) -->
+    <div style="margin-top:32px;border-top:1px solid var(--border);padding-top:24px;">
+      <h3 class="section-h" style="font-size:16px;margin-bottom:4px;">🐀 Lab Rats <span style="font-size:11px;font-weight:400;color:var(--fg-muted);margin-left:8px;">Autonomous research agents — powered by OpenRouter</span></h3>
+      <p style="font-size:12px;color:var(--fg-muted);margin-bottom:16px;">Each rat is a domain expert agent running 24/7. They research, analyse, and visualise — autonomously growing the lab.</p>
+      <div id="lab-rats-grid" class="rat-grid"></div>
+    </div>
+
+  </div>
+
+  <!-- 9. INSIGHTS -->
+  <div class="tab-pane" id="pane-insights">
+    <h2 class="section-h">📈 Insights <span class="section-domain-label" id="insights-domain-label"></span></h2>
+    <p class="section-sub">Generated charts and trend analysis for the selected domain.</p>
+    <div id="insights-charts"></div>
+  </div>
+
+  <!-- 10. EXPERIMENTS -->
+  <div class="tab-pane" id="pane-lab_exp">
+    <h2 class="section-h">🧪 Experiments</h2>
+    <p class="section-sub">Active and completed lab experiments and analysis runs.</p>
+    <div class="lab-placeholder">
+      <div class="placeholder-icon">🧪</div>
+      <div>
+        <h4>Lab Notebook — No experiments yet</h4>
+        <p>Add experiment entries to <code>data/processed/</code> as JSON files, or create YAML logs in <code>knowledge/experiments/</code>. Each entry becomes a card here with status, date, domain, and output links.</p>
+      </div>
+    </div>
+    <div class="callout callout-info">
+      <strong>First experiment suggestion:</strong> OJA skill extraction on Greek job postings → map to ESCO → compare vs Cedefop Skills Forecast 2025.
+      Data: <code>dypa-ergani</code> + <code>kariera.gr</code> crawl. Method: <code>hybrid-semantic-normalization</code> + <code>escoxlm-r</code>.
+    </div>
+  </div>
+
+  <!-- 11. PROJECTS -->
+  <div class="tab-pane" id="pane-projects">
+    <div class="proj-layout">
+      <!-- Project sub-tab sidebar -->
+      <div class="proj-sidebar">
+        <div class="proj-sidebar-label">PROJECTS</div>
+        <div class="proj-nav-item active" data-proj="eu-almpo" onclick="switchProject('eu-almpo',this)">
+          <span class="proj-nav-dot" style="background:#2f81f7"></span>
+          <span>EU-ALMPO</span>
+          <span class="proj-nav-tag">HORIZON</span>
+        </div>
+        <div class="proj-nav-item" data-proj="microidea" onclick="switchProject('microidea',this)">
+          <span class="proj-nav-dot" style="background:#39d353"></span>
+          <span>MicroIdea</span>
+          <span class="proj-nav-tag">Erasmus+</span>
+        </div>
+        <div class="proj-nav-item" data-proj="growth4blue" onclick="switchProject('growth4blue',this)">
+          <span class="proj-nav-dot" style="background:#bc8cff"></span>
+          <span>Growth4Blue</span>
+          <span class="proj-nav-tag">ADRION</span>
+        </div>
+        <div class="proj-nav-item" data-proj="train4blue" onclick="switchProject('train4blue',this)">
+          <span class="proj-nav-dot" style="background:#f78166"></span>
+          <span>TRAIN4BLUE</span>
+          <span class="proj-nav-tag">ADRION</span>
+        </div>
+      </div>
+      <!-- Project content area -->
+      <div class="proj-content" id="proj-content">
+        <div class="detail-empty">Loading projects…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. OJA PORTALS -->
+  <div class="tab-pane" id="pane-oja">
+    <h2 class="section-h">📋 OJA Portal Catalog</h2>
+    <p class="section-sub">Online Job Advertisement portals by country. These are the primary sources for labor demand intelligence via OJA analysis.</p>
+    <div class="search-bar">
+      <input type="text" id="oja-search" placeholder="Search portals or countries…" oninput="filterOJA()">
+      <select id="oja-status" onchange="filterOJA()">
+        <option value="">All status</option>
+        <option value="active">Active ✓</option>
+        <option value="blocked">Blocked ⚠</option>
+        <option value="paused">Paused</option>
+      </select>
+      <span class="search-count" id="oja-count"></span>
+    </div>
+    <div id="oja-table-wrap"></div>
+  </div>
+
+  <!-- 13. LMI RESEARCH -->
+  <div class="tab-pane" id="pane-lmi_research">
+    <h2 class="section-h">🔍 LMI Research Reference</h2>
+    <p class="section-sub">Lab notebook: what supply &amp; demand data we have indexed, how to visualize it, and best practices from leading LMO portals worldwide.</p>
+    <div class="lmir-layout">
+      <nav class="lmir-sidebar">
+        <div class="lmir-nav-item active" onclick="lmirSection('data')" id="lmir-nav-data">📦 Lab Data Guide</div>
+        <div class="lmir-nav-item" onclick="lmirSection('viz')" id="lmir-nav-viz">📈 Viz Catalog <span class="lmir-badge">22</span></div>
+        <div class="lmir-nav-item" onclick="lmirSection('roles')" id="lmir-nav-roles">👥 By Role</div>
+        <div class="lmir-nav-item" onclick="lmirSection('portals')" id="lmir-nav-portals">🌐 Portal Benchmarks</div>
+        <div class="lmir-nav-item" onclick="lmirSection('regional')" id="lmir-nav-regional">🏔️ Regional Challenges</div>
+      </nav>
+      <div class="lmir-content">
+        <div id="lmir-section-data" class="lmir-section active"></div>
+        <div id="lmir-section-roles" class="lmir-section"></div>
+        <div id="lmir-section-viz" class="lmir-section">
+          <div class="lmir-viz-toolbar">
+            <input type="text" id="lmir-viz-search" placeholder="Search visualization types…" oninput="filterLmirViz()">
+            <select id="lmir-viz-filter" onchange="filterLmirViz()">
+              <option value="">All categories</option>
+              <option value="temporal">Temporal</option>
+              <option value="comparison">Comparison</option>
+              <option value="hierarchy">Hierarchy</option>
+              <option value="flow">Flow</option>
+              <option value="geographic">Geographic</option>
+              <option value="distribution">Distribution</option>
+              <option value="network">Network</option>
+              <option value="special">Special / LMI</option>
+              <option value="oja-intelligence">OJA Intelligence</option>
+            </select>
+          </div>
+          <div class="lmir-viz-count" id="lmir-viz-count">Loading…</div>
+          <div id="lmir-viz-grid" class="lmir-viz-grid"></div>
+        </div>
+        <div id="lmir-section-portals" class="lmir-section"></div>
+        <div id="lmir-section-regional" class="lmir-section"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 14. PLAYGROUND -->
+  <div class="tab-pane" id="pane-playground">
+    <div class="interact-layout">
+
+      <!-- Left: agent roster -->
+      <div class="interact-sidebar">
+        <div class="interact-sidebar-label">AGENTS</div>
+        <div class="interact-agent active" data-agent="assistant" onclick="selectAgent('assistant',this)">
+          <span class="interact-agent-avatar" style="background:#2f81f7">🧠</span>
+          <div class="interact-agent-info">
+            <div class="interact-agent-name">Lab Assistant</div>
+            <div class="interact-agent-role">General Q&amp;A · Claude</div>
+          </div>
+          <span class="interact-agent-status online" title="Online"></span>
+        </div>
+        <div class="interact-agent-divider">LAB RATS</div>
+        <div class="interact-agent" data-agent="rat_researcher" onclick="selectAgent('rat_researcher',this)">
+          <span class="interact-agent-avatar" style="background:#2f81f7">🔬</span>
+          <div class="interact-agent-info">
+            <div class="interact-agent-name">rat_researcher</div>
+            <div class="interact-agent-role">Labor economist · AI researcher</div>
+          </div>
+          <span class="interact-agent-status" id="rat-status-rat_researcher" title="Unknown"></span>
+        </div>
+        <div class="interact-agent" data-agent="rat_analyst" onclick="selectAgent('rat_analyst',this)">
+          <span class="interact-agent-avatar" style="background:#56d364">📊</span>
+          <div class="interact-agent-info">
+            <div class="interact-agent-name">rat_analyst</div>
+            <div class="interact-agent-role">Quantitative economist · Data eng.</div>
+          </div>
+          <span class="interact-agent-status" id="rat-status-rat_analyst" title="Unknown"></span>
+        </div>
+        <div class="interact-agent" data-agent="rat_visualizer" onclick="selectAgent('rat_visualizer',this)">
+          <span class="interact-agent-avatar" style="background:#d2a8ff">📈</span>
+          <div class="interact-agent-info">
+            <div class="interact-agent-name">rat_visualizer</div>
+            <div class="interact-agent-role">Viz engineer · LMI analyst</div>
+          </div>
+          <span class="interact-agent-status" id="rat-status-rat_visualizer" title="Unknown"></span>
+        </div>
+        <div class="interact-agent" data-agent="rat_monitor" onclick="selectAgent('rat_monitor',this)">
+          <span class="interact-agent-avatar" style="background:#ffa657">🛰️</span>
+          <div class="interact-agent-info">
+            <div class="interact-agent-name">rat_monitor</div>
+            <div class="interact-agent-role">DevOps · Infrastructure</div>
+          </div>
+          <span class="interact-agent-status" id="rat-status-rat_monitor" title="Unknown"></span>
+        </div>
+      </div>
+
+      <!-- Right: chat area -->
+      <div class="interact-chat" id="interact-chat-pane">
+        <div class="skaven-banner" id="skaven-banner">
+          <span class="skaven-banner-text">THE GREAT HOARD GROWS — YES-YES! 🐀🐀🐀</span>
+        </div>
+        <div class="interact-chat-header" id="interact-header">
+          <span class="interact-header-avatar" id="interact-header-avatar">🧠</span>
+          <div>
+            <div class="interact-header-name" id="interact-header-name">Lab Assistant</div>
+            <div class="interact-header-desc" id="interact-header-desc">General Q&amp;A powered by Claude · Full knowledge base access</div>
+          </div>
+        </div>
+
+        <div class="interact-history" id="interact-history">
+          <div class="interact-msg assistant">
+            <div class="interact-msg-body">👋 Select an agent from the left, or type <code>@</code> in the input to mention one inline. Ask me anything about the lab — papers, datasets, projects, deliverables, portals.</div>
+          </div>
+        </div>
+
+        <!-- @mention dropdown -->
+        <div class="interact-mention-dropdown hidden" id="interact-mention-dropdown">
+          <div class="interact-mention-item" data-agent="rat_researcher" onmousedown="pickMention('rat_researcher')">
+            <span>🔬</span><span>rat_researcher</span><span class="interact-mention-role">Labor economist · AI researcher</span>
+          </div>
+          <div class="interact-mention-item" data-agent="rat_analyst" onmousedown="pickMention('rat_analyst')">
+            <span>📊</span><span>rat_analyst</span><span class="interact-mention-role">Quantitative economist · Data eng.</span>
+          </div>
+          <div class="interact-mention-item" data-agent="rat_visualizer" onmousedown="pickMention('rat_visualizer')">
+            <span>📈</span><span>rat_visualizer</span><span class="interact-mention-role">Viz engineer · LMI analyst</span>
+          </div>
+          <div class="interact-mention-item" data-agent="rat_monitor" onmousedown="pickMention('rat_monitor')">
+            <span>🛰️</span><span>rat_monitor</span><span class="interact-mention-role">DevOps · Infrastructure</span>
+          </div>
+        </div>
+
+        <div class="interact-input-row">
+          <div class="interact-input-wrap">
+            <div class="interact-agent-pill" id="interact-agent-pill">
+              <span id="interact-pill-icon">🧠</span>
+              <span id="interact-pill-name">assistant</span>
+            </div>
+            <textarea id="interact-input" rows="1"
+              placeholder="Message… type @ to mention a rat"
+              onkeydown="interactKeydown(event)"
+              oninput="interactInput(event)"></textarea>
+          </div>
+          <button class="btn btn-primary interact-send" onclick="interactSend()" id="interact-send-btn">Send</button>
+        </div>
+        <div class="interact-hint">Press <kbd>Enter</kbd> to send · <kbd>Shift+Enter</kbd> for new line · type <kbd>@</kbd> to mention a rat agent</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 14. MAP -->
+  <div class="tab-pane" id="pane-map">
+    <h2 class="section-h">🗾 Data Coverage Map <span class="section-domain-label" id="map-domain-label"></span></h2>
+    <div class="map-layout">
+      <!-- Left sidebar: country list -->
+      <div class="map-country-list" id="map-country-list">
+        <div class="map-cl-header">Countries</div>
+        <div class="map-cl-group-label">🇪🇺 EU / Priority</div>
+        <div class="map-cl-item" onclick="mapFlyTo('Greece',37.98,23.73)" data-country="Greece">🇬🇷 Greece <span class="map-cl-tier primary">●</span></div>
+        <div class="map-cl-item" onclick="mapFlyTo('Italy',41.9,12.5)" data-country="Italy">🇮🇹 Italy <span class="map-cl-tier secondary">●</span></div>
+        <div class="map-cl-item" onclick="mapFlyTo('Spain',40.4,-3.7)" data-country="Spain">🇪🇸 Spain <span class="map-cl-tier secondary">●</span></div>
+        <div class="map-cl-item" onclick="mapFlyTo('Slovenia',46.1,14.5)" data-country="Slovenia">🇸🇮 Slovenia <span class="map-cl-tier secondary">●</span></div>
+        <div class="map-cl-item" onclick="mapFlyTo('Cyprus',35.1,33.4)" data-country="Cyprus">🇨🇾 Cyprus <span class="map-cl-tier reference">●</span></div>
+        <div class="map-cl-item" onclick="mapFlyTo('Denmark',56.0,10.0)" data-country="Denmark">🇩🇰 Denmark <span class="map-cl-tier secondary">●</span></div>
+        <div class="map-cl-group-label">🌍 Western Balkans</div>
+        <div class="map-cl-item" onclick="mapFlyTo('Serbia',44.8,20.5)" data-country="Serbia">🇷🇸 Serbia <span class="map-cl-tier primary">●</span></div>
+        <div class="map-cl-item" onclick="mapFlyTo('Montenegro',42.7,19.4)" data-country="Montenegro">🇲🇪 Montenegro <span class="map-cl-tier primary">●</span></div>
+        <div class="map-cl-item" onclick="mapFlyTo('North Macedonia',41.6,21.7)" data-country="North Macedonia">🇲🇰 N.Macedonia <span class="map-cl-tier primary">●</span></div>
+        <div class="map-cl-item" onclick="mapFlyTo('Albania',41.3,20.0)" data-country="Albania">🇦🇱 Albania <span class="map-cl-tier primary">●</span></div>
+        <div class="map-cl-item" onclick="mapFlyTo('Bosnia',43.9,17.7)" data-country="Bosnia">🇧🇦 Bosnia <span class="map-cl-tier primary">●</span></div>
+        <div class="map-cl-item" onclick="mapFlyTo('Kosovo',42.6,20.9)" data-country="Kosovo">🇽🇰 Kosovo <span class="map-cl-tier primary">●</span></div>
+        <div class="map-cl-group-label">🌏 Reference</div>
+        <div class="map-cl-item" onclick="mapFlyTo('Egypt',30.0,31.2)" data-country="Egypt">🇪🇬 Egypt <span class="map-cl-tier reference">●</span></div>
+        <div class="map-legend" style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px;">
+          <div class="legend-item"><div class="legend-dot primary-dot"></div> Primary</div>
+          <div class="legend-item"><div class="legend-dot secondary-dot"></div> Secondary</div>
+          <div class="legend-item"><div class="legend-dot reference-dot"></div> Reference</div>
+        </div>
+      </div>
+      <!-- Map canvas -->
+      <div class="map-canvas-wrap">
+        <div id="lab-map" style="height:100%;width:100%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 15. IMPL — CRAWLING PORTALS -->
+  <div class="tab-pane" id="pane-impl_portals">
+    <h2 class="section-h">🕷 Crawling Portals</h2>
+    <p class="section-sub">Active OJA crawling infrastructure across DMLab projects. 41 portals monitored across 9 countries.</p>
+    <div class="search-bar">
+      <input type="text" id="impl-portals-search" placeholder="Search portals…" oninput="renderImplPortals()">
+      <select id="impl-portals-country" onchange="renderImplPortals()">
+        <option value="">All countries</option>
+        <option value="Greece">🇬🇷 Greece</option>
+        <option value="Italy">🇮🇹 Italy</option>
+        <option value="Spain">🇪🇸 Spain</option>
+        <option value="Cyprus">🇨🇾 Cyprus</option>
+        <option value="Slovenia">🇸🇮 Slovenia</option>
+        <option value="Serbia">🇷🇸 Serbia</option>
+        <option value="Montenegro">🇲🇪 Montenegro</option>
+        <option value="North Macedonia">🇲🇰 N. Macedonia</option>
+        <option value="Denmark">🇩🇰 Denmark</option>
+      </select>
+      <select id="impl-portals-project" onchange="renderImplPortals()">
+        <option value="">All projects</option>
+        <option value="MICROIDEA">MicroIdea</option>
+        <option value="EU-ALMPO">EU-ALMPO</option>
+        <option value="GROWTH4BLUE">Growth4Blue</option>
+        <option value="TRAIN4BLUE">TRAIN4BLUE</option>
+      </select>
+      <select id="impl-portals-status" onchange="renderImplPortals()">
+        <option value="">All status</option>
+        <option value="active">Active ✓</option>
+        <option value="inactive">Inactive ✗</option>
+      </select>
+      <span class="search-count" id="impl-portals-count"></span>
+    </div>
+    <div id="impl-portals-table"></div>
+  </div>
+
+  <!-- 16. IMPL — DELIVERABLES 2026 -->
+  <div class="tab-pane" id="pane-impl_deliverables">
+    <h2 class="section-h">📦 Software Deliverables 2026</h2>
+    <p class="section-sub">University of Patras software deliverables due in 2026 across all active projects.</p>
+    <div class="search-bar">
+      <select id="impl-del-project" onchange="renderImplDeliverables()">
+        <option value="">All projects</option>
+        <option value="EU-ALMPO">EU-ALMPO</option>
+        <option value="TRAIN4BLUE">TRAIN4BLUE</option>
+        <option value="GROWTH4BLUE">GROWTH4BLUE</option>
+        <option value="MICROIDEA">MICROIDEA</option>
+      </select>
+      <span class="search-count" id="impl-del-count"></span>
+    </div>
+    <div id="impl-deliverables-timeline"></div>
+    <div id="impl-deliverables-table"></div>
+  </div>
+
+  <!-- 17. CONSTITUTION -->
+  <div class="tab-pane" id="pane-constitution">
+    <h2 class="section-h">📜 Lab Constitution</h2>
+    <p class="section-sub">Guiding principles, research scope, and code of practice for the Labor Intelligence Virtual Lab.</p>
+    <div class="constitution-wrap markdown" id="constitution-content">Loading…</div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  Labor Intelligence Virtual Lab · DMLab · <a href="#" onclick="activateTab('constitution');return false;">Constitution</a> · 2026
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+slug: bls-cps
+name: Current Population Survey (CPS)
+source: U.S. Bureau of Labor Statistics
+geography: [united_states]
+type: survey
+access: free
+url: "https://www.bls.gov/cps/"
+api_available: true
+api_url: "https://api.bls.gov/publicAPI/v2/timeseries/data/"
+update_frequency: monthly
+size: "~100k respondents/month"
+temporal_coverage: "1948–present"
+tags: [employment, unemployment, wages, demographics, education]
+description: |
+  The flagship U.S. household survey. Covers employment status, occupation,
+  industry, earnings, hours worked, and demographic characteristics for the
+  civilian non-institutional population 16+. Jointly produced with the Census Bureau.
+  CPS microdata harmonized through IPUMS for longitudinal analysis.
+key_variables:
+  - employment status (employed/unemployed/not in labor force)
+  - occupation (SOC codes)
+  - industry (NAICS codes)
+  - usual weekly earnings
+  - hours worked
+  - education attainment
+  - age, sex, race, ethnicity

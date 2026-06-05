@@ -1,0 +1,11 @@
+slug: skillspan
+name: SkillSpan
+task: skill-extraction
+description: |
+  Hard and soft skill extraction from English job postings. Contains TECH
+  and HOUSE subsets with ESCO labels. TECHWOLF subset with generic job
+  distribution. Sentence-level BIO annotations for span-based evaluation.
+metrics: [precision, recall, f1-span, f1-exact]
+url: "https://github.com/jensjorisdecorte/Skill-Extraction-benchmark"
+year: 2022
+domains: [global]

@@ -1,0 +1,25 @@
+slug: nlx-job-postings
+name: National Labor Exchange (NLx) Research Hub
+source: DirectEmployers Association / NLx
+geography: [united_states]
+type: job-postings
+access: research-request
+url: "https://nlxresearchhub.org/"
+api_available: false
+update_frequency: continuous
+size: "155+ million job postings, 10+ billion data points extracted"
+temporal_coverage: "2007–present"
+tags: [job-postings, skills, occupations, wages, employers, labor-demand, research]
+description: |
+  Largest U.S. job posting dataset available for academic research. Aggregates
+  postings from thousands of job boards and employer websites. Data points include
+  skills, credentials, pay, occupation, geography, and employer. Available to
+  qualified researchers via application. Used in skills demand forecasting research
+  (arXiv:2205.09508).
+key_variables:
+  - job title and description text
+  - extracted skills (normalized)
+  - occupation codes (SOC)
+  - compensation (when stated)
+  - employer and location
+  - posting duration and close date

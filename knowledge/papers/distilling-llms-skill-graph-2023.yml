@@ -1,0 +1,19 @@
+slug: distilling-llms-skill-graph-2023
+title: "Distilling Large Language Models using Skill-Occupation Graph Context for HR-domain Tasks"
+authors: [Anonymous]
+year: 2023
+venue: arXiv
+arxiv_id: "2311.06383"
+topics: [knowledge-distillation, skill-occupation-graph, hr-nlp, llm]
+domains: [global, european_union]
+abstract: |
+  Graph-based representation of skills and occupations used to enrich LLM
+  distillation for HR-specific tasks. Provides structured context from the
+  ESCO skill-occupation graph to improve distilled model performance on
+  job matching, skill extraction, and occupational classification.
+key_findings:
+  - Skill-occupation graph context improves distillation outcomes
+  - Structured ESCO relationships complement unstructured text
+  - Smaller distilled models with graph context approach full LLM performance
+datasets_used: [esco, custom-hr-tasks]
+methods_used: [knowledge-distillation, graph-context, llm-prompting]

@@ -1,0 +1,20 @@
+slug: ml-labor-forecasting-pandemic-2024
+title: "Labor Market Forecasting in Unprecedented Times: A Machine Learning Approach"
+authors: [Anonymous]
+year: 2024
+venue: Bulletin of Economic Research
+arxiv_id: ""
+topics: [labor-forecasting, machine-learning, covid-19, time-series]
+domains: [global]
+abstract: |
+  Demonstrates that ML methods outperform conventional approaches for labour
+  market forecasting during the COVID-19 pandemic. Traditional ARIMA and VAR
+  models failed during the structural break; tree-based and neural approaches
+  were more robust to distribution shift.
+key_findings:
+  - ML methods significantly outperform traditional econometric forecasts during COVID
+  - Structural breaks render conventional models unreliable
+  - Ensemble methods most robust across diverse economic conditions
+  - High-frequency alternative data improves pandemic-era forecasts
+datasets_used: [bls-cps, bls-jolts]
+methods_used: [gradient-boosting, lstm, arima, var, ensemble-methods]

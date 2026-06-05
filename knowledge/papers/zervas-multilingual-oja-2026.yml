@@ -1,0 +1,28 @@
+slug: zervas-multilingual-oja-2026
+title: "Multilingual Job Posting Mapping to ESCO Occupations"
+authors: [Panagiotis Zervas]
+affiliation: University of Peloponnese (UOP)
+year: 2026
+venue: "Cedefop–Eurostat Research Conference, Thessaloniki"
+session: "2a — Occupation Classification"
+url: "https://www.cedefop.europa.eu/en/events/harnessing-web-data-next-generation-skills-intelligence"
+topics: [multilingual-nlp, esco-mapping, occupation-classification, oja]
+domain: european_union
+abstract: |
+  Presentation at the Cedefop/Eurostat "Harnessing Web Data for Next-Generation Skills Intelligence"
+  conference (Thessaloniki, May 2026). Covers UOP's approach to automatically classifying
+  multilingual online job postings to ESCO occupations across the LIVLAB country scope —
+  EU member states and Western Balkan accession countries. Demonstrates that state-of-the-art
+  multilingual NLP models (fine-tuned on ESCO) achieve competitive classification performance
+  across Greek, Italian, Spanish, and Western Balkan language variants.
+key_findings:
+  - UOP multilingual OJA classification is at the research frontier recognised by Cedefop/Eurostat
+  - ESCO fine-tuning on multilingual corpora significantly outperforms zero-shot classification
+  - Cross-lingual transfer works for closely related languages (e.g. Serbian → Macedonian)
+  - Western Balkan OJA corpora can be mapped to ESCO without separate training data for each language
+methods_used: [multilingual-oja-classification, esco-mapping, transformer-finetuning]
+datasets_used: [wih-oja-microdata, cedefop-skills-ovate]
+livlab_relevance: |
+  This is LIVLAB's own UOP research presented at a top EU conference. The methodology is the
+  backbone of EU-ALMPO WP4 — the ESCO-classification pipeline for the 12-country OJA crawler.
+  Core deliverable for D4.1 and D4.2.

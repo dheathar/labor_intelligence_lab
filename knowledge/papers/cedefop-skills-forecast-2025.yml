@@ -1,0 +1,34 @@
+slug: cedefop-skills-forecast-2025
+title: "Cedefop Skills Forecast 2025: Projections to 2035"
+authors: [Cedefop, Cambridge Econometrics]
+year: 2025
+venue: Cedefop Publication
+url: "https://www.cedefop.europa.eu/en/publications/skills-forecast"
+technical_report_url: "https://www.cedefop.europa.eu/files/skills_forecast_2025_technical_report.pdf"
+topics: [skills-forecast, employment-projections, twin-transition, qualification-demand, sector-analysis]
+domain: european_union
+abstract: |
+  Cedefop's 2025 edition of the European Skills Forecast, projecting employment by sector,
+  occupation, and qualification level to 2035 for all EU-27 countries. Uses Cambridge Econometrics'
+  E3ME macroeconomic model (Module 1) combined with occupation/qualification projection modules.
+  Captures the twin (digital + green) transition, COVID-19 recovery, and demographic shifts.
+key_findings:
+  - ICT & Professional Services: strongest job growth through 2035
+  - Health & Social Work: +3.2M jobs EU27 (demographic pressure)
+  - Renewable energy sector: rapid expansion driving new occupation demand
+  - Manufacturing: net decline (-1.45M) driven by automation and offshoring
+  - Agriculture: continued structural decline (-680K)
+  - Qualification polarisation: demand grows fastest at high skill levels AND some low-skill services; middle skill hollowing out
+  - Green and digital transitions together drive most of the occupational churn
+  - 591 ESCO skills labelled as green; green skills increasingly mainstreamed across sectors
+model_modules:
+  - "Module 1: Cambridge Econometrics E3ME — sectoral employment projections"
+  - "Module 2: Employment by occupation (input-output based)"
+  - "Module 3: Employment by qualification level"
+  - "Module 4: Replacement demand (job openings from exits and transitions)"
+data_available: true
+country_reports: EU27
+livlab_relevance: |
+  Primary benchmark for LIVLAB's demand forecasting. Insights tab chart uses Skills Forecast
+  sector projections. Reference for Growth4Blue (blue economy) and TRAIN4BLUE (training demand).
+  Comparison with WB6 OJA demand signals: WB6 countries not in Cedefop forecast scope.

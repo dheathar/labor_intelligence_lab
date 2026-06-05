@@ -1,0 +1,41 @@
+# ── LIVLAB BENCHMARK TEMPLATE ────────────────────────────────────────────────
+# Constitution rules:
+#   [1] Evidence first — every leaderboard entry must cite a paper or repo
+#   [6] Methodological currency — note if benchmark is superseded or contested
+#   [9] Version your methods — include model version in leaderboard entries
+#
+# REQUIRED: slug, name, task, description, metrics, leaderboard
+# OPTIONAL: languages, url, year, domains, classification_targets
+# ─────────────────────────────────────────────────────────────────────────────
+
+slug: benchmark-name-kebab
+
+name: "Benchmark Name"
+task: skill-extraction                           # skill-extraction |
+                                                 # occupation-classification |
+                                                 # wage-prediction | ner | other
+
+description: |
+  What capability this benchmark measures, how the test set was constructed,
+  and what a "good" score means in practice.
+
+metrics:
+  - f1-macro
+  - precision
+  - recall                                       # top1-accuracy | top3-accuracy | etc.
+
+languages:
+  - English
+  - Multilingual
+
+leaderboard:
+  - method: "Model or System Name (Author Year)"
+    score: 0.82                                  # primary metric score
+    year: 2024
+    notes: "Brief context — dataset split, language, conditions"
+    url: "https://arxiv.org/abs/..."
+
+url: "https://..."                               # benchmark page or paper
+year: 2024
+domains:
+  - european_union

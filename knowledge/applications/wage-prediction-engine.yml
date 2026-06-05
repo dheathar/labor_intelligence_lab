@@ -1,0 +1,12 @@
+slug: wage-prediction-engine
+name: Wage Prediction and Gap Analysis Engine
+category: wage-analysis
+status: research
+description: |
+  Foundation model-based system for estimating wages and wage gaps across
+  occupations, industries, and demographic groups. Uses embedding-based probing
+  to estimate compensation levels from job posting text at scale, enabling
+  analysis of wage disparities without traditional survey data.
+data_sources: [bls-cps, onet, nlx-job-postings]
+methods: [foundation-model-wage, regression-analysis]
+example_tools: [Glassdoor Pay Data, LinkedIn Salary Insights]

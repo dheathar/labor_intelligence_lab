@@ -1,0 +1,32 @@
+slug: european_union
+name: European Union
+display_name: EU Labor Market
+description: >
+  EU/EEA labor market covered by Eurostat (REST+SDMX API), EU-LFS Microdata,
+  Cedefop Skills Forecast, ESCO taxonomy and the Web Intelligence Hub.
+flag: "🇪🇺"
+map:
+  center: [52, 15]
+  zoom: 4
+stats:
+  papers: 12
+  datasets: 9
+  methods: 8
+  applications: 7
+  benchmarks: 3
+sources:
+  - eurostat_api
+  - esco_api
+  - cedefop_api
+  - ilostat
+topics:
+  - esco-taxonomy
+  - skills-intelligence
+  - oja-analysis
+  - vocational-training
+  - multilingual-nlp
+highlights:
+  - "Cedefop Skills Forecast 2025: projections to 2035 by sector & occupation"
+  - "EU-LFS Microdata: ~1.1M individuals/quarter, available via registration"
+  - "Cedefop/Eurostat Web Intelligence Hub: OJA-based real-time skills intelligence"
+  - "ESCO: 13,000+ occupations and 13,890 skills/competences taxonomy"

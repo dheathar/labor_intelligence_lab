@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Environment — NEVER commit secrets
+.env
+.env.local
+
+# Data — raw and processed (too large / proprietary)
+data/raw/
+data/processed/
+data/rat_logs/
+data/rat_memory/
+data/source_status.json
+data/catalog.json
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+.env
+data/raw/
+data/processed/*.parquet
+data/processed/*.csv
+data/processed/*.json
+*.egg-info/
+.DS_Store

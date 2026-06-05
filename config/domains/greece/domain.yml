@@ -1,0 +1,32 @@
+slug: greece
+name: Greece
+display_name: Greek Labor Market
+description: >
+  Greece-specific labor market intelligence. Sources: DYPA/Ergani job register
+  (real-time vacancies), ELSTAT LFS (1981–2025), ILOSTAT and Cedefop.
+flag: "🇬🇷"
+map:
+  center: [39.0, 22.0]
+  zoom: 6
+stats:
+  papers: 4
+  datasets: 6
+  methods: 5
+  applications: 5
+  benchmarks: 2
+sources:
+  - elstat_scraper
+  - ilostat
+  - eurostat_api
+  - cedefop_api
+topics:
+  - greek-lfs
+  - dypa-ergani
+  - unemployment-duration
+  - skills-shortage
+  - eu-comparison
+highlights:
+  - "ELSTAT LFS Quarterly (SJO01): 2001–2026, regional + demographic breakdowns"
+  - "ELSTAT LFS Annual (SJO03): 1981–2025 — 44-year historical series"
+  - "DYPA/Ergani: real-time job vacancy demand via job register"
+  - "Cedefop 2026 conference held in Thessaloniki — OJA intelligence focus"

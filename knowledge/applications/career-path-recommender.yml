@@ -1,0 +1,12 @@
+slug: career-path-recommender
+name: Career Path Recommender
+category: job-recommendation
+status: research
+description: |
+  Recommends feasible career transitions based on skill adjacency in occupation
+  graph. Identifies which workers can most easily transition into growing roles
+  given their current skill profile. Combines GNN-based transition modelling
+  with ESCO skill taxonomy.
+data_sources: [onet, esco, bls-employment-projections]
+methods: [graph-neural-networks-transitions, skill-extraction, esco-mapping]
+example_tools: [O*NET Career Exploration, LinkedIn Career Explorer]

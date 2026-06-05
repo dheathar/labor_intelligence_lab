@@ -1,0 +1,13 @@
+slug: oja-intelligence-dashboard
+name: OJA Skills Intelligence Dashboard
+category: labor-intelligence
+status: production
+description: |
+  Online Job Advertisement (OJA)-based real-time dashboard for skills demand
+  intelligence. Processes job postings continuously using multilingual NLP
+  pipelines (hybrid semantic normalisation) to surface occupation-level skill
+  trends. The Cedefop/Eurostat Web Intelligence Hub is the EU-scale example.
+  First-priority experiment for this lab: replicate for Greek/EU job postings.
+data_sources: [dypa-ergani, nlx-job-postings, eurostat-labour, esco]
+methods: [hybrid-semantic-normalization, skill-extraction, escoxlm-r]
+example_tools: [Cedefop Skills-OVATE, Lightcast]

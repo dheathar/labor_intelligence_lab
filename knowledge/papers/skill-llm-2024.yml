@@ -1,0 +1,19 @@
+slug: skill-llm-2024
+title: "Skill-LLM: Repurposing General-Purpose LLMs for Skill Extraction via Knowledge Distillation"
+authors: [Anonymous]
+year: 2024
+venue: arXiv
+arxiv_id: "2410.12052"
+topics: [skill-extraction, knowledge-distillation, llm, job-postings]
+domains: [global]
+abstract: |
+  Adapts general LLMs for labour market skill extraction using knowledge
+  distillation. A large teacher LLM annotates job postings; a smaller student
+  model learns from these annotations. Achieves near-teacher performance at
+  much lower inference cost.
+key_findings:
+  - Knowledge distillation bridges gap between general LLMs and domain specialists
+  - Student model achieves 95%+ of teacher performance at 10x lower cost
+  - Particularly effective for long-tail skill categories
+datasets_used: [skillspan, custom-job-postings]
+methods_used: [knowledge-distillation, llm-finetuning, skill-extraction]

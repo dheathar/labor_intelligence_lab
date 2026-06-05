@@ -1,0 +1,12 @@
+slug: ai-jobs-forecasting-benchmark
+name: AI Jobs Forecasting Benchmark
+task: labor-market-forecasting
+description: |
+  Benchmarks LLM performance on predicting occupational demand changes driven
+  by AI adoption. Evaluates against ground-truth BLS employment projections
+  and expert forecasts. Establishes baseline for future evaluation of AI
+  labor market prediction capability.
+metrics: [mae, rmse, correlation, directional-accuracy]
+url: "https://arxiv.org/abs/2510.23358"
+year: 2025
+domains: [global, united_states]

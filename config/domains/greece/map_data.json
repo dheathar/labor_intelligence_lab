@@ -1,0 +1,30 @@
+[
+  {
+    "id": "grc",
+    "name": "Greece",
+    "lat": 39.0,
+    "lng": 22.0,
+    "tier": "primary",
+    "flag": "🇬🇷",
+    "stats": {
+      "unemployment_rate": "9.5% (2025 Q1)",
+      "employment_rate": "61.2% (2025)",
+      "youth_unemployment": "25.1% (2025)"
+    },
+    "sources": {
+      "demand": [
+        { "name": "DYPA / Ergani Job Register", "type": "admin", "url": "https://www.dypa.gov.gr/en", "note": "Real-time job vacancies, ESCO-mapped" },
+        { "name": "Cedefop Skills-OVATE", "type": "oja", "url": "https://www.cedefop.europa.eu/en/tools/skills-ovate", "note": "OJA-based skills demand intelligence for Greece" }
+      ],
+      "supply": [
+        { "name": "ELSTAT LFS Quarterly (SJO01)", "type": "survey", "url": "https://www.statistics.gr/en/statistics/-/publication/SJO01/", "note": "Q1 2001–Q1 2026, regional breakdowns" },
+        { "name": "ELSTAT LFS Annual (SJO03)", "type": "survey", "url": "https://www.statistics.gr/en/statistics/-/publication/SJO03/", "note": "1981–2025 annual series" },
+        { "name": "ILOSTAT Greece", "type": "api", "url": "https://ilostat.ilo.org/data/country-profiles/grc/", "note": "SDMX API, 1938–present" }
+      ],
+      "macro": [
+        { "name": "Eurostat Greece", "type": "api", "url": "https://ec.europa.eu/eurostat/web/greece", "note": "REST+SDMX, harmonised EU stats" },
+        { "name": "Cedefop Skills Forecast", "type": "projections", "url": "https://www.cedefop.europa.eu/en/tools/skills-forecast", "note": "Projections to 2035 by occupation" }
+      ]
+    }
+  }
+]

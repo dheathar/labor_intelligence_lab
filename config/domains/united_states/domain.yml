@@ -1,0 +1,30 @@
+slug: united_states
+name: United States
+display_name: U.S. Labor Market
+description: >
+  The U.S. labor market — covered by BLS, O*NET, JOLTS, IPUMS and the
+  National Labor Exchange (155M+ job postings).
+flag: "🇺🇸"
+map:
+  center: [39.5, -98.35]
+  zoom: 4
+stats:
+  papers: 14
+  datasets: 10
+  methods: 12
+  applications: 9
+  benchmarks: 5
+sources:
+  - bls_api
+  - onet_api
+  - ilostat
+topics:
+  - employment-projections
+  - skill-extraction
+  - wage-prediction
+  - job-postings
+  - labor-forecasting
+highlights:
+  - "BLS projects 2024–2034 employment by occupation"
+  - "NLx Research Hub: 155M+ job postings, 10B+ data points"
+  - "NBER w33777: 80% of US workforce may have 10%+ of tasks affected by LLMs"

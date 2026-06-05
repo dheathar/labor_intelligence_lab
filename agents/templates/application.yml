@@ -1,0 +1,42 @@
+# ── LIVLAB APPLICATION TEMPLATE ──────────────────────────────────────────────
+# Constitution rules:
+#   [1] Evidence first — link to real deployment or published evaluation
+#   [2] Honest data — document what data the application actually uses
+#   [3] Reproducibility — note if pipeline is code-available
+#
+# REQUIRED: slug, name, category, status, description, data_sources, livlab_relevance
+# OPTIONAL: methods_used, url, code_url, outputs, project
+# ─────────────────────────────────────────────────────────────────────────────
+
+slug: application-name-kebab
+
+name: "Application Name"
+category: skills-gap                             # skills-gap | demand-forecasting |
+                                                 # career-pathways | policy-analysis |
+                                                 # wage-estimation | job-matching |
+                                                 # oja-intelligence | regional-analysis
+
+status: research                                 # research | prototype | production
+
+description: |
+  What the application does, who uses it, and what decisions it informs.
+  Be specific about geographic scope and data vintage.
+
+data_sources:                                    # slugs from knowledge/datasets/
+  - dataset-slug
+
+methods_used:                                    # slugs from knowledge/methods/
+  - method-slug
+
+outputs:
+  - "Monthly skill demand index by ISCO-2 occupation"
+  - "Country-level dashboard"
+
+url: "https://..."                               # public-facing URL if available
+code_url: "https://github.com/..."              # omit if not open source
+
+project: eu-almpo                               # eu-almpo | microidea | growth4blue |
+                                                # train4blue | internal
+
+livlab_relevance: |
+  How this application connects to LIVLAB's mission and active projects.

@@ -1,0 +1,92 @@
+slug: oja-portals-catalog
+name: Online Job Advertisement (OJA) Portals Catalog
+category: data-sources
+status: reference
+description: |
+  Catalog of key Online Job Advertisement portals by country/region. These are
+  the primary sources for labor demand intelligence via OJA analysis. Each portal
+  can be scraped (where permitted) or accessed via API for skill extraction,
+  occupational demand analysis, and real-time labor market intelligence.
+
+portals:
+  global:
+    - name: LinkedIn Jobs
+      url: "https://www.linkedin.com/jobs/"
+      api: "LinkedIn Economic Graph (partner access)"
+      coverage: "190+ countries, 1B+ profiles"
+      note: "Best for skills, seniority, company-level demand signals"
+    - name: Indeed
+      url: "https://www.indeed.com/"
+      api: "Indeed Publisher API (limited)"
+      coverage: "60+ countries"
+    - name: Glassdoor
+      url: "https://www.glassdoor.com/"
+      api: "Glassdoor Jobs API"
+      coverage: "40+ countries"
+    - name: Lightcast / Burning Glass
+      url: "https://lightcast.io/"
+      api: "Lightcast API (commercial)"
+      coverage: "160,000+ sources, 2.5B+ postings"
+      note: "Gold standard for research-grade job posting data"
+
+  europe:
+    - name: EURES European Job Mobility Portal
+      url: "https://eures.ec.europa.eu/"
+      api: "EURES API (open)"
+      coverage: "EU27 + EEA"
+      note: "Official EU cross-border vacancy exchange"
+    - name: Cedefop Web Intelligence Hub
+      url: "https://www.cedefop.europa.eu/en/tools/skills-ovate"
+      coverage: "EU27"
+      note: "OJA-based skills intelligence — hybrid semantic NLP pipeline"
+
+  greece:
+    - name: Ergani / DYPA
+      url: "https://www.dypa.gov.gr/en"
+      coverage: "Greece (national)"
+      note: "Official job register — primary Greek demand signal"
+    - name: Kariera.gr
+      url: "https://www.kariera.gr/"
+      coverage: "Greece"
+      note: "Largest private Greek job portal"
+    - name: Skywalker.gr
+      url: "https://www.skywalker.gr/"
+      coverage: "Greece"
+    - name: JobsToday.gr
+      url: "https://www.jobstoday.gr/"
+      coverage: "Greece"
+    - name: e-Karies (Εκαριέρες)
+      url: "https://www.e-karies.gr/"
+      coverage: "Greece"
+
+  balkans:
+    - name: MojPosao (Croatia/Serbia)
+      url: "https://www.mojposao.hr/"
+      coverage: "Croatia, Serbia, Bosnia"
+    - name: Infostud / Poslovi.infostud.com
+      url: "https://poslovi.infostud.com/"
+      coverage: "Serbia"
+    - name: HaloPosao (Serbia)
+      url: "https://halooglasi.com/"
+      coverage: "Serbia"
+    - name: Rabota.bg (Bulgaria)
+      url: "https://www.rabota.bg/"
+      coverage: "Bulgaria"
+    - name: Jobs.bg
+      url: "https://www.jobs.bg/"
+      coverage: "Bulgaria"
+    - name: eJobs.ro (Romania)
+      url: "https://www.ejobs.ro/"
+      coverage: "Romania"
+
+  middle_east_north_africa:
+    - name: Bayt.com
+      url: "https://www.bayt.com/"
+      coverage: "Arab region, 20+ countries"
+    - name: Wuzzuf (Egypt)
+      url: "https://wuzzuf.net/"
+      coverage: "Egypt"
+      note: "Used in arXiv:2601.06129 Egyptian jobs study"
+    - name: Forasna (Egypt)
+      url: "https://www.forasna.com/"
+      coverage: "Egypt"

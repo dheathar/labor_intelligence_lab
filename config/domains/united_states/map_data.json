@@ -1,0 +1,30 @@
+[
+  {
+    "id": "usa",
+    "name": "United States",
+    "lat": 39.5,
+    "lng": -98.35,
+    "tier": "primary",
+    "flag": "🇺🇸",
+    "stats": {
+      "unemployment_rate": "4.1% (May 2025)",
+      "employment_rate": "79.9% (prime-age 25–54, 2025)",
+      "job_openings": "7.4M (JOLTS, Apr 2025)"
+    },
+    "sources": {
+      "demand": [
+        { "name": "BLS JOLTS", "type": "api", "url": "https://www.bls.gov/jlt/", "note": "Monthly job openings, hires, separations — free API" },
+        { "name": "NLx Research Hub", "type": "research", "url": "https://nlxresearchhub.org/", "note": "155M+ job postings for academic research" },
+        { "name": "O*NET Web Services", "type": "api", "url": "https://services.onetcenter.org/", "note": "Occupational skill requirements API" }
+      ],
+      "supply": [
+        { "name": "BLS Current Population Survey (CPS)", "type": "api", "url": "https://www.bls.gov/cps/", "note": "Monthly employment/unemployment — free API" },
+        { "name": "IPUMS CPS Microdata", "type": "microdata", "url": "https://cps.ipums.org/", "note": "Harmonized CPS microdata for longitudinal analysis" }
+      ],
+      "projections": [
+        { "name": "BLS Employment Projections (2024–2034)", "type": "projections", "url": "https://www.bls.gov/emp/", "note": "10-year occupational demand forecasts" },
+        { "name": "O*NET Future of Work", "type": "projections", "url": "https://www.onetcenter.org/overview.html", "note": "Occupation-level skill change and outlook" }
+      ]
+    }
+  }
+]

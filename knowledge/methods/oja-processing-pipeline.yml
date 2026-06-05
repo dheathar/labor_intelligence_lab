@@ -1,0 +1,37 @@
+slug: oja-processing-pipeline
+name: "OJA Multi-Stage Processing Pipeline"
+category: data-engineering
+status: production
+url: "https://cros.ec.europa.eu/wih/oja"
+description: |
+  The gold-standard pipeline for transforming raw online job advertisements into structured
+  labour market intelligence, as developed by Cedefop/Eurostat Web Intelligence Hub. Covers
+  4 stages: landscaping → collection → pre-processing → information extraction.
+stages:
+  - name: Landscaping
+    description: "Systematic identification and quality assessment of job portals by country. Maps portal coverage, volume, update frequency, scraping feasibility. WIH conducted exercises in 2017 (EU27+UK) and 2021 (expanded to EFTA)."
+    tools: [manual-survey, automated-probe, coverage-scoring]
+  - name: Collection
+    description: "Three methods in order of data quality: (1) Direct API — highest quality, structured data from portal database; (2) Scraping — extracts structured fields from fixed HTML layout; (3) Crawling — bot navigates full pages, lower structure."
+    tools: [scrapy, selenium, portal-api, playwright]
+  - name: Pre-processing
+    description: "Deduplication (same job posted to multiple portals or re-posted), language detection, encoding normalisation, near-duplicate removal via MinHash/SimHash. Critical: raw OJA volume ≈ 3–5× true vacancy count."
+    tools: [minhash, simhash, langdetect, record-linkage]
+  - name: Information Extraction
+    description: "Structured NLP pipeline extracts: occupation (ISCO-08 3-digit), skills (ESCO v1.2), sector (NACE rev.2), location (NUTS-2), contract type, education level, experience required. Uses ontology matching + ML classifiers trained on ESCO."
+    tools: [spacy, transformers, esco-api, ner, text-classification]
+key_metrics:
+  - "OJAR = OJA flow count / LFS employment count (by ISCO-3-digit, monthly)"
+  - "Skill frequency = % of OJAs in occupation mentioning a given ESCO skill"
+  - "Greenness index = share of OJAs mentioning ≥1 green-labelled ESCO skill"
+  - "Digitalness index = share of OJAs requiring ≥1 DigComp/ESCO digital skill"
+known_biases:
+  - "IT/professional roles overrepresented (higher portal usage)"
+  - "Craft trades, agriculture, public sector underrepresented"
+  - "Duplicate postings inflate demand signals if dedup is incomplete"
+  - "SMEs less likely to post formally — demand understated"
+livlab_application: |
+  EU-ALMPO WP4 replicates this pipeline for 12 countries including non-EU (Serbia, Montenegro,
+  North Macedonia, Albania, BiH, Kosovo). Key challenge: no WIH coverage for Western Balkans —
+  LIVLAB's own crawler fills this gap.
+references: [cedefop-oja-10-years-2025, cedefop-harnessing-web-data-2026]

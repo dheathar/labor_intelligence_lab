@@ -1,0 +1,19 @@
+slug: imf-skill-gaps-2026
+title: "Bridging Skill Gaps for the Future: New Jobs Creation in the AI Age"
+authors: [IMF Staff]
+year: 2026
+venue: IMF Staff Discussion Note
+arxiv_id: "SDN/2026/001"
+topics: [ai-labor-impact, skills-gaps, job-creation, policy]
+domains: [global]
+abstract: |
+  IMF analysis of skill gaps created by AI adoption and pathways to bridge them
+  through new job creation. Examines which occupations are complemented vs
+  substituted by AI, and the policy interventions needed to support transitions.
+key_findings:
+  - AI creates new job categories even as it automates existing tasks
+  - Complementary skills (creativity, social intelligence) most protected
+  - Policy interventions must target retraining speed and breadth
+  - Developing economies face asymmetric transition risks
+datasets_used: [ilostat, world-bank-labor]
+methods_used: [task-based-analysis, general-equilibrium-modelling]

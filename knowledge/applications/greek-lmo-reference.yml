@@ -1,0 +1,26 @@
+slug: greek-lmo-reference
+name: Greek LMO — MDAAE Labour Market Portal
+category: labor-intelligence
+status: production
+maturity: operational
+url: "https://mdaae.gr/en/"
+description: |
+  The Greek Ministry's Labour Market Analysis tool (mdaae.gr) is the national
+  LMO portal for Greece. It provides integrated labor market statistics drawn
+  from DYPA (formerly OAED), ERGANI (employer declarations), and ELSTAT LFS.
+  Key outputs: monthly registered unemployment, vacancy stats, sector-level
+  employment trends, and ALMP participation tracking.
+key_features:
+  - Monthly registered unemployed by gender, age, education, region (NUTS3)
+  - ERGANI inflow/outflow: new hires, departures, net job creation
+  - Labour market indicators in compliance with ILO/Eurostat definitions
+  - ALMP programme participation tracking
+  - Regional (13 peripheries) and municipal breakdown
+data_sources: [dypa-ergani, elstat-lfs-quarterly, ilostat]
+methods: [official-statistics, administrative-data-analysis]
+domains: [greece, european_union]
+tags: [greece, LMO, ALMP, unemployment, ERGANI, DYPA, official-stats]
+relevance_for_lab: |
+  Primary reference portal for the Greece domain. EU-ALMPO project should
+  benchmark against MDAAE for Greek ALMP data. GROWTH4BLUE and TRAIN4BLUE
+  Greece deliverables should align terminology with MDAAE definitions.

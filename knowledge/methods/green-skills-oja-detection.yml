@@ -1,0 +1,36 @@
+slug: green-skills-oja-detection
+name: "Green Skills Detection in OJAs via NLP + ESCO Labelling"
+category: nlp
+status: active
+url: "https://esco.ec.europa.eu/en/about-esco/escopedia/escopedia/green-skills-labelling-esco"
+description: |
+  Method for detecting and tracking green skills demand in online job advertisements.
+  Combines ESCO's 591 green-labelled skills/knowledge concepts with NLP-based lexicon
+  extension to handle natural language variation in job postings.
+esco_green_scope:
+  - "591 ESCO skills and knowledge concepts labelled as green (as of 2025)"
+  - "Covers: renewable energy, sustainable construction, circular economy, environmental management"
+  - "Hierarchical — green label propagates down ESCO skill tree"
+method_steps:
+  - step: 1
+    name: "ESCO green skill seed list"
+    description: "Start from 591 green-labelled ESCO concepts as ground truth"
+  - step: 2
+    name: "Lexicon expansion via NLP"
+    description: "Apply word embedding (Word2Vec/BERT) to expand to synonyms and natural-language variants found in OJA text. Cedefop used 6M UK OJAs as expansion corpus."
+  - step: 3
+    name: "OJA classification"
+    description: "Tag each OJA with green skill mentions; compute greenness index = share of OJAs mentioning ≥1 green skill, by occupation × sector × region × quarter"
+  - step: 4
+    name: "Trend analysis"
+    description: "Time series of greenness index to detect growth sectors and emerging green occupations"
+key_findings:
+  - "Green skill demand growing fastest in construction, energy, transport sectors"
+  - "Offshore renewable energy (wind/tidal) shows sharp demand increase 2022-2025"
+  - "NUTS-2 regional variation: coastal/industrial regions lead green skill demand"
+  - "Green skills increasingly embedded in non-green job titles (mainstreaming)"
+livlab_application: |
+  Directly applicable to Growth4Blue and TRAIN4BLUE blue economy projects.
+  Maritime/aquaculture sector OJAs from Marineria.it, Adriatic regional portals
+  should be analysed for green + blue economy skill overlap.
+references: [cedefop-oja-10-years-2025, cedefop-harnessing-web-data-2026, oja-processing-pipeline]

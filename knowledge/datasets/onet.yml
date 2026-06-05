@@ -1,0 +1,26 @@
+slug: onet
+name: O*NET Occupational Information Network
+source: U.S. Department of Labor / ETA
+geography: [united_states, global]
+type: occupational-taxonomy
+access: free
+url: "https://www.onetcenter.org/"
+api_available: true
+api_url: "https://services.onetcenter.org/ws/"
+update_frequency: annual
+size: "~1,000 occupations, 270+ descriptors each"
+temporal_coverage: "1998–present (regular updates)"
+tags: [occupations, skills, tasks, work-activities, education, wages, taxonomy]
+description: |
+  The primary U.S. occupational taxonomy. ~1,000 occupations described across
+  270+ standardized descriptors: knowledge, skills, abilities, work activities,
+  work context, interests, work values, and education/training requirements.
+  Free API access. Foundation for most U.S. labor market analysis.
+  Cross-walked to ESCO for international comparisons.
+key_variables:
+  - O*NET-SOC occupation codes and titles
+  - 35 skills (communication, critical thinking, etc.)
+  - 41 knowledge areas
+  - 52 work activities
+  - education/training requirements
+  - median wages (linked to BLS OES)

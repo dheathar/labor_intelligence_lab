@@ -1,0 +1,24 @@
+slug: elstat-lfs-quarterly
+name: Greek Labour Force Survey — Quarterly (SJO01)
+source: Hellenic Statistical Authority (ELSTAT)
+geography: [greece]
+type: survey
+access: free-download
+url: "https://www.statistics.gr/en/statistics/-/publication/SJO01/"
+api_available: false
+update_frequency: quarterly
+size: "Representative sample of Greek households"
+temporal_coverage: "Q1 2001–Q1 2026 (25+ years)"
+tags: [greece, employment, unemployment, occupation, demographics, regional, quarterly]
+description: |
+  Quarterly Greek LFS following ILO/Eurostat methodology. Published as Excel
+  downloads by ELSTAT. Covers employment status, economic activity (NACE),
+  occupational data, working time, underemployment and unemployment duration.
+  National + regional (NUTS2) + urban/rural breakdowns.
+  Contact: k.loizos@statistics.gr for custom data requests.
+key_variables:
+  - employment by sector (NACE), occupation, age, sex, education, nationality
+  - unemployment duration and characteristics
+  - potential labour force and underemployment
+  - urban/rural classification
+  - NUTS2 regional breakdown

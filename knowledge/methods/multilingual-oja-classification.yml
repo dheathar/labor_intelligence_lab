@@ -1,0 +1,27 @@
+slug: multilingual-oja-classification
+name: "Multilingual OJA to ESCO Occupation Classification"
+category: nlp
+status: active
+description: |
+  Fine-tuning multilingual transformer models (mBERT, XLM-R, ESCOXLM-R) on ESCO-labelled
+  OJA corpora to automatically classify job postings to ISCO-08 occupations and ESCO skills
+  across multiple languages. UOP's primary NLP pipeline for the multi-country LIVLAB crawler.
+approach:
+  - base_model: "ESCOXLM-R (multilingual, ESCO-pretrained) or XLM-RoBERTa-large"
+  - training: "Fine-tune on ESCO occupation description text + OJA training set with ISCO labels"
+  - classification_levels: ["ISCO-1 digit (9 classes)", "ISCO-2 digit (~40)", "ISCO-3 digit (~130)", "ISCO-4 digit (~430)"]
+  - skills_extraction: "NER-based span extraction of ESCO skill mentions from OJA text"
+  - languages: [Greek, Italian, Spanish, English, Serbian, Albanian, Macedonian, Bosnian, Slovenian]
+cross_lingual_strategy: |
+  For languages with limited training data (Western Balkans), leverage cross-lingual transfer
+  from related languages + ESCO multilingual concept labels as supervision signal.
+  Serbian → Macedonian/Bosnian transfer works well (South Slavic family).
+  Greek requires dedicated fine-tuning (no close relative in Slavic transfer group).
+performance_benchmarks:
+  - "ESCOXLM-R on ISCO-2 classification: ~82% accuracy on European languages"
+  - "UOP multilingual pipeline: competitive results for Greek and WB6 (Zervas 2026)"
+livlab_application: |
+  Core classification module for EU-ALMPO WP4. Every OJA from the LIVLAB crawler is
+  classified using this pipeline before being ingested into the analytics database.
+  Enables ESCO-based skill profiling comparable to Cedefop Skills-OVATE.
+references: [zervas-multilingual-oja-2026, escoxlm-r-2023, oja-processing-pipeline]

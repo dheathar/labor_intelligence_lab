@@ -1,0 +1,28 @@
+slug: genai-skills-demand-measurement
+name: "GenAI & AI Skills Demand Measurement from OJAs"
+category: nlp
+status: active
+description: |
+  Methods for detecting and tracking how generative AI adoption reshapes skill demand signals
+  in online job advertisements. Directly from Marconi (Luxembourg ADEM) and Lampis (JRC)
+  presentations at Cedefop Thessaloniki 2026 Conference.
+measurement_approaches:
+  - name: "AI skill keyword tracking"
+    description: "Count OJAs mentioning AI/ML tools (GPT, ChatGPT, LLM, prompt engineering, RAG) — monthly time series reveals adoption speed by occupation/sector"
+  - name: "AI-complementary skills detection"
+    description: "Co-occurrence network analysis: which non-AI skills cluster with AI skill mentions? Reveals the human skills employers demand alongside AI (communication, critical thinking, domain expertise)"
+  - name: "Occupation exposure scoring"
+    description: "For each ISCO-08 occupation, measure % of OJAs mentioning AI tools vs. 2019 baseline — identifies occupations most transformed by GenAI"
+  - name: "Task displacement detection"
+    description: "Compare task content of OJAs 2019 vs. 2025 for the same occupation title — disappearing tasks may reflect AI substitution"
+key_findings_2026:
+  - "AI skill mentions in OJAs grew >300% from 2022 to 2025 across EU"
+  - "Fastest growth: Software developers, Data analysts, Marketing professionals"
+  - "AI-complementary skills: domain expertise, communication, critical thinking remain highly demanded alongside AI tools"
+  - "GenAI creates new occupations (Prompt Engineer, AI Trainer) faster than traditional taxonomy updates can capture"
+  - "OJAs are leading indicator: AI skill demand appears in OJAs ~12–18 months before appearing in LFS skill surveys"
+livlab_application: |
+  EU-ALMPO WP4 should implement GenAI skill tracking as a dedicated analytics module.
+  Monthly OJA-based AI skill index for LIVLAB countries — comparable to WEF Future of Jobs
+  AI transformation metrics. Particularly relevant for TRAIN4BLUE (digital skills in blue economy).
+references: [cedefop-harnessing-web-data-2026, skill-cooccurrence, ai-forecasts-ai-jobs-2025]

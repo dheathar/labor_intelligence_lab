@@ -1,0 +1,28 @@
+slug: oja-green-skills-monitor
+name: "OJA Green & Blue Skills Demand Monitor"
+category: sustainability-intelligence
+status: prototype
+description: |
+  Application for tracking green and blue economy skill demand through OJA time series.
+  Uses ESCO's 591 green-labelled skills + NLP lexicon expansion to compute sector-specific
+  greenness indices. Critical for TRAIN4BLUE and Growth4Blue blue economy skill mapping
+  in the Adriatic-Ionian region.
+use_cases:
+  - "Track green skill demand growth across Adriatic coastal regions (NUTS-2)"
+  - "Identify emerging blue economy occupations in maritime/aquaculture sectors"
+  - "Benchmark green skill mainstreaming in non-green job titles"
+  - "Compare green skill demand: EU countries vs Western Balkans (LIVLAB coverage)"
+key_metrics:
+  - "Greenness index per occupation (% OJAs mentioning ≥1 green skill)"
+  - "Blue economy skill share in coastal NUTS-2 regions"
+  - "Offshore renewable energy skill demand trend (offshore wind, tidal)"
+  - "Green skill co-occurrence network (which green skills appear together)"
+data_sources: [wih-oja-microdata, cedefop-skills-ovate, dypa-ergani]
+methods_used: [green-skills-oja-detection, oja-processing-pipeline]
+visualization_types:
+  - "Greenness index time series by country and sector"
+  - "NUTS-2 choropleth of coastal green/blue skill demand"
+  - "Skill co-occurrence network (green skills)"
+  - "Bubble chart: occupation × greenness × volume"
+projects: [growth4blue, train4blue]
+references: [cedefop-harnessing-web-data-2026, green-skills-oja-detection]

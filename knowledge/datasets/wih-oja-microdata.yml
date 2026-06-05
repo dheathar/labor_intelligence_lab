@@ -1,0 +1,53 @@
+slug: wih-oja-microdata
+name: "Eurostat Web Intelligence Hub — OJA Microdata"
+source: "Eurostat / Web Intelligence Hub (WIH)"
+geography: [EU27, UK, EFTA]
+type: web-data
+access: restricted
+url: "https://cros.ec.europa.eu/wih/oja"
+api_available: false
+update_frequency: quarterly
+description: |
+  The primary European OJA microdata infrastructure, operated by Eurostat's Web Intelligence
+  Hub. Collects hundreds of millions of job advertisements per year from thousands of sources
+  (job portals, PES websites, recruitment agencies, corporate sites) across 32 countries.
+  Accessible to ESS members and authorised researchers via DataLab (R/Python/SQL environment)
+  or Microdata Access Portal. WIH OJA microdata cannot be downloaded — analysis must run
+  within DataLab.
+collection_methods:
+  - "Direct API access (highest quality — structured data from portal databases)"
+  - "Scraping (structured field extraction from fixed HTML layouts)"
+  - "Crawling (full page retrieval via automated bots)"
+data_dimensions:
+  - occupation: "ISCO-08 (1–4 digit)"
+  - skills: "ESCO v1.2 skill mentions extracted via NLP"
+  - sector: "NACE rev.2"
+  - region: "NUTS-2"
+  - contract_type: "Full-time / Part-time / Temporary / Permanent"
+  - education_level: "ISCED"
+  - experience_required: "Years / Level"
+  - wage: "Where disclosed"
+  - language: "Original posting language"
+  - date: "Posting date, removal date"
+coverage:
+  countries: 32
+  sources: "Thousands of portals"
+  volume: "Hundreds of millions of OJAs per year"
+  landscaping_years: [2017, 2021]
+access_procedure: |
+  Researchers from ESS members and national statistical authorities access via WIH DataLab
+  with R and Python environments using SQL queries. Scientific research access via Eurostat
+  Microdata Access Portal (application required).
+published_products:
+  - "OJAR — Online Job Advertisement Rate (experimental, quarterly)"
+  - "ICT Specialist Demand in OJAs (isoc_sk_oja, experimental)"
+  - "Top & Trending Skills App"
+  - "Cedefop Skills-OVATE (aggregated analytics)"
+livlab_gap: |
+  WIH coverage does NOT include Western Balkans (Serbia, Montenegro, North Macedonia, Albania,
+  BiH, Kosovo). LIVLAB's own multi-country OJA crawler is the only source for this region.
+  This is the core data infrastructure gap that EU-ALMPO WP4 addresses.
+quality_notes: |
+  Raw OJA volume is 3–5× true vacancy count due to cross-portal duplication and re-posting.
+  Deduplication is essential. Systematic bias toward professional occupations.
+tags: [oja, web-data, skills-demand, eurostat, restricted-access]

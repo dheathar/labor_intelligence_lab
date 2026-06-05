@@ -1,0 +1,29 @@
+slug: emerging_markets
+name: Emerging Markets
+display_name: Emerging Markets
+description: >
+  Developing economies labor market data via World Bank, ILO, and
+  multi-country admin connectors (admin_sources project).
+flag: "🌱"
+map:
+  center: [10, 20]
+  zoom: 2
+stats:
+  papers: 6
+  datasets: 5
+  methods: 4
+  applications: 5
+  benchmarks: 1
+sources:
+  - ilostat
+  - world_bank
+topics:
+  - informal-employment
+  - youth-unemployment
+  - occupational-transitions
+  - poverty-targeting
+  - skills-gaps
+highlights:
+  - "ILO: 2 billion people in informal employment globally"
+  - "World Bank: harmonized household survey data across 160+ countries"
+  - "arXiv:2601.06129 — Graph-based AI labor transitions from 10,000 Egyptian jobs"

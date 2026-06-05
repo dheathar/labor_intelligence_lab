@@ -1,0 +1,11 @@
+slug: llm4jobs-benchmark
+name: LLM4Jobs Benchmark
+task: occupational-classification
+description: |
+  Benchmark for unsupervised occupation extraction and standardisation from
+  free-text job descriptions and resumes. Evaluates mapping accuracy to
+  O*NET SOC and ISCO-08 codes.
+metrics: [accuracy-top1, accuracy-top5, mrr]
+url: "https://arxiv.org/abs/2309.09708"
+year: 2023
+domains: [global]

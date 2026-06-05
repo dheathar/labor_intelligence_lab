@@ -1,0 +1,25 @@
+slug: bls-jolts
+name: Job Openings and Labor Turnover Survey (JOLTS)
+source: U.S. Bureau of Labor Statistics
+geography: [united_states]
+type: employer-survey
+access: free
+url: "https://www.bls.gov/jlt/"
+api_available: true
+api_url: "https://api.bls.gov/publicAPI/v2/timeseries/data/"
+update_frequency: monthly
+size: "~21,000 business establishments/month"
+temporal_coverage: "December 2000–present"
+tags: [job-openings, hires, separations, quits, layoffs, labor-demand]
+description: |
+  Monthly establishment survey measuring unmet labor demand (job openings),
+  hiring rates, and labor turnover (separations = quits + layoffs + discharges).
+  Critical signal for labor market tightness. Used in LSTNet forecasting paper
+  (arXiv:2507.01979) as primary training data.
+key_variables:
+  - job openings (level and rate)
+  - hires (level and rate)
+  - total separations
+  - quits (voluntary)
+  - layoffs and discharges
+  - other separations

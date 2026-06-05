@@ -1,0 +1,59 @@
+# ── LIVLAB DATASET TEMPLATE ──────────────────────────────────────────────────
+# Constitution rules that apply to this entry type:
+#   [2] Honest data — document coverage gaps, known biases, discontinued series
+#   [4] Multi-source — note how this source complements or overlaps others
+#   [7] Open by default — prefer open; document proprietary access barriers
+#   [8] Cite sources — include direct URL to data portal or API docs
+#   [10] Flag data quality — portal blocking, irregular updates, sample issues
+#
+# REQUIRED: slug, name, source, geography, type, access, url, description, tags
+# OPTIONAL: api_available, update_frequency, size, quality_notes, livlab_gap,
+#           api_docs_url, contact, last_verified
+# ─────────────────────────────────────────────────────────────────────────────
+
+slug: source-shortname-datasetname               # e.g. eurostat-lfs, ilostat-unemployment
+
+name: "Full Dataset / Database Name"
+source: "Organisation or Publisher Full Name"
+geography:
+  - EU27                                         # use ISO-2 codes for countries,
+  - GRC                                          # or regions: EU27, WB6, global
+  - SRB
+
+type: survey                                     # survey | survey-microdata |
+                                                 # administrative | job-postings |
+                                                 # official-statistics | taxonomy |
+                                                 # projections | nowcast
+
+access: free                                     # free | free-download |
+                                                 # registration-required |
+                                                 # research-request | commercial
+
+url: "https://..."                               # direct link to dataset or portal
+api_available: true                              # true | false
+api_docs_url: "https://..."                      # omit if no API
+update_frequency: "quarterly"                    # daily | weekly | monthly |
+                                                 # quarterly | annual | irregular |
+                                                 # discontinued
+
+size: "~1.1M respondents/quarter"               # optional; omit if unknown
+
+description: |
+  Two to four sentences: what the dataset contains, what it measures, the
+  unit of observation, geographic and temporal coverage. Be precise about
+  what IS and IS NOT included. Cite the version or edition if versioned.
+
+tags:
+  - keyword-one                                  # lowercase-kebab; used for search
+  - keyword-two
+
+quality_notes: |
+  Document known issues: sample breaks, definitional changes, known biases,
+  geographic gaps, or access barriers. If no issues are known, write
+  "No known quality issues as of YYYY-MM." Do not leave this blank.
+
+livlab_gap: |
+  If this dataset has coverage gaps relevant to LIVLAB's scope (e.g. missing
+  WB6 countries, no occupation-level breakdowns), document them here.
+  Reference the corresponding LIVLAB workaround if one exists.
+  Omit this field if there are no relevant gaps.

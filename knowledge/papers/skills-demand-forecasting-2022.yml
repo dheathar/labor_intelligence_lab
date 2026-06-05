@@ -1,0 +1,20 @@
+slug: skills-demand-forecasting-2022
+title: "Practical Skills Demand Forecasting via Representation Learning of Temporal Dynamics"
+authors: [Anonymous]
+year: 2022
+venue: arXiv
+arxiv_id: "2205.09508"
+topics: [skills-forecasting, temporal-dynamics, representation-learning, job-postings]
+domains: [global, united_states]
+abstract: |
+  Directly forecasts skills demand using online job postings. Addresses the
+  skills gap between workers and employer demands using representation learning
+  over temporal skill co-occurrence signals. Recognised by Labor Market
+  Information Council as a crucial research direction.
+key_findings:
+  - Temporal representation learning captures skill demand dynamics
+  - Online job postings are a reliable real-time signal for skills demand
+  - Skill co-occurrence graph embeddings improve forecasting accuracy
+  - Risk: millions of unfilled positions without skilled workers
+datasets_used: [nlx-job-postings]
+methods_used: [graph-embeddings, temporal-learning, representation-learning]

@@ -1,0 +1,38 @@
+slug: oja-classification-benchmark
+name: "Multilingual OJA Occupation Classification Benchmark"
+task: occupation-classification
+description: |
+  Benchmark for evaluating automatic classification of online job advertisements to ISCO-08
+  occupation codes and ESCO occupation URIs. Tests multilingual performance across European
+  languages including low-resource Balkan languages.
+metrics: [top1-accuracy, top3-accuracy, f1-macro, f1-weighted]
+languages: [English, German, French, Greek, Italian, Spanish, Serbian, Croatian, Albanian]
+classification_targets:
+  - "ISCO-08 1-digit (9 classes)"
+  - "ISCO-08 2-digit (~40 classes)"
+  - "ISCO-08 3-digit (~130 classes)"
+  - "ESCO occupation URI (~3,008 classes)"
+leaderboard:
+  - method: "ESCOXLM-R (Peeters et al. 2023)"
+    score: 0.82
+    year: 2023
+    notes: "ISCO-2 accuracy, multilingual European languages"
+  - method: "XLM-R large fine-tuned (multilingual)"
+    score: 0.79
+    year: 2023
+    notes: "ISCO-2 accuracy"
+  - method: "UOP Multilingual Pipeline (Zervas 2026)"
+    score: 0.81
+    year: 2026
+    notes: "Includes Greek + WB6 languages; Cedefop conference result"
+  - method: "GPT-4 zero-shot"
+    score: 0.71
+    year: 2024
+    notes: "ISCO-2; no fine-tuning"
+  - method: "mBERT fine-tuned"
+    score: 0.74
+    year: 2022
+    notes: "ISCO-2"
+url: "https://www.cedefop.europa.eu/en/events/harnessing-web-data-next-generation-skills-intelligence"
+year: 2026
+domains: [european_union]

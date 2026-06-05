@@ -1,0 +1,20 @@
+slug: deep-learning-survey-2024
+title: "Deep Learning-based Computational Job Market Analysis: A Survey on Skill Extraction and Classification from Job Postings"
+authors: [Decorte et al.]
+year: 2024
+venue: arXiv
+arxiv_id: "2402.05617"
+topics: [skill-extraction, survey, nlp, job-postings, benchmarks]
+domains: [global]
+abstract: |
+  Comprehensive survey consolidating methodologies, datasets, and terminologies
+  for deep learning approaches to job market analysis. Covers skill extraction,
+  skill classification, occupational coding, and benchmarking. Organises the
+  field into task types, dataset characteristics, and model families.
+key_findings:
+  - Consolidates fragmented literature into unified taxonomy
+  - Identifies SkillSpan and Skill-XL as primary benchmarks
+  - LLM-based approaches now competitive with supervised baselines
+  - Multilingual coverage still a significant gap
+datasets_used: [skillspan, skill-xl]
+methods_used: [bio-tagging, transformer-encoders, llm-prompting]

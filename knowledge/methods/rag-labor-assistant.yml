@@ -1,0 +1,17 @@
+slug: rag-labor-assistant
+name: Retrieval-Augmented LLM for Labor Market Q&A
+category: knowledge-retrieval
+subcategory: rag
+description: |
+  Combines a retrieval system over labor market documents (papers, datasets,
+  policy reports) with a generative LLM to answer complex questions about
+  labor market dynamics. Grounds LLM responses in specific evidence from
+  the knowledge base, reducing hallucination.
+strengths:
+  - Grounds answers in specific sources
+  - Handles complex multi-hop questions
+  - Easy to update knowledge base
+weaknesses:
+  - Retrieval quality bottlenecks answer quality
+  - Context window limits on dense documents
+sota_benchmarks: []

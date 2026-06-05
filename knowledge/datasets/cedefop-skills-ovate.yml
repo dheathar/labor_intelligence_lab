@@ -1,0 +1,48 @@
+slug: cedefop-skills-ovate
+name: "Skills-OVATE — Skills Online Vacancy Analysis Tool for Europe"
+source: "Cedefop (powered by Eurostat WIH)"
+geography: [EU27, UK, EFTA, Norway, Iceland, Liechtenstein]
+type: aggregated-analytics
+access: free
+url: "https://www.cedefop.europa.eu/en/tools/skills-online-vacancies"
+api_available: false
+update_frequency: quarterly
+description: |
+  Cedefop's flagship labour market intelligence tool built on WIH OJA microdata. Delivers
+  near real-time skills and occupation demand analytics for 32 European countries. The
+  primary public-facing interface for Cedefop's OJA intelligence at occupation × skill ×
+  country × region × sector granularity.
+dimensions:
+  - name: Country
+    values: "32 countries (EU27 + UK + EFTA)"
+  - name: Occupation
+    classification: "ISCO-08 (up to 3-digit, ~130 groups)"
+  - name: Skills
+    classification: "ESCO v1 or O*NET (user selectable)"
+    depth: "3rd level of ESCO hierarchy"
+  - name: Sector
+    classification: "NACE rev.2"
+  - name: Region
+    classification: "NUTS-2 (sub-national for selected countries)"
+  - name: Contract type
+    values: [Full-time, Part-time, Temporary, Permanent]
+  - name: Time
+    frequency: "Quarterly (last 4 quarters shown)"
+key_visualizations:
+  - "Skills demand bar chart by occupation (ESCO skill frequency %)"
+  - "Top skills heatmap: occupation × skill category"
+  - "OJAR trend line by occupation and country"
+  - "Regional choropleth: skill demand intensity at NUTS-2"
+  - "Sector bubble chart: OJA volume × growth rate"
+  - "Digital/green skills index bar by country"
+  - "Skill co-occurrence network (which skills appear together)"
+  - "Qualification demand: ISCED level by occupation"
+livlab_relevance: |
+  Skills-OVATE covers LIVLAB's EU countries (Greece, Italy, Spain, Slovenia, Denmark, Cyprus).
+  For Western Balkans (Serbia, Montenegro, North Macedonia, Albania, BiH, Kosovo), LIVLAB
+  must build equivalent analytics using its own OJA crawler. Skills-OVATE serves as the
+  benchmark and methodology reference for what to replicate.
+quality_notes: |
+  Data for the last 4 available quarters; updated quarterly. Extensive dedup and NLP processing
+  applied. Biases toward professional occupations documented and disclosed.
+tags: [oja, skills-demand, cedefop, free-access, visualization, esco, nuts2]

@@ -1,0 +1,274 @@
+[
+  {
+    "id": "grc",
+    "name": "Greece",
+    "lat": 39.0,
+    "lng": 22.5,
+    "tier": "primary",
+    "flag": "🇬🇷",
+    "projects": ["EU-ALMPO", "MicroIdea", "Growth4Blue", "TRAIN4BLUE"],
+    "sources": {
+      "demand": [
+        { "name": "DYPA / Ergani", "type": "admin", "url": "https://www.dypa.gov.gr/en", "note": "Real-time job register" },
+        { "name": "Skywalker.gr", "type": "oja-portal", "url": "https://skywalker.gr/", "note": "Crawling since Jun 2023 ✓" },
+        { "name": "Kariera.gr", "type": "oja-portal", "url": "https://www.kariera.gr/", "note": "Crawling since Jun 2023 ✓" },
+        { "name": "Careernet.gr", "type": "oja-portal", "url": "https://www.careernet.gr/", "note": "Crawling since Jun 2023 ✓" },
+        { "name": "Jobseeker.gr", "type": "oja-portal", "url": "https://www.jobseeker.gr/", "note": "Crawling since Jun 2023 ✓" },
+        { "name": "Jobfind.gr", "type": "oja-portal", "url": "https://www.jobfind.gr/", "note": "Crawling since Jun 2023 ✓" },
+        { "name": "Careerjet.gr", "type": "oja-portal", "url": "https://www.careerjet.gr/", "note": "Crawling since Jun 2023 ✓" }
+      ],
+      "supply": [
+        { "name": "ELSTAT LFS Quarterly (SJO01)", "type": "survey", "url": "https://www.statistics.gr/en/statistics/-/publication/SJO01/", "note": "2001–2026" },
+        { "name": "ELSTAT LFS Annual (SJO03)", "type": "survey", "url": "https://www.statistics.gr/en/statistics/-/publication/SJO03/", "note": "1981–2025" },
+        { "name": "ILOSTAT Greece", "type": "api", "url": "https://ilostat.ilo.org/data/country-profiles/grc/", "note": "SDMX API" }
+      ]
+    }
+  },
+  {
+    "id": "ita",
+    "name": "Italy",
+    "lat": 42.8,
+    "lng": 12.8,
+    "tier": "primary",
+    "flag": "🇮🇹",
+    "projects": ["EU-ALMPO", "Growth4Blue", "TRAIN4BLUE"],
+    "sources": {
+      "demand": [
+        { "name": "Adecco Italy", "type": "oja-portal", "url": "https://www.adecco.it/", "note": "Crawling since Jun 2025 ✓" },
+        { "name": "Randstad Italia", "type": "oja-portal", "url": "https://www.randstad.it/", "note": "Crawling since Jun 2025 ✓" },
+        { "name": "Gi Group", "type": "oja-portal", "url": "https://www.gigroup.it/", "note": "Crawling since Jun 2025 ✓" },
+        { "name": "Adzuna Italy (Puglia)", "type": "oja-portal", "url": "https://www.adzuna.it/", "note": "Job aggregator, Feb 2026 ✓" },
+        { "name": "Lavoroperte Calabria", "type": "oja-portal", "url": "https://lavoroperte.arpalcalabria.it/", "note": "Regional portal, Feb 2026 ✓" },
+        { "name": "Marineria.it", "type": "oja-portal", "url": "https://www.marineria.it/", "note": "Blue economy / maritime jobs ✓" }
+      ],
+      "supply": [
+        { "name": "ISTAT Labour Force Survey", "type": "survey", "url": "https://www.istat.it/", "note": "Italian national LFS" }
+      ]
+    }
+  },
+  {
+    "id": "esp",
+    "name": "Spain",
+    "lat": 40.4,
+    "lng": -3.7,
+    "tier": "primary",
+    "flag": "🇪🇸",
+    "projects": ["EU-ALMPO"],
+    "sources": {
+      "demand": [
+        { "name": "Turijobs.com", "type": "oja-portal", "url": "https://www.turijobs.com", "note": "Tourism/hospitality jobs, crawling Nov 2024 ✓" },
+        { "name": "Infoempleo.com", "type": "oja-portal", "url": "https://www.infoempleo.com", "note": "Crawling Nov 2024 ✓" },
+        { "name": "Infojobs.net", "type": "oja-portal", "url": "https://www.infojobs.net", "note": "⚠ Scraping blocked" }
+      ],
+      "supply": [
+        { "name": "INE Spain LFS (EPA)", "type": "survey", "url": "https://www.ine.es/", "note": "Spanish Labour Force Survey" }
+      ]
+    }
+  },
+  {
+    "id": "srb",
+    "name": "Serbia",
+    "lat": 44.0,
+    "lng": 21.0,
+    "tier": "primary",
+    "flag": "🇷🇸",
+    "projects": ["EU-ALMPO"],
+    "sources": {
+      "demand": [
+        { "name": "Infostud / Poslovi", "type": "oja-portal", "url": "https://poslovi.infostud.com/oglasi-za-posao", "note": "Crawling Jun 2025 ✓ (dedup issue resolved)" },
+        { "name": "NSZ Employment Service", "type": "admin", "url": "https://www.nsz.gov.rs/", "note": "Official Serbian employment portal, crawling Jun 2025 ✓" }
+      ],
+      "supply": [
+        { "name": "SORS Serbia Statistics", "type": "survey", "url": "https://www.stat.gov.rs/", "note": "Serbian LFS" }
+      ]
+    }
+  },
+  {
+    "id": "mne",
+    "name": "Montenegro",
+    "lat": 42.7,
+    "lng": 19.4,
+    "tier": "primary",
+    "flag": "🇲🇪",
+    "projects": ["EU-ALMPO", "Growth4Blue"],
+    "sources": {
+      "demand": [
+        { "name": "Zaposli.me", "type": "oja-portal", "url": "https://www.zaposli.me/", "note": "Crawling Jun 2025 ✓" },
+        { "name": "Prekoveze.me", "type": "oja-portal", "url": "https://www.prekoveze.me/", "note": "Crawling Jun 2025 ✓" },
+        { "name": "Radnik.me", "type": "oja-portal", "url": "https://radnik.me/", "note": "Crawling Nov 2025 ✓" },
+        { "name": "ZZZCG Employment Agency", "type": "admin", "url": "https://www.zzzcg.me/", "note": "Official employment portal, Jun 2025 ✓" },
+        { "name": "Careerjet Montenegro", "type": "oja-portal", "url": "https://www.careerjet.me/", "note": "Crawling Nov 2025 ✓" }
+      ],
+      "supply": [
+        { "name": "MONSTAT", "type": "survey", "url": "https://www.monstat.org/", "note": "Montenegrin LFS" }
+      ]
+    }
+  },
+  {
+    "id": "mkd",
+    "name": "North Macedonia",
+    "lat": 41.6,
+    "lng": 21.7,
+    "tier": "primary",
+    "flag": "🇲🇰",
+    "projects": ["EU-ALMPO"],
+    "sources": {
+      "demand": [
+        { "name": "Vrabotuvanje.com.mk", "type": "oja-portal", "url": "https://www.vrabotuvanje.com.mk/en", "note": "Crawling Nov 2024 ✓" },
+        { "name": "Vraboti.se", "type": "oja-portal", "url": "https://vraboti.se/", "note": "Crawling Nov 2024 ✓" },
+        { "name": "Apliciraj.mk", "type": "oja-portal", "url": "https://apliciraj.mk/", "note": "Crawling Jun 2025 ✓" },
+        { "name": "Oglasizarabota.mk", "type": "oja-portal", "url": "https://www.oglasizarabota.mk/", "note": "Crawling Nov 2024 ✓" },
+        { "name": "av.gov.mk (Employment Agency)", "type": "admin", "url": "http://av.gov.mk/", "note": "Redirects to e-rabota — no descriptions ⚠" }
+      ],
+      "supply": [
+        { "name": "SSO Macedonia Statistics", "type": "survey", "url": "https://www.stat.gov.mk/", "note": "Macedonian LFS" }
+      ]
+    }
+  },
+  {
+    "id": "alb",
+    "name": "Albania",
+    "lat": 41.1,
+    "lng": 20.2,
+    "tier": "primary",
+    "flag": "🇦🇱",
+    "projects": ["EU-ALMPO", "Growth4Blue"],
+    "sources": {
+      "demand": [
+        { "name": "Njoftime.com", "type": "oja-portal", "url": "https://www.njoftime.com/", "note": "Crawling Nov 2025 ✓" },
+        { "name": "Duapune.com", "type": "oja-portal", "url": "https://duapune.com/", "note": "Crawling Nov 2025 ✓" },
+        { "name": "NAES Portal (puna.gov.al)", "type": "admin", "url": "https://www.puna.gov.al/", "note": "National Employment Service, Nov 2025 ✓" }
+      ],
+      "supply": [
+        { "name": "INSTAT Albania", "type": "survey", "url": "https://www.instat.gov.al/", "note": "Albanian LFS" }
+      ]
+    }
+  },
+  {
+    "id": "bih",
+    "name": "Bosnia and Herzegovina",
+    "lat": 43.9,
+    "lng": 17.7,
+    "tier": "primary",
+    "flag": "🇧🇦",
+    "projects": ["EU-ALMPO"],
+    "sources": {
+      "demand": [
+        { "name": "Mojposao.ba", "type": "oja-portal", "url": "https://www.mojposao.ba", "note": "Crawling Nov 2025 ✓" },
+        { "name": "KlixPosao", "type": "oja-portal", "url": "https://posao.klix.ba", "note": "Crawling Nov 2025 ✓" },
+        { "name": "Poslovi.ba", "type": "oja-portal", "url": "https://www.poslovi.ba", "note": "Crawling Nov 2025 ✓" },
+        { "name": "ZZZRS Employment Portal", "type": "admin", "url": "http://prijava.zzzrs.net", "note": "Official portal, Nov 2025 ✓" }
+      ],
+      "supply": [
+        { "name": "BHAS Bosnia Statistics", "type": "survey", "url": "https://bhas.gov.ba/", "note": "Bosnian LFS" }
+      ]
+    }
+  },
+  {
+    "id": "xkx",
+    "name": "Kosovo",
+    "lat": 42.6,
+    "lng": 20.9,
+    "tier": "primary",
+    "flag": "🇽🇰",
+    "projects": ["EU-ALMPO"],
+    "sources": {
+      "demand": [
+        { "name": "Kosovajob.com", "type": "oja-portal", "url": "https://kosovajob.com/", "note": "Crawling Nov 2025 ✓" },
+        { "name": "Ofertapune.net", "type": "oja-portal", "url": "https://ofertapune.net/", "note": "Crawling Nov 2025 ✓" },
+        { "name": "Portalpune.com", "type": "oja-portal", "url": "https://portalpune.com/", "note": "Crawling Nov 2025 ✓" },
+        { "name": "Superpune (rks-gov.net)", "type": "admin", "url": "https://superpuna.rks-gov.net/", "note": "Official Kosovo employment portal, Nov 2025 ✓" }
+      ],
+      "supply": [
+        { "name": "ASK Kosovo Statistics", "type": "survey", "url": "https://ask.rks-gov.net/", "note": "Kosovo LFS" }
+      ]
+    }
+  },
+  {
+    "id": "svn",
+    "name": "Slovenia",
+    "lat": 46.1,
+    "lng": 14.8,
+    "tier": "secondary",
+    "flag": "🇸🇮",
+    "projects": ["EU-ALMPO"],
+    "sources": {
+      "demand": [
+        { "name": "Mojedelo.com", "type": "oja-portal", "url": "https://www.mojedelo.com/", "note": "Crawling Jun 2025 ✓ (JS migration fixed)" },
+        { "name": "Optius.com", "type": "oja-portal", "url": "https://www.optius.com/", "note": "Crawling Jun 2025 ✓" }
+      ],
+      "supply": [
+        { "name": "SURS Slovenia Statistics", "type": "survey", "url": "https://www.stat.si/", "note": "Slovenian LFS" }
+      ]
+    }
+  },
+  {
+    "id": "cyp",
+    "name": "Cyprus",
+    "lat": 35.1,
+    "lng": 33.4,
+    "tier": "secondary",
+    "flag": "🇨🇾",
+    "projects": ["EU-ALMPO"],
+    "sources": {
+      "demand": [
+        { "name": "Carierista.com", "type": "oja-portal", "url": "https://www.carierista.com/en", "note": "⚠ IP blocked — crawling paused" },
+        { "name": "Kariera.com.cy", "type": "oja-portal", "url": "https://kariera.com.cy/", "note": "⚠ Scraping not possible" }
+      ],
+      "supply": [
+        { "name": "Eurostat Cyprus", "type": "api", "url": "https://ec.europa.eu/eurostat/", "note": "EU-LFS based statistics" }
+      ]
+    }
+  },
+  {
+    "id": "dnk",
+    "name": "Denmark",
+    "lat": 56.3,
+    "lng": 9.5,
+    "tier": "secondary",
+    "flag": "🇩🇰",
+    "projects": ["EU-ALMPO"],
+    "sources": {
+      "demand": [
+        { "name": "JobNet.dk", "type": "oja-portal", "url": "https://job.jobnet.dk/", "note": "Crawling Nov 2025 ✓" },
+        { "name": "IT-Jobbank.dk", "type": "oja-portal", "url": "https://www.it-jobbank.dk/jobs", "note": "IT sector focus, Nov 2025 ✓" },
+        { "name": "StepStone.dk", "type": "oja-portal", "url": "https://www.stepstone.dk/", "note": "Crawling Nov 2025 ✓" },
+        { "name": "WorkinDenmark.dk", "type": "oja-portal", "url": "https://www.workindenmark.dk/", "note": "International jobs — scraping paused" }
+      ],
+      "supply": [
+        { "name": "Statistics Denmark (DST)", "type": "api", "url": "https://www.dst.dk/en", "note": "Danish LFS, API available" }
+      ]
+    }
+  },
+  {
+    "id": "usa",
+    "name": "United States",
+    "lat": 39.5,
+    "lng": -98.35,
+    "tier": "reference",
+    "flag": "🇺🇸",
+    "projects": [],
+    "sources": {
+      "demand": [
+        { "name": "BLS JOLTS", "type": "api", "url": "https://www.bls.gov/jlt/", "note": "Job openings, hires, separations — free API" },
+        { "name": "O*NET Web Services", "type": "api", "url": "https://services.onetcenter.org/", "note": "Occupational skills taxonomy — free API" }
+      ],
+      "supply": [
+        { "name": "BLS CPS", "type": "api", "url": "https://www.bls.gov/cps/", "note": "Monthly employment/unemployment" }
+      ]
+    }
+  },
+  {
+    "id": "egy",
+    "name": "Egypt",
+    "lat": 26.8,
+    "lng": 30.8,
+    "tier": "research",
+    "flag": "🇪🇬",
+    "projects": [],
+    "sources": {
+      "research": [{ "name": "Graph AI Transitions (arXiv:2601.06129)", "type": "paper", "url": "https://arxiv.org/abs/2601.06129", "note": "GNN study on 10,000 Egyptian jobs" }],
+      "demand": [{ "name": "Wuzzuf.net", "type": "oja-portal", "url": "https://wuzzuf.net/", "note": "Leading Egyptian job portal" }]
+    }
+  }
+]

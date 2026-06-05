@@ -1,0 +1,19 @@
+slug: ai-forecasts-ai-jobs-2025
+title: "How AI Forecasts AI Jobs: Benchmarking LLM Predictions of Labor Market Changes"
+authors: [Anonymous]
+year: 2025
+venue: arXiv
+arxiv_id: "2510.23358"
+topics: [llm-evaluation, labor-forecasting, benchmarks, ai-labor-impact]
+domains: [global, united_states]
+abstract: |
+  Benchmarks LLM performance on predicting labor market changes, specifically
+  occupational demand shifts driven by AI adoption. Evaluates multiple LLMs
+  against ground-truth labor statistics and expert forecasts.
+key_findings:
+  - LLMs show systematic biases in labor market prediction
+  - AI-related job demand is consistently underestimated
+  - Prompting strategy significantly affects forecast accuracy
+  - Establishes baseline benchmark for future evaluation
+datasets_used: [bls-employment-projections, onet]
+methods_used: [llm-prompting, benchmark-evaluation]

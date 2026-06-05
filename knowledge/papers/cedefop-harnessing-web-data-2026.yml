@@ -1,0 +1,80 @@
+slug: cedefop-harnessing-web-data-2026
+title: "Harnessing Web Data for Next-Generation Skills Intelligence — Conference Proceedings"
+authors: [Cedefop, Eurostat]
+year: 2026
+venue: "Cedefop–Eurostat Research Conference, Thessaloniki"
+url: "https://www.cedefop.europa.eu/en/events/harnessing-web-data-next-generation-skills-intelligence"
+topics: [oja, skills-intelligence, green-skills, digital-skills, regional-analysis, occupation-classification, ai-skills, career-pathways, gender-equity]
+domain: european_union
+abstract: |
+  Follow-up to the 2025 Brussels conference, held 28–29 May 2026 at Cedefop premises in Thessaloniki.
+  Features 16 presentations across 4 sessions covering: skills & qualifications linking (NQF, ESCO),
+  regional/sectoral OJA analysis, occupation classification algorithms, green & digital transition skills,
+  AI/GenAI impacts on skill demand, career pathway identification, skills ecosystem mapping, and
+  gender gaps in skills intelligence.
+conference_sessions:
+  - id: "1a"
+    title: "Skills & Qualifications"
+    presentations:
+      - "Linking job postings to national qualifications frameworks (Pelucchi)"
+      - "Digital skills architecture for Europe (Ketamo)"
+      - "Education/training data integration (Bertoletti)"
+  - id: "1b"
+    title: "Regional & Sectoral Focus"
+    presentations:
+      - "Rural innovation capabilities from OJAs (Sasso)"
+      - "Skills demand and productivity linkage (Caldarola)"
+      - "Telework and digital skills during COVID-19, Slovakia (Fabo)"
+      - "Employment opportunities for Ukrainian refugees in Poland (Pater)"
+  - id: "2a"
+    title: "Occupation Classification"
+    presentations:
+      - "UK skills intelligence frameworks (Cardenas-Rubio)"
+      - "Luxembourg ADEM occupation algorithms (Marconi)"
+      - "Multilingual job posting mapping — Panagiotis Zervas (UOP)"
+  - id: "2b"
+    title: "Green & Digital Transitions"
+    presentations:
+      - "Reference frameworks for digital/green skills (Kovacs)"
+      - "Climate policy impacts on skill demand (Colombo)"
+      - "Offshore renewable energy sector OJA analysis (Sdoukopoulos)"
+  - id: "3a"
+    title: "AI Skills"
+    presentations:
+      - "Generative AI impact on skill demand — occupation-level (Marconi)"
+      - "Human capital framework for Industry 4.0 (Albizu-Echevarria)"
+  - id: "3b"
+    title: "Training & Guidance"
+    presentations:
+      - "ML for personalised training recommendations in Serbia (Jelic Mariokov)"
+      - "STEM talent mobility and guidance impact (Jaiswal)"
+      - "Career pathway identification from job adverts (Condon)"
+  - id: "4a"
+    title: "Skills Intelligence Systems"
+    presentations:
+      - "Regional skills ecosystems (Pages, Porciatti)"
+      - "Higher education curriculum alignment (Basilico, Cubillos)"
+      - "Job vacancy–training provision matching — Serbia/North Macedonia (Oruc, Kostadinov)"
+  - id: "4b"
+    title: "Gender & Inclusivity"
+    presentations:
+      - "Gender discrimination lexicometry in French job postings (Curci)"
+      - "Gender gaps in skills intelligence (Dimitrova)"
+keynote: "OJAs in the next decade (Michail Skaliotis)"
+key_findings:
+  - OJAs are the primary real-time signal for labour market skills intelligence across EU
+  - Multilingual NLP + ESCO mapping is the standard pipeline for occupation/skills extraction
+  - Green skills demand measurable via 591 labelled ESCO concepts + NLP lexicon extension
+  - GenAI is reshaping skill demand profiles at occupation level — measurable via OJA time series
+  - Career pathways can be mined from sequential OJA patterns at individual-employer level
+  - Regional skills ecosystems (NUTS-2) require combining OJA with LFS and admin data
+  - Gender bias detectable via lexicometric analysis of job posting language
+  - Skills-vacancy–training provision gap analysis: critical for WBalkans (Serbia, North Macedonia)
+  - Ukrainian refugee employment matching: OJA demand × admin records supply-side
+livlab_relevance: |
+  Directly informs EU-ALMPO WP4 methodology. UOP's own Panagiotis Zervas presented on multilingual
+  job posting mapping — confirms LIVLAB's multi-country OJA crawler is at the research frontier.
+  Session 4a's Serbia/North Macedonia training provision gap work is directly applicable to
+  Growth4Blue and EU-ALMPO country scope.
+methods_used: [multilingual-nlp, esco-mapping, lexicometry, career-pathway-mining, regional-clustering]
+datasets_used: [wih-oja-microdata, cedefop-skills-ovate, eu-lfs-microdata]

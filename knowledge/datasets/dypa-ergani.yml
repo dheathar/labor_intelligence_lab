@@ -1,0 +1,24 @@
+slug: dypa-ergani
+name: DYPA / Ergani Job Register
+source: DYPA — Greek Public Employment Service (formerly OAED)
+geography: [greece]
+type: administrative
+access: website-portal
+url: "https://www.dypa.gov.gr/en"
+api_available: false
+update_frequency: real-time
+size: "All registered job vacancies and jobseeker profiles in Greece"
+temporal_coverage: "ongoing"
+tags: [greece, job-vacancies, labor-demand, real-time, administrative, esco]
+description: |
+  The Greek national job register. DYPA's Ergani system collects all formally
+  registered job vacancies and labour demand. Integrated with the Labour Market
+  Diagnostic Mechanism for real-time monitoring using big data analytics.
+  Skills classified using ESCO taxonomy. Primary source for Greek labour demand
+  intelligence. Access primarily through website portal and diagnostic tool;
+  no public API documented.
+key_variables:
+  - job vacancy count by sector and region
+  - skill requirements (ESCO-mapped)
+  - registered unemployment profiles
+  - labour demand diagnoses by occupation

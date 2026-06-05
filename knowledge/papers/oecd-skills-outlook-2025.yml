@@ -1,0 +1,19 @@
+slug: oecd-skills-outlook-2025
+title: "OECD Skills Outlook 2025: From Skills to Labour Market Opportunities"
+authors: [OECD]
+year: 2025
+venue: OECD Report
+arxiv_id: ""
+topics: [skills-forecasting, skills-mismatch, lifelong-learning, policy]
+domains: [global, european_union]
+abstract: |
+  Examines how skills connect to labour market opportunities across OECD countries.
+  Analyses skill instability trends, socio-economic disparities in skill development,
+  and policy levers for aligning education with labour demand.
+key_findings:
+  - 39% of existing skill sets will be transformed/outdated by 2030 (down from 44% in 2023)
+  - Skill instability slowing: 57% (2020) → 44% (2023) → 39% (2025)
+  - Socio-economic background is primary driver of skill development opportunity gaps
+  - Gender differences persist in skill usage and reward structures
+datasets_used: [piaac, oecd-labour-data]
+methods_used: [comparative-analysis, survey-methods, econometrics]

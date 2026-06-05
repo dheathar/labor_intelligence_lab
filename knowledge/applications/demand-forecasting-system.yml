@@ -1,0 +1,12 @@
+slug: demand-forecasting-system
+name: Labor Demand Forecasting System
+category: economic-forecasting
+status: research
+description: |
+  Multi-horizon forecasting system for occupational employment demand.
+  Combines deep learning time-series models (LSTNet) with structural economic
+  models and AI exposure indices to project demand at occupation × sector ×
+  geography level.
+data_sources: [bls-cps, bls-jolts, bls-employment-projections, cedefop-skills-forecast, ilostat]
+methods: [lstnet-forecasting, ml-labor-forecasting-pandemic-2024]
+example_tools: [Cedefop Skills Forecast, BLS Employment Projections]

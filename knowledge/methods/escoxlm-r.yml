@@ -1,0 +1,17 @@
+slug: escoxlm-r
+name: ESCOXLM-R
+category: skill-extraction
+subcategory: pre-training
+paper: escoxlm-r-2023
+description: |
+  Multilingual domain-specific pre-training of XLM-R using ESCO taxonomy as training
+  signal. Achieves state-of-the-art on multilingual skill extraction and occupational
+  classification. Best for EU multi-language job posting analysis.
+strengths:
+  - Multilingual (27 EU languages)
+  - Domain-adapted to labor market
+  - Strong zero-shot cross-lingual transfer
+weaknesses:
+  - Requires ESCO taxonomy alignment
+  - Not updated post-ESCO v1.2
+sota_benchmarks: [skillspan, skill-xl]

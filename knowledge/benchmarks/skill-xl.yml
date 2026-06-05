@@ -1,0 +1,12 @@
+slug: skill-xl
+name: Skill-XL
+task: skill-extraction
+description: |
+  Extended exhaustive benchmark with sentence-level skill annotations.
+  Addresses redundancy in large ESCO label space. Granular and diverse,
+  applicable across span-based and sequence-labeling approaches.
+  Most comprehensive current benchmark for the field.
+metrics: [precision, recall, f1-span]
+url: "https://arxiv.org/abs/2402.05617"
+year: 2024
+domains: [global]

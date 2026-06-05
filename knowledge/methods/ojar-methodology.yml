@@ -1,0 +1,42 @@
+slug: ojar-methodology
+name: "Online Job Advertisement Rate (OJAR)"
+category: indicator
+status: experimental
+url: "https://ec.europa.eu/eurostat/web/experimental-statistics/online-job-advertisement-rate"
+description: |
+  Eurostat experimental statistic that normalises raw OJA counts against employment levels
+  to produce a comparable, interpretable labour demand signal. Bridges the gap between
+  raw job posting volumes and meaningful vacancy rate equivalents.
+formula: |
+  OJAR = Total flow of Online Job Advertisements (WIH)
+        ÷ Number of Employees (EU-LFS)
+
+  Computed at: 3-digit ISCO occupation × country × quarter
+dimensions:
+  - name: Occupation
+    classification: ISCO-08 (3-digit, ~130 groups)
+  - name: Sector
+    classification: NACE rev.2
+  - name: Geography
+    classification: "NUTS-0 (country); NUTS-2 (regional, experimental)"
+  - name: Time
+    frequency: Monthly (released within 1 month of reference period)
+key_findings_2023:
+  - "Sales, marketing & development managers: OJAR 26.6% — highest in EU"
+  - "ICT specialists: consistently high OJAR across all countries"
+  - "Craft and trade workers: OJAR near zero — systematic undercoverage"
+limitations:
+  - "Not all vacancies are advertised online — OJA rate ≠ job vacancy rate"
+  - "Portal coverage uneven across countries (Denmark/Netherlands: high; Balkans: low)"
+  - "Duplicates inflate numerator if dedup incomplete"
+  - "Structural bias toward professional/white-collar occupations"
+data_source: wih-oja-microdata
+companion_statistics:
+  - "Eurostat ICT Specialist Demand in OJAs (isoc_sk_oja)"
+  - "Eurostat Top & Trending Skills App"
+  - "Cedefop Skills-OVATE (deeper skills breakdown)"
+livlab_application: |
+  LIVLAB should compute country-specific OJAR equivalents for Western Balkan countries
+  where WIH coverage is absent. Use LIVLAB crawler as numerator; ILOSTAT/national LFS
+  as denominator. Allows benchmarking against EU countries with official OJAR.
+references: [cedefop-oja-10-years-2025, oja-processing-pipeline]

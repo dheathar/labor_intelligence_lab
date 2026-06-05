@@ -1,0 +1,532 @@
+projects:
+  - slug: eu-almpo
+    name: EU-ALMPO
+    full_name: "EU Active Labour Market Policies Observatory"
+    role: Coordinator
+    dmlab_role: |
+      University of Peloponnese (UOP) leads coordination and three technical WPs:
+      WP3 (AI Repository), WP4 (OJA Crawling & LM Analysis Tool), WP5 (CV-based ALMP Tool),
+      and WP9 (Project Management). DMLab's LIVLAB portal is the core deliverable for D4.1.
+    period: "2025–2027"
+    start_date: "2025-01-01"
+    end_date: "2027-12-31"
+    duration_months: 36
+    status: active
+    theme: labor-market-intelligence
+    programme: "HORIZON Europe — CL2-2024-TRANSFORMATIONS-01"
+    topic: "HORIZON-CL2-2024-TRANSFORMATIONS-01-02"
+    grant_number: "101178736"
+    granting_authority: "European Research Executive Agency (REA)"
+    total_budget: 2484233.75
+    funding_rate: 100
+    uop_budget: 673750.00
+    description: |
+      The EU-ALMPO establishes the EU Active Labour Market Policies Observatory — an
+      AI-powered platform to reshape ALMP design, implementation and evaluation across
+      the EU. The observatory leverages online job posting crawling, administrative data,
+      and machine learning to provide policymakers, researchers, and employment services
+      with evidence-based tools for skills matching, workforce planning, and inclusive
+      labour market interventions.
+    countries:
+      - Greece
+      - Italy
+      - Poland
+      - Spain
+      - Germany
+      - Denmark (Associated)
+    partner_countries: [Greece, Italy, Poland, Spain, Germany]
+    objectives:
+      - Develop an analytical model and evaluation framework for ALMP effectiveness
+      - Conduct in-depth skills matching analysis across 5 partner countries
+      - Build an AI-powered ALMP knowledge repository with annotation tools
+      - Create a multi-source labour market analysis tool (OJA + admin data)
+      - Develop a CV-insights platform for personalised ALMP recommendations
+      - Run innovation experiments with practitioners and employment services
+      - Evaluate outcomes and produce policy recommendations for the EU
+
+    partners:
+      - short: UOP
+        name: University of Peloponnese
+        country: Greece
+        role: Coordinator
+        pic: "999548238"
+        budget: 673750.00
+        person_months: 95.0
+        wps_lead: [WP3, WP4, WP5, WP9]
+      - short: IRS
+        name: Istituto per la Ricerca Sociale
+        country: Italy
+        role: Beneficiary
+        pic: "996850668"
+        budget: 462500.00
+        person_months: 37.0
+        wps_lead: [WP1]
+      - short: GUT
+        name: Politechnika Gdanska
+        country: Poland
+        role: Beneficiary
+        pic: "999588784"
+        budget: 243750.00
+        person_months: 48.0
+        wps_lead: [WP2]
+      - short: DomSpain
+        name: DOMSPAIN CONSULTING SL
+        country: Spain
+        role: Beneficiary
+        pic: "949606624"
+        budget: 163250.00
+        person_months: 37.0
+        wps_lead: [WP6]
+      - short: TIG
+        name: Tavistock Institut GmbH
+        country: Germany
+        role: Beneficiary
+        pic: "896375158"
+        budget: 485000.00
+        person_months: 39.0
+        wps_lead: [WP7]
+      - short: HAEA
+        name: Hellenic Adult Education Association
+        country: Greece
+        role: Beneficiary
+        pic: "945423984"
+        budget: 142750.00
+        person_months: 24.5
+        wps_lead: []
+      - short: p_consulting
+        name: C.M. Skoulidi & Sia E.E.
+        country: Greece
+        role: Beneficiary
+        pic: "944756915"
+        budget: 104483.75
+        person_months: 39.0
+        wps_lead: [WP8]
+      - short: Acronym
+        name: Akronymo Meletitiki Etaireia
+        country: Greece
+        role: Beneficiary
+        pic: "886875851"
+        budget: 208750.00
+        person_months: 33.5
+        wps_lead: []
+      - short: 3F
+        name: "Fagligt Fælles Forbund, 3F"
+        country: Denmark
+        role: Associated Partner
+        pic: "941796766"
+        budget: 0
+        person_months: 10.5
+        wps_lead: []
+      - short: INAPP
+        name: Istituto Nazionale per l'Analisi delle Politiche Pubbliche
+        country: Italy
+        role: Associated Partner
+        pic: "948379186"
+        budget: 0
+        person_months: 7.5
+        wps_lead: []
+
+    work_packages:
+      - id: WP1
+        title: "Development of an analytical model and evaluation framework for ALMPs"
+        lead: IRS
+        start_month: 2
+        end_month: 27
+        person_months: 21.0
+        objective: |
+          Understanding complexity of labour market policy effectiveness through evidence-based
+          analysis: definitions of ALMPs and skills matching, key trends, and determinants
+          of effective ALMPs via meta-evaluation.
+        tasks:
+          - "T1.1: Definitions of ALMPs and skills matching — literature review"
+          - "T1.2: Identification of key trends affecting labour market and skills"
+          - "T1.3: Determinants for effective ALMPs — meta-evaluation"
+        deliverables: [D1.1]
+      - id: WP2
+        title: "In-depth analysis of skill matching strategies and approaches"
+        lead: GUT
+        start_month: 3
+        end_month: 12
+        person_months: 48.0
+        objective: |
+          In-depth analysis of skill-matching strategies in partner countries through stakeholder
+          mapping, good practice identification, and community of practice workshops.
+        tasks:
+          - "T2.1: Mapping of stakeholders and skills eco-systems in 5 partner countries"
+          - "T2.2: Identification of existing and emerging good practices"
+          - "T2.3: Ten in-depth case studies (2 per country)"
+          - "T2.4: Community of practice workshop on AI-based matching tools"
+        deliverables: [D2.1, D2.2]
+      - id: WP3
+        title: "AI-Powered Repository for ALMPs Knowledge Management"
+        lead: UOP
+        start_month: 2
+        end_month: 36
+        person_months: 45.0
+        objective: |
+          Build an AI-powered ALMP knowledge repository with metadata annotation tools
+          and an interactive ALMP Design Wizard for policy practitioners.
+        tasks:
+          - "T3.1: Comprehensive data acquisition and curation for ALMPs repository"
+          - "T3.2: Enhanced metadata annotation tool with AI assistance"
+          - "T3.3: Scalable repository architecture design"
+          - "T3.4: Interactive ALMP Design Wizard development"
+        deliverables: [D3.1, D3.2]
+      - id: WP4
+        title: "Crawling and Analysis of Online Job Postings and Administrative Data"
+        lead: UOP
+        start_month: 6
+        end_month: 36
+        person_months: 41.0
+        objective: |
+          Develop a user-friendly Labour Market Analysis Tool that integrates OJA data
+          and administrative records to support evidence-based ALMP design.
+        tasks:
+          - "T4.1: Multi-source OJA crawler infrastructure (12+ countries)"
+          - "T4.2: Administrative data integration (LFS, PES registers, Eurostat)"
+          - "T4.3: Labour Market Analysis Tool development"
+          - "T4.4: Ethics compliance and data governance"
+        deliverables: [D4.1, D4.2, D4.3, D4.4, D4.5]
+        livlab_note: "D4.1 is the LIVLAB portal — the primary DMLab software deliverable"
+      - id: WP5
+        title: "Advanced ALMP Development Tool Leveraging Individuals CV Insights"
+        lead: UOP
+        start_month: 10
+        end_month: 36
+        person_months: 28.0
+        objective: |
+          Develop a comprehensive platform that analyses individual CV data to generate
+          personalised ALMP recommendations for job seekers and employment counsellors.
+        tasks:
+          - "T5.1: CV data ingestion and skills extraction pipeline"
+          - "T5.2: Matching mechanism — CV skills vs. labour market needs"
+          - "T5.3: Platform UI and ALMP recommendation engine"
+        deliverables: [D5.1, D5.2]
+      - id: WP6
+        title: "Innovation experiments"
+        lead: DomSpain
+        start_month: 21
+        end_month: 33
+        person_months: 65.5
+        objective: |
+          Run four innovation experiments with employment services and practitioners
+          to test ALMP tools in real contexts and collect empirical evidence.
+        tasks:
+          - "T6.1: Experiment design and partner preparation"
+          - "T6.2: Four country experiments (GR, IT, ES, PL)"
+          - "T6.3: Experiment monitoring and data collection"
+          - "T6.4: Synthesis and lessons learned"
+        deliverables: [D6.1]
+      - id: WP7
+        title: "Evaluation of research and experimentation results"
+        lead: TIG
+        start_month: 2
+        end_month: 36
+        person_months: 49.0
+        objective: |
+          Participative development and fine-tuning of ALMPs and skills policy design;
+          final evaluation and policy recommendations.
+        tasks:
+          - "T7.1: Evaluation framework development"
+          - "T7.2: Ongoing monitoring of project results"
+          - "T7.3: Policy recommendations synthesis"
+        deliverables: [D7.1]
+      - id: WP8
+        title: "Dissemination, Exploitation and Communication"
+        lead: p_consulting
+        start_month: 1
+        end_month: 36
+        person_months: 43.0
+        objective: |
+          Maximise reach and impact through scientific publications, EU-ALMPO Ambassador
+          Network, policy briefs, and a comprehensive communication strategy.
+        tasks:
+          - "T8.1: Dissemination and exploitation planning"
+          - "T8.2: Website, logo and communication toolkit"
+          - "T8.3: Scientific publications (8 papers)"
+          - "T8.4: EU-ALMPO Ambassadors Network"
+          - "T8.5: Clustering policy briefs"
+          - "T8.6: Final dissemination evaluation"
+        deliverables: [D8.1, D8.2, D8.3, D8.4, D8.5, D8.6, D8.7, D8.8]
+      - id: WP9
+        title: "Project Management and Quality Assurance"
+        lead: UOP
+        start_month: 1
+        end_month: 36
+        person_months: 40.0
+        objective: |
+          Overall project coordination, quality assurance, ethics compliance,
+          and stakeholder engagement.
+        tasks:
+          - "T9.1: Project governance and consortium management"
+          - "T9.2: Project management structure and plan"
+          - "T9.3: Financial management and reporting"
+          - "T9.4: Ethics and data protection compliance"
+          - "T9.5: Peer review of deliverables (HAEA)"
+        deliverables: [D9.1, D9.2, D9.3]
+
+    deliverables:
+      - id: D1.1
+        title: "Analytical model for designing and implementing ALMPs"
+        wp: WP1
+        lead: IRS
+        type: Report
+        access: Sensitive
+        due_month: 8
+        description: "Analytical model and inputs for WP2, WP3 & WP4"
+      - id: D2.1
+        title: "Ten in-depth case studies on skills matching"
+        wp: WP2
+        lead: IRS
+        type: Report
+        access: Public
+        due_month: 10
+        description: "2 case studies per partner country on skills strategies and AI-based matching"
+      - id: D2.2
+        title: "Recommendation Report on AI-based matching tools"
+        wp: WP2
+        lead: GUT
+        type: Report
+        access: Sensitive
+        due_month: 12
+        description: "Recommendations from community of practice on AI-based matching tools"
+      - id: D3.1
+        title: "Documents annotation IT tool"
+        wp: WP3
+        lead: UOP
+        type: Dataset/Tool
+        access: Public
+        due_month: 10
+        description: "Specialized tool to aid experts in annotating ALMP documents with metadata"
+      - id: D3.2
+        title: "Interactive ALMP Design Wizard"
+        wp: WP3
+        lead: UOP
+        type: Software
+        access: Public
+        due_month: 23
+        description: "Interactive UI for streamlined ALMP policy design with feedback loops"
+      - id: D4.1
+        title: "User-Friendly Labour Market Analysis Tool"
+        wp: WP4
+        lead: UOP
+        type: Software
+        access: Public
+        due_month: 18
+        description: "Multi-source LM analysis tool integrating OJA + admin data — primary LIVLAB deliverable"
+        livlab: true
+      - id: D4.2
+        title: "Report and scientific publication on LM Analysis Tool"
+        wp: WP4
+        lead: UOP
+        type: Report
+        access: Public
+        due_month: 24
+        description: "Academic paper on enhancing LM Analysis Tool and ALMP Design Wizard integration"
+      - id: D4.3
+        title: "First Ethics Report"
+        wp: WP4
+        lead: UOP
+        type: Report
+        access: Public
+        due_month: 10
+      - id: D4.4
+        title: "Second Ethics Report"
+        wp: WP4
+        lead: UOP
+        type: Report
+        access: Public
+        due_month: 20
+      - id: D4.5
+        title: "Third Ethics Report"
+        wp: WP4
+        lead: UOP
+        type: Report
+        access: Public
+        due_month: 30
+      - id: D5.1
+        title: "Comprehensive Platform for LM Insights with ALMP Analytics"
+        wp: WP5
+        lead: UOP
+        type: Prototype
+        access: Public
+        due_month: 16
+        description: "Platform integrating LM insights with tailored ALMP recommendation analysis"
+      - id: D5.2
+        title: "Prototype: ALMP Tool with CV Insights"
+        wp: WP5
+        lead: UOP
+        type: Prototype
+        access: Public
+        due_month: 34
+        description: "Comprehensive ALMP Tool integrating CV insights for policy design"
+      - id: D6.1
+        title: "Synthesis report on innovation experiment outcomes"
+        wp: WP6
+        lead: DomSpain
+        type: Report
+        access: Public
+        due_month: 33
+        description: "Analysis of 4 country experiment outcomes with guide-books and recommendations"
+      - id: D7.1
+        title: "Final Recommendations report"
+        wp: WP7
+        lead: TIG
+        type: Report
+        access: Public
+        due_month: 36
+        description: "Synthesis of evaluation findings across pilots and policy recommendations"
+      - id: D8.1
+        title: "Dissemination and Exploitation Plan"
+        wp: WP8
+        lead: p_consulting
+        type: Report
+        access: Public
+        due_month: 6
+      - id: D8.2
+        title: "Dissemination and Exploitation Plan — final version"
+        wp: WP8
+        lead: p_consulting
+        type: Report
+        access: Public
+        due_month: 36
+      - id: D8.3
+        title: "Communication toolkit: website & logo"
+        wp: WP8
+        lead: p_consulting
+        type: Website/Media
+        access: Public
+        due_month: 2
+      - id: D8.4
+        title: "Scientific publications (8)"
+        wp: WP8
+        lead: p_consulting
+        type: Report
+        access: Public
+        due_month: 36
+      - id: D8.5
+        title: "EU-ALMPO Ambassadors Network"
+        wp: WP8
+        lead: Acronym
+        type: Report
+        access: Public
+        due_month: 30
+      - id: D8.6
+        title: "Final Report on Dissemination actions"
+        wp: WP8
+        lead: p_consulting
+        type: Report
+        access: Public
+        due_month: 36
+      - id: D8.7
+        title: "Interim clustering Policy Brief"
+        wp: WP8
+        lead: Acronym
+        type: Report
+        access: Public
+        due_month: 15
+      - id: D8.8
+        title: "Final clustering Policy Brief"
+        wp: WP8
+        lead: Acronym
+        type: Report
+        access: Public
+        due_month: 36
+      - id: D9.1
+        title: "Data Management Plan"
+        wp: WP9
+        lead: UOP
+        type: DMP
+        access: Public
+        due_month: 5
+      - id: D9.2
+        title: "Project Management Plan"
+        wp: WP9
+        lead: UOP
+        type: Report
+        access: Public
+        due_month: 5
+      - id: D9.3
+        title: "Final Project Report"
+        wp: WP9
+        lead: UOP
+        type: Report
+        access: Public
+        due_month: 36
+        description: "Lessons drawn from project implementation"
+
+    data_sources:
+      - Multi-country OJA crawler (12+ countries)
+      - ELSTAT LFS (Greece, quarterly + annual)
+      - INE EPA (Spain, monthly/quarterly)
+      - ISTAT RFL (Italy, monthly/quarterly)
+      - DYPA/Ergani register (Greece)
+      - SEPE register (Spain)
+      - NSZ Portal (Serbia)
+      - Eurostat Labour Market DB (REST + SDMX)
+      - ILOSTAT SDMX API (global)
+      - EU-LFS microdata (Eurostat)
+    color: accent
+
+  - slug: microidea
+    name: MicroIdea
+    full_name: "MicroIdea — Vocational Training Intelligence"
+    role: Lead Partner
+    period: "2024–2026"
+    start_date: "2024-01-01"
+    end_date: "2026-12-31"
+    status: active
+    theme: vocational-training
+    programme: "Erasmus+"
+    description: |
+      Erasmus+ project on vocational training and lifelong learning intelligence.
+      Uses labor market data to align VET curricula with actual skill demand.
+    countries: [EU member states]
+    data_sources:
+      - Cedefop Skills Forecast
+      - ESCO taxonomy
+      - National VET statistics
+    color: success
+
+  - slug: growth4blue
+    name: Growth4Blue
+    full_name: "Growth4Blue — Blue Economy Skills Intelligence"
+    role: Partner
+    period: "2024–2027"
+    start_date: "2024-01-01"
+    end_date: "2027-12-31"
+    status: active
+    theme: blue-economy
+    programme: "Interreg IPA ADRION"
+    description: |
+      Interreg IPA ADRION project focusing on blue economy career pathways and
+      skills intelligence in the Adriatic-Ionian region. Combines maritime/coastal
+      job posting data with skills gap analysis for the blue economy sector.
+    countries: [Greece, Italy, Croatia, Albania, Montenegro]
+    data_sources:
+      - Marineria.it (maritime job portal)
+      - Adzuna Italy (coastal region filter)
+      - DYPA/Ergani (Greece)
+      - Eurostat NUTS2 coastal regions
+    color: purple
+
+  - slug: train4blue
+    name: TRAIN4BLUE
+    full_name: "TRAIN4BLUE — Training for the Blue Economy"
+    role: Partner
+    period: "2025–2027"
+    start_date: "2025-01-01"
+    end_date: "2027-12-31"
+    status: active
+    theme: blue-economy
+    programme: "Interreg IPA ADRION"
+    description: |
+      Skills development project for blue economy careers. Focuses on identifying
+      training needs in maritime, coastal, and aquaculture sectors using labor
+      market intelligence.
+    countries: [Greece, Italy]
+    data_sources:
+      - Marineria.it
+      - ELSTAT regional data
+      - Cedefop sector forecasts
+    color: pink

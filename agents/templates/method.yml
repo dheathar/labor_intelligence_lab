@@ -1,0 +1,52 @@
+# ── LIVLAB METHOD TEMPLATE ───────────────────────────────────────────────────
+# Constitution rules that apply to this entry type:
+#   [6] Methodological currency — track SOTA; note if superseded
+#   [9] Version your methods — name the exact model/version (ESCO v1.2, not "ESCO")
+#   [1] Evidence first — link to the paper that introduced or benchmarks this method
+#
+# REQUIRED: slug, name, category, status, description, livlab_application
+# OPTIONAL: approach, performance_benchmarks, references, superseded_by,
+#           implementation_url, languages
+# ─────────────────────────────────────────────────────────────────────────────
+
+slug: method-name-kebab                          # e.g. ojar-methodology, esco-ner
+
+name: "Human-Readable Method Name"
+category: nlp                                    # nlp | forecasting | taxonomy |
+                                                 # econometrics | matching | survey |
+                                                 # classification | embedding
+
+status: active                                   # active | experimental | archived |
+                                                 # superseded
+
+description: |
+  Two to four sentences: what problem this method solves, how it works at a
+  high level, and what inputs/outputs it has. Name the key technique
+  (e.g. "fine-tuned XLM-R", "BIO-tagging with CRF", "two-stage retrieval").
+  Reference the version of any model or taxonomy used.
+
+approach:                                        # optional structured breakdown
+  - "Step 1: ..."
+  - "Step 2: ..."
+
+performance_benchmarks:                          # optional; include metric + dataset
+  - "F1 = 0.82 on SkillSpan (2023)"
+  - "ISCO-2 accuracy = 0.81 on UOP multilingual corpus (Zervas 2026)"
+
+languages:                                       # omit if language-agnostic
+  - Greek
+  - English
+  - Serbian
+
+implementation_url: "https://github.com/..."    # omit if no public implementation
+
+superseded_by: "newer-method-slug"              # only if status: superseded
+
+livlab_application: |
+  Concrete description of how LIVLAB uses or plans to use this method.
+  Reference the specific project (EU-ALMPO WP4), pipeline stage, or
+  use case. If not yet implemented, say "planned for" + project/WP.
+
+references:                                      # slugs from knowledge/papers/ or
+  - paper-slug-one                               # knowledge/methods/
+  - paper-slug-two

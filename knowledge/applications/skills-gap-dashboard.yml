@@ -1,0 +1,12 @@
+slug: skills-gap-dashboard
+name: Skills Gap Dashboard
+category: workforce-planning
+status: production
+description: |
+  Real-time dashboard layering job posting skill demand against workforce
+  supply signals. Identifies skill shortages by occupation, sector, and
+  geography. Enables HR leaders and policymakers to spot emerging bottlenecks
+  before they become critical.
+data_sources: [onet, bls-jolts, nlx-job-postings, cedefop-skills-forecast]
+methods: [skill-extraction, esco-mapping, gap-analysis]
+example_tools: [Cedefop Skills-OVATE, LinkedIn Talent Insights, Lightcast]

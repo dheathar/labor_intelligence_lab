@@ -1,0 +1,31 @@
+slug: esco-skill-occupation-matrix
+name: "ESCO Skill-Occupation Matrix Tables"
+source: "European Commission ESCO team"
+geography: [global]
+type: taxonomy-derived
+access: free
+url: "https://esco.ec.europa.eu/en/about-esco/escopedia/escopedia/skills-occupations-matrix-tables"
+api_available: true
+update_frequency: "With ESCO version updates (latest: v1.2)"
+description: |
+  Downloadable matrix linking ISCO-08 occupation groups to ESCO skill hierarchical groups.
+  Shows the share of ESCO skills within each occupation group at multiple ISCO hierarchy levels
+  (1–4 digit) and ESCO skill levels (1–3). Enables visual heatmaps of occupation × skill
+  relationships without running full NLP on OJAs.
+data_dimensions:
+  - occupation_level: "ISCO-08 levels 1, 2, 3, or 4"
+  - skill_level: "ESCO skill hierarchy levels 1, 2, or 3"
+  - value: "Share of ESCO skills within ISCO occupation group (%)"
+  - essential_optional: "Essential vs. optional skills distinction"
+key_uses:
+  - "Heatmap base layer for skills × occupation visualization (without needing OJA NLP)"
+  - "Curriculum design: map training programme to required skill profile"
+  - "Career adjacency: which occupations share skill profiles?"
+  - "Skills shortage estimation: high-demand occupation + low-supply skill = shortage signal"
+  - "OJAR contextualisation: which skills should appear in a high-OJAR occupation?"
+livlab_application: |
+  Use as static benchmark for the skills × occupation heatmap visualization.
+  Compare ESCO matrix (theoretical employer expectations) with actual LIVLAB OJA skill
+  frequencies — gap reveals which expected skills employers no longer mention vs.
+  new skills not yet in ESCO taxonomy.
+tags: [esco, skill-occupation, taxonomy, matrix, free-access]

@@ -1,0 +1,79 @@
+[
+  {
+    "id": "eu27",
+    "name": "European Union",
+    "lat": 52.0,
+    "lng": 15.0,
+    "tier": "primary",
+    "flag": "🇪🇺",
+    "stats": {
+      "unemployment_rate": "6.0% (2025 Q1, EU27)",
+      "employment_rate": "74.6% (2024, EU27)",
+      "youth_unemployment": "14.1% (2025)"
+    },
+    "sources": {
+      "demand": [
+        { "name": "Eurostat Job Vacancy Statistics", "type": "api", "url": "https://ec.europa.eu/eurostat/web/labour-market/job-vacancies", "note": "NACE-sector quarterly job vacancy rate, REST+SDMX API" },
+        { "name": "Cedefop Web Intelligence Hub / OJA", "type": "oja", "url": "https://www.cedefop.europa.eu/en/events/harnessing-web-data-next-generation-skills-intelligence", "note": "Online Job Advertisements across EU — hybrid semantic NLP pipeline" },
+        { "name": "Cedefop Skills-OVATE", "type": "oja", "url": "https://www.cedefop.europa.eu/en/tools/skills-ovate", "note": "OJA-based occupation skills demand tool" }
+      ],
+      "supply": [
+        { "name": "EU-LFS Microdata", "type": "microdata", "url": "https://ec.europa.eu/eurostat/web/microdata/european-union-labour-force-survey", "note": "1.1M individuals/quarter, registration required" },
+        { "name": "Eurostat LFS Aggregates", "type": "api", "url": "https://ec.europa.eu/eurostat/web/labour-market/employment-and-unemployment", "note": "Employment, unemployment, hours — REST+SDMX API" }
+      ],
+      "skills": [
+        { "name": "ESCO API", "type": "api", "url": "https://esco.ec.europa.eu/en/use-esco/use-esco-services-api", "note": "3,008 occupations, 13,890 skills — 27 languages" },
+        { "name": "Cedefop Skills Forecast 2025", "type": "projections", "url": "https://www.cedefop.europa.eu/en/tools/skills-forecast", "note": "Employment projections by sector×occupation to 2035" },
+        { "name": "Cedefop Skills Shortage Index", "type": "indicators", "url": "https://www.cedefop.europa.eu/en/datasets", "note": "Labour and skills shortage by occupation" }
+      ]
+    }
+  },
+  {
+    "id": "grc",
+    "name": "Greece",
+    "lat": 39.0,
+    "lng": 22.5,
+    "tier": "secondary",
+    "flag": "🇬🇷",
+    "sources": {
+      "demand": [
+        { "name": "DYPA / Ergani", "type": "admin", "url": "https://www.dypa.gov.gr/en", "note": "Real-time job register" }
+      ],
+      "supply": [
+        { "name": "ELSTAT LFS", "type": "survey", "url": "https://www.statistics.gr/en/statistics/-/publication/SJO01/", "note": "2001–2026 quarterly" }
+      ]
+    }
+  },
+  {
+    "id": "deu",
+    "name": "Germany",
+    "lat": 51.2,
+    "lng": 10.5,
+    "tier": "secondary",
+    "flag": "🇩🇪",
+    "sources": {
+      "demand": [
+        { "name": "Bundesagentur für Arbeit", "type": "admin", "url": "https://www.arbeitsagentur.de/", "note": "German Federal Employment Agency — job vacancies + unemployment data" }
+      ],
+      "supply": [
+        { "name": "Eurostat Germany LFS", "type": "api", "url": "https://ec.europa.eu/eurostat/", "note": "EU-LFS based aggregates" }
+      ]
+    }
+  },
+  {
+    "id": "fra",
+    "name": "France",
+    "lat": 46.2,
+    "lng": 2.2,
+    "tier": "secondary",
+    "flag": "🇫🇷",
+    "sources": {
+      "demand": [
+        { "name": "Pôle Emploi / France Travail", "type": "admin", "url": "https://www.francetravail.fr/", "note": "National job vacancies and placement data" }
+      ],
+      "supply": [
+        { "name": "INSEE Enquête Emploi", "type": "survey", "url": "https://www.insee.fr/", "note": "French LFS equivalent" }
+      ]
+    }
+  }
+]

@@ -1,0 +1,37 @@
+slug: regional-skills-ecosystem
+name: "Regional Skills Ecosystem Mapping"
+category: regional-intelligence
+status: research
+description: |
+  Framework for mapping regional labour market skills ecosystems by combining OJA demand signals
+  with supply-side LFS data, training provision, and employer/stakeholder network data at NUTS-2.
+  Directly drawn from Cedefop conference Session 4a (Pages, Porciatti 2026).
+components:
+  - name: Demand side
+    data: "OJA at NUTS-2: top occupations, top skills, OJAR by occupation"
+    source: "LIVLAB crawler / WIH OJA"
+  - name: Supply side
+    data: "LFS participation rates, registered unemployed by education level"
+    source: "Eurostat, national LFS"
+  - name: Training provision
+    data: "VET and higher education graduate output by field"
+    source: "Cedefop, ISTAT, ELSTAT, national ministries"
+  - name: Skills gap
+    data: "Demand skills rank vs. supply qualification profile mismatch"
+    derived: true
+  - name: Ecosystem actors
+    data: "Labour Market Observatories, Skills Councils, major employers"
+    source: "WP2 stakeholder mapping (EU-ALMPO)"
+key_visualizations:
+  - "NUTS-2 radar chart: demand vs. supply skills profile"
+  - "Skills gap heatmap: occupation × skill mismatch intensity"
+  - "Training alignment score: VET output vs. OJA demand"
+  - "Employer concentration map (sectoral specialisation)"
+  - "Regional OJA volume trend: leading/lagging indicator"
+priority_regions:
+  - "Attica / Peloponnese (Greece)"
+  - "Puglia / Calabria (Italy — coastal/blue economy)"
+  - "Belgrade + Vojvodina (Serbia)"
+  - "Adriatic coastal zones (Montenegro, Albania)"
+projects: [eu-almpo, growth4blue]
+references: [cedefop-harnessing-web-data-2026, cedefop-skills-ovate]

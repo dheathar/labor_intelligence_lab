@@ -1,0 +1,20 @@
+slug: wage-disparities-foundation-models-2025
+title: "Estimating Wage Disparities Using Foundation Models"
+authors: [Anonymous]
+year: 2025
+venue: PNAS
+arxiv_id: "pnas.2427298122"
+topics: [wage-prediction, foundation-models, wage-inequality, nlp]
+domains: [global, united_states]
+abstract: |
+  Uses large pre-trained foundation models to estimate wage gaps across
+  occupations, industries, and demographic groups. Demonstrates that foundation
+  model representations encode labour market wage signals, enabling estimation
+  of wage disparities at scale without traditional survey data.
+key_findings:
+  - Foundation model embeddings correlate strongly with wage levels
+  - Gender and race wage gaps recoverable from text representations
+  - Enables large-scale wage estimation without survey data
+  - New paradigm: labour market analysis via foundation model probing
+datasets_used: [bls-cps, onet]
+methods_used: [foundation-model-probing, regression-analysis]

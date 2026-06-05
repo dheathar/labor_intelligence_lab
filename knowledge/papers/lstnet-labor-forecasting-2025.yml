@@ -1,0 +1,19 @@
+slug: lstnet-labor-forecasting-2025
+title: "Forecasting Labor Markets with LSTNet: A Multi-Scale Deep Learning Approach"
+authors: [Anonymous]
+year: 2025
+venue: arXiv
+arxiv_id: "2507.01979"
+topics: [labor-forecasting, deep-learning, time-series, employment]
+domains: [global, united_states]
+abstract: |
+  Applies LSTNet (Long- and Short-Term Time-series Network) to U.S. BLS labor
+  market data spanning March 2006 – December 2024. Combines convolutional and
+  recurrent layers to capture multi-scale temporal patterns in employment levels,
+  average weekly hours, earnings, unemployment, job openings, hires, and separations.
+key_findings:
+  - Neural networks outperform autoregressive models at 1- and 6-month horizons
+  - Multi-scale architecture captures both short-term shocks and long-term trends
+  - BLS JOLTS + CPS combination gives best predictive power
+datasets_used: [bls-cps, bls-jolts, bls-employment-projections]
+methods_used: [lstnet, cnn-rnn, time-series-forecasting]

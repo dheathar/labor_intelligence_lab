@@ -1,0 +1,63 @@
+services:
+  portal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8766:8766"
+    environment:
+      # Set these in Dokploy's Environment section (or in .env for local dev)
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      CHAT_MODEL: ${CHAT_MODEL:-anthropic/claude-haiku-4-5}
+      LAB_HOST: "0.0.0.0"
+      LAB_PORT: "8766"
+      RAT_SERVER_URL: "http://agents:8767"
+      BLS_API_KEY: ${BLS_API_KEY:-}
+      ONET_USERNAME: ${ONET_USERNAME:-}
+      ONET_PASSWORD: ${ONET_PASSWORD:-}
+    volumes:
+      - knowledge_data:/app/knowledge
+      - lab_data:/app/data
+      - config_data:/app/config
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8766/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+    depends_on:
+      agents:
+        condition: service_started
+
+  agents:
+    build:
+      context: .
+      dockerfile: Dockerfile.agents
+    ports:
+      - "8767:8767"
+    environment:
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      RAT_MODEL_RESEARCHER: ${RAT_MODEL_RESEARCHER:-anthropic/claude-haiku-4-5}
+      RAT_MODEL_ANALYST: ${RAT_MODEL_ANALYST:-anthropic/claude-haiku-4-5}
+      RAT_MODEL_VISUALIZER: ${RAT_MODEL_VISUALIZER:-anthropic/claude-haiku-4-5}
+      RAT_MODEL_MONITOR: ${RAT_MODEL_MONITOR:-anthropic/claude-haiku-4-5}
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - knowledge_data:/app/knowledge
+      - lab_data:/app/data
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8767/api/rats')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+
+volumes:
+  knowledge_data:
+    driver: local
+  lab_data:
+    driver: local
+  config_data:
+    driver: local

@@ -1,0 +1,19 @@
+slug: llm4jobs
+name: LLM4Jobs
+category: occupational-classification
+subcategory: unsupervised
+paper: ""
+arxiv_id: "2309.09708"
+description: |
+  Unsupervised occupation extraction and standardisation using LLMs. Extracts
+  occupations from free-text job postings and resumes, then maps to standard
+  taxonomies (O*NET, ISCO) without requiring labeled training data. Essential
+  for job recommendation and labor market policy analysis.
+strengths:
+  - No labeled data required
+  - Handles novel job titles
+  - Generalizes across taxonomies
+weaknesses:
+  - LLM inference cost
+  - Less consistent on low-resource languages
+sota_benchmarks: [llm4jobs-benchmark]

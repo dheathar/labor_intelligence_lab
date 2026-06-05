@@ -1,0 +1,19 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install agent dependencies first (cached layer)
+COPY requirements.agents.txt .
+RUN pip install --no-cache-dir -r requirements.agents.txt
+
+# Copy agent code
+COPY agents/ ./agents/
+
+# knowledge/ and data/ are mounted as volumes at runtime
+# but copy knowledge as default so standalone startup works
+COPY knowledge/ ./knowledge/
+
+ENV PYTHONUNBUFFERED=1
+EXPOSE 8767
+
+CMD ["python", "-m", "agents.rat_server"]

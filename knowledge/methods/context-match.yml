@@ -1,0 +1,16 @@
+slug: context-match
+name: ConTeXT-Match
+category: skill-extraction
+subcategory: contrastive-learning
+description: |
+  Lightweight bi-encoder with contrastive learning for skill extraction from job postings.
+  Achieves state-of-the-art on skill extraction benchmarks at significantly lower
+  computational cost than generative approaches. Maps job text spans to ESCO skills.
+strengths:
+  - State-of-the-art skill extraction performance
+  - Computationally efficient (bi-encoder)
+  - Suitable for production deployment
+weaknesses:
+  - English-focused
+  - Requires ESCO as target taxonomy
+sota_benchmarks: [skillspan, skill-xl]

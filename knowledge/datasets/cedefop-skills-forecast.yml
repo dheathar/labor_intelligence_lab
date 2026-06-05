@@ -1,0 +1,23 @@
+slug: cedefop-skills-forecast
+name: Cedefop Skills Forecast 2025
+source: Cedefop (European Centre for Development of Vocational Training)
+geography: [european_union]
+type: projections
+access: free-download
+url: "https://www.cedefop.europa.eu/en/tools/skills-forecast"
+api_available: false
+update_frequency: "every 2–3 years"
+size: "EU27 + UK/NO/IS, 42 sectors, 9 occupation groups"
+temporal_coverage: "historical 2000–2024, projections 2025–2035"
+tags: [employment-projections, skills-forecast, occupations, sectors, vocational-training]
+description: |
+  The only synchronized European employment forecast by occupation and sector.
+  Produced by Cedefop using EUKLEMS, Eurostat LFS, and expert inputs. Projects
+  employment demand at sector × occupation level through 2035. Available as
+  downloadable spreadsheets and via interactive Skillsnet portal.
+  Complementary to Cedefop STAS (short-term) and Skills Shortage Index.
+key_variables:
+  - employment level by occupation × sector (42 sectors, 9 groups)
+  - employment growth projections 2025–2035
+  - skills requirements by occupation
+  - VET participation and outcomes

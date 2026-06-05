@@ -1,0 +1,25 @@
+# Secrets
+.env
+.env.local
+
+# Python artifacts
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Data (mounted as volumes at runtime)
+data/
+
+# Git + IDE
+.git/
+.DS_Store
+.idea/
+.vscode/
+
+# Docs + dev files
+*.pdf
+*.log
+README.md
+docs/

@@ -1,0 +1,9 @@
+name: labor-intelligence-lab
+display_name: Labor Intelligence Virtual Lab
+version: "0.1.0"
+description: >
+  A research environment for labor market demand & supply analysis.
+  Covers datasets, papers, ML methods, benchmarks, and live data connectors
+  across global, US, EU, Greek, and emerging-market labor markets.
+default_domain: global
+port: 8766

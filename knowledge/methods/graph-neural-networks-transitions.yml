@@ -1,0 +1,18 @@
+slug: graph-neural-networks-transitions
+name: Graph Neural Networks for Occupational Transitions
+category: occupational-transitions
+subcategory: graph-learning
+paper: graph-ai-transitions-2026
+description: |
+  Models occupational transition probabilities as a graph problem where nodes
+  are occupations and edges encode transition feasibility based on skill
+  adjacency and AI exposure scores. GNNs learn complex non-linear relationships
+  between occupations that are invisible in simple feature matrices.
+strengths:
+  - Captures non-obvious transition pathways
+  - Incorporates skill adjacency structure
+  - Works for emerging market contexts
+weaknesses:
+  - Requires occupation graph construction
+  - Less interpretable than linear models
+sota_benchmarks: []
