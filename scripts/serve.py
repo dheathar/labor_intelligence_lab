@@ -34,6 +34,7 @@ log = logging.getLogger("livlab")
 
 app = FastAPI(title="Labor Intelligence Virtual Lab", version="0.1.0")
 
+
 # ── In-memory catalog built at startup ──────────────────────────────────────
 
 _catalog: dict = {}
