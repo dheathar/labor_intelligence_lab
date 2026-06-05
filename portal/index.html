@@ -571,107 +571,20 @@
     </div>
   </div>
 
-  <!-- 14. PLAYGROUND -->
+  <!-- 14. PLAYGROUND — just a launch card; chat lives in the global drawer -->
   <div class="tab-pane" id="pane-playground">
-    <div class="interact-layout">
-
-      <!-- Left: agent roster -->
-      <div class="interact-sidebar">
-        <div class="interact-sidebar-label">AGENTS</div>
-        <div class="interact-agent active" data-agent="assistant" onclick="selectAgent('assistant',this)">
-          <span class="interact-agent-avatar" style="background:#2f81f7">🧠</span>
-          <div class="interact-agent-info">
-            <div class="interact-agent-name">Lab Assistant</div>
-            <div class="interact-agent-role">General Q&amp;A · Claude</div>
-          </div>
-          <span class="interact-agent-status online" title="Online"></span>
-        </div>
-        <div class="interact-agent-divider">LAB RATS</div>
-        <div class="interact-agent" data-agent="rat_researcher" onclick="selectAgent('rat_researcher',this)">
-          <span class="interact-agent-avatar" style="background:#2f81f7">🔬</span>
-          <div class="interact-agent-info">
-            <div class="interact-agent-name">rat_researcher</div>
-            <div class="interact-agent-role">Labor economist · AI researcher</div>
-          </div>
-          <span class="interact-agent-status" id="rat-status-rat_researcher" title="Unknown"></span>
-        </div>
-        <div class="interact-agent" data-agent="rat_analyst" onclick="selectAgent('rat_analyst',this)">
-          <span class="interact-agent-avatar" style="background:#56d364">📊</span>
-          <div class="interact-agent-info">
-            <div class="interact-agent-name">rat_analyst</div>
-            <div class="interact-agent-role">Quantitative economist · Data eng.</div>
-          </div>
-          <span class="interact-agent-status" id="rat-status-rat_analyst" title="Unknown"></span>
-        </div>
-        <div class="interact-agent" data-agent="rat_visualizer" onclick="selectAgent('rat_visualizer',this)">
-          <span class="interact-agent-avatar" style="background:#d2a8ff">📈</span>
-          <div class="interact-agent-info">
-            <div class="interact-agent-name">rat_visualizer</div>
-            <div class="interact-agent-role">Viz engineer · LMI analyst</div>
-          </div>
-          <span class="interact-agent-status" id="rat-status-rat_visualizer" title="Unknown"></span>
-        </div>
-        <div class="interact-agent" data-agent="rat_monitor" onclick="selectAgent('rat_monitor',this)">
-          <span class="interact-agent-avatar" style="background:#ffa657">🛰️</span>
-          <div class="interact-agent-info">
-            <div class="interact-agent-name">rat_monitor</div>
-            <div class="interact-agent-role">DevOps · Infrastructure</div>
-          </div>
-          <span class="interact-agent-status" id="rat-status-rat_monitor" title="Unknown"></span>
-        </div>
+    <div class="playground-launch">
+      <div class="playground-launch-icon">🐀</div>
+      <h2>Lab Chat</h2>
+      <p>Ask the Lab Assistant or any Lab Rat — available from every tab via the chat bubble in the bottom-right corner.</p>
+      <div class="playground-launch-agents">
+        <div class="pla-agent" onclick="openChatDrawer('assistant')"><span>🧠</span><span>Lab Assistant</span></div>
+        <div class="pla-agent" onclick="openChatDrawer('rat_researcher')"><span>🔬</span><span>rat_researcher</span></div>
+        <div class="pla-agent" onclick="openChatDrawer('rat_analyst')"><span>📊</span><span>rat_analyst</span></div>
+        <div class="pla-agent" onclick="openChatDrawer('rat_visualizer')"><span>📈</span><span>rat_visualizer</span></div>
+        <div class="pla-agent" onclick="openChatDrawer('rat_monitor')"><span>🛰️</span><span>rat_monitor</span></div>
       </div>
-
-      <!-- Right: chat area -->
-      <div class="interact-chat" id="interact-chat-pane">
-        <div class="skaven-banner" id="skaven-banner">
-          <span class="skaven-banner-text">THE GREAT HOARD GROWS — YES-YES! 🐀🐀🐀</span>
-        </div>
-        <div class="interact-chat-header" id="interact-header">
-          <span class="interact-header-avatar" id="interact-header-avatar">🧠</span>
-          <div>
-            <div class="interact-header-name" id="interact-header-name">Lab Assistant</div>
-            <div class="interact-header-desc" id="interact-header-desc">General Q&amp;A powered by Claude · Full knowledge base access</div>
-          </div>
-        </div>
-
-        <div class="interact-history" id="interact-history">
-          <div class="interact-msg assistant">
-            <div class="interact-msg-body">👋 Select an agent from the left, or type <code>@</code> in the input to mention one inline. Ask me anything about the lab — papers, datasets, projects, deliverables, portals.</div>
-          </div>
-        </div>
-
-        <!-- @mention dropdown -->
-        <div class="interact-mention-dropdown hidden" id="interact-mention-dropdown">
-          <div class="interact-mention-item" data-agent="rat_researcher" onmousedown="pickMention('rat_researcher')">
-            <span>🔬</span><span>rat_researcher</span><span class="interact-mention-role">Labor economist · AI researcher</span>
-          </div>
-          <div class="interact-mention-item" data-agent="rat_analyst" onmousedown="pickMention('rat_analyst')">
-            <span>📊</span><span>rat_analyst</span><span class="interact-mention-role">Quantitative economist · Data eng.</span>
-          </div>
-          <div class="interact-mention-item" data-agent="rat_visualizer" onmousedown="pickMention('rat_visualizer')">
-            <span>📈</span><span>rat_visualizer</span><span class="interact-mention-role">Viz engineer · LMI analyst</span>
-          </div>
-          <div class="interact-mention-item" data-agent="rat_monitor" onmousedown="pickMention('rat_monitor')">
-            <span>🛰️</span><span>rat_monitor</span><span class="interact-mention-role">DevOps · Infrastructure</span>
-          </div>
-        </div>
-
-        <div class="interact-input-row">
-          <div class="interact-input-wrap">
-            <div class="interact-agent-pill" id="interact-agent-pill">
-              <span id="interact-pill-icon">🧠</span>
-              <span id="interact-pill-name">assistant</span>
-            </div>
-            <textarea id="interact-input" rows="1"
-              placeholder="Message… type @ to mention a rat"
-              onkeydown="interactKeydown(event)"
-              oninput="interactInput(event)"></textarea>
-          </div>
-          <button class="btn btn-primary interact-send" onclick="interactSend()" id="interact-send-btn">Send</button>
-        </div>
-        <div class="interact-hint">Press <kbd>Enter</kbd> to send · <kbd>Shift+Enter</kbd> for new line · type <kbd>@</kbd> to mention a rat agent</div>
-      </div>
-
+      <button class="btn btn-primary" onclick="openChatDrawer()">Open Chat</button>
     </div>
   </div>
 
@@ -778,5 +691,115 @@
 </footer>
 
 <script src="app.js"></script>
+
+<!-- ── Global Chat Drawer ───────────────────────────────────────────── -->
+<div id="chat-drawer" class="chat-drawer" aria-hidden="true">
+  <div class="chat-drawer-inner">
+
+    <!-- Sidebar -->
+    <div class="interact-sidebar">
+      <div class="interact-sidebar-label">AGENTS</div>
+      <div class="interact-agent active" data-agent="assistant" onclick="selectAgent('assistant',this)">
+        <span class="interact-agent-avatar" style="background:#2f81f7">🧠</span>
+        <div class="interact-agent-info">
+          <div class="interact-agent-name">Lab Assistant</div>
+          <div class="interact-agent-role">General Q&amp;A · Claude</div>
+        </div>
+        <span class="interact-agent-status online" title="Online"></span>
+      </div>
+      <div class="interact-agent-divider">LAB RATS</div>
+      <div class="interact-agent" data-agent="rat_researcher" onclick="selectAgent('rat_researcher',this)">
+        <span class="interact-agent-avatar" style="background:#2f81f7">🔬</span>
+        <div class="interact-agent-info">
+          <div class="interact-agent-name">rat_researcher</div>
+          <div class="interact-agent-role">Labor economist · AI researcher</div>
+        </div>
+        <span class="interact-agent-status" id="rat-status-rat_researcher" title="Unknown"></span>
+      </div>
+      <div class="interact-agent" data-agent="rat_analyst" onclick="selectAgent('rat_analyst',this)">
+        <span class="interact-agent-avatar" style="background:#56d364">📊</span>
+        <div class="interact-agent-info">
+          <div class="interact-agent-name">rat_analyst</div>
+          <div class="interact-agent-role">Quantitative economist · Data eng.</div>
+        </div>
+        <span class="interact-agent-status" id="rat-status-rat_analyst" title="Unknown"></span>
+      </div>
+      <div class="interact-agent" data-agent="rat_visualizer" onclick="selectAgent('rat_visualizer',this)">
+        <span class="interact-agent-avatar" style="background:#d2a8ff">📈</span>
+        <div class="interact-agent-info">
+          <div class="interact-agent-name">rat_visualizer</div>
+          <div class="interact-agent-role">Viz engineer · LMI analyst</div>
+        </div>
+        <span class="interact-agent-status" id="rat-status-rat_visualizer" title="Unknown"></span>
+      </div>
+      <div class="interact-agent" data-agent="rat_monitor" onclick="selectAgent('rat_monitor',this)">
+        <span class="interact-agent-avatar" style="background:#ffa657">🛰️</span>
+        <div class="interact-agent-info">
+          <div class="interact-agent-name">rat_monitor</div>
+          <div class="interact-agent-role">DevOps · Infrastructure</div>
+        </div>
+        <span class="interact-agent-status" id="rat-status-rat_monitor" title="Unknown"></span>
+      </div>
+    </div>
+
+    <!-- Chat -->
+    <div class="interact-chat" id="interact-chat-pane">
+      <div class="skaven-banner" id="skaven-banner">
+        <span class="skaven-banner-text">THE GREAT HOARD GROWS — YES-YES! 🐀🐀🐀</span>
+      </div>
+      <div class="interact-chat-header" id="interact-header">
+        <span class="interact-header-avatar" id="interact-header-avatar">🧠</span>
+        <div style="flex:1;min-width:0">
+          <div class="interact-header-name" id="interact-header-name">Lab Assistant</div>
+          <div class="interact-header-desc" id="interact-header-desc">General Q&amp;A powered by Claude · Full knowledge base access</div>
+        </div>
+        <button class="chat-drawer-close" onclick="closeChatDrawer()" title="Close">✕</button>
+      </div>
+
+      <div class="interact-history" id="interact-history">
+        <div class="interact-msg assistant">
+          <div class="interact-msg-body">👋 Select an agent from the left, or type <code>@</code> in the input to mention one inline. Ask me anything about the lab — papers, datasets, projects, deliverables, portals.</div>
+        </div>
+      </div>
+
+      <div class="interact-mention-dropdown hidden" id="interact-mention-dropdown">
+        <div class="interact-mention-item" data-agent="rat_researcher" onmousedown="pickMention('rat_researcher')">
+          <span>🔬</span><span>rat_researcher</span><span class="interact-mention-role">Labor economist · AI researcher</span>
+        </div>
+        <div class="interact-mention-item" data-agent="rat_analyst" onmousedown="pickMention('rat_analyst')">
+          <span>📊</span><span>rat_analyst</span><span class="interact-mention-role">Quantitative economist · Data eng.</span>
+        </div>
+        <div class="interact-mention-item" data-agent="rat_visualizer" onmousedown="pickMention('rat_visualizer')">
+          <span>📈</span><span>rat_visualizer</span><span class="interact-mention-role">Viz engineer · LMI analyst</span>
+        </div>
+        <div class="interact-mention-item" data-agent="rat_monitor" onmousedown="pickMention('rat_monitor')">
+          <span>🛰️</span><span>rat_monitor</span><span class="interact-mention-role">DevOps · Infrastructure</span>
+        </div>
+      </div>
+
+      <div class="interact-input-row">
+        <div class="interact-input-wrap">
+          <div class="interact-agent-pill" id="interact-agent-pill">
+            <span id="interact-pill-icon">🧠</span>
+            <span id="interact-pill-name">assistant</span>
+          </div>
+          <textarea id="interact-input" rows="1"
+            placeholder="Message… type @ to mention a rat"
+            onkeydown="interactKeydown(event)"
+            oninput="interactInput(event)"></textarea>
+        </div>
+        <button class="btn btn-primary interact-send" onclick="interactSend()" id="interact-send-btn">Send</button>
+      </div>
+      <div class="interact-hint">Press <kbd>Enter</kbd> to send · <kbd>Shift+Enter</kbd> for new line · type <kbd>@</kbd> to mention a rat</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FAB toggle button -->
+<button id="chat-fab" class="chat-fab" onclick="toggleChatDrawer()" title="Open Lab Chat">
+  <span id="chat-fab-icon">🐀</span>
+</button>
+
 </body>
 </html>

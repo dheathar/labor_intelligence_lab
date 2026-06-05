@@ -132,6 +132,7 @@ async function boot() {
     // Restore last active tab from localStorage (persist across refreshes)
     const savedTab = localStorage.getItem('livlab-tab') || 'overview';
     activateTab(savedTab);
+    fetchRatStatuses();
   } catch (e) {
     console.error('Boot failed:', e);
     document.querySelector('.container').innerHTML =
@@ -245,18 +246,50 @@ function refreshActiveTab() {
   else if (t === 'impl_portals') renderImplPortals();
   else if (t === 'impl_deliverables') renderImplDeliverables();
   else if (t === 'lmi_research') renderLmiResearch();
-  else if (t === 'playground') initInteraction();
+  else if (t === 'playground') openChatDrawer();
 }
 
-function initInteraction() {
-  // Select assistant by default, refresh rat status dots
-  const active = document.querySelector('.interact-agent.active');
-  if (!active) {
-    const first = document.querySelector('.interact-agent[data-agent="assistant"]');
-    if (first) selectAgent('assistant', first);
+function openChatDrawer(agent) {
+  const drawer = document.getElementById('chat-drawer');
+  const fab = document.getElementById('chat-fab');
+  if (!drawer) return;
+  drawer.classList.add('open');
+  drawer.setAttribute('aria-hidden', 'false');
+  fab.classList.add('open');
+  document.getElementById('chat-fab-icon').textContent = '✕';
+  if (agent) {
+    const el = document.querySelector(`.interact-agent[data-agent="${agent}"]`);
+    if (el) selectAgent(agent, el);
+  } else {
+    const active = document.querySelector('.interact-agent.active');
+    if (!active) {
+      const first = document.querySelector('.interact-agent[data-agent="assistant"]');
+      if (first) selectAgent('assistant', first);
+    }
   }
   renderInteractHistory();
   fetchRatStatuses();
+  setTimeout(() => document.getElementById('interact-input')?.focus(), 260);
+}
+
+function closeChatDrawer() {
+  const drawer = document.getElementById('chat-drawer');
+  const fab = document.getElementById('chat-fab');
+  if (!drawer) return;
+  drawer.classList.remove('open');
+  drawer.setAttribute('aria-hidden', 'true');
+  fab.classList.remove('open');
+  document.getElementById('chat-fab-icon').textContent = '🐀';
+}
+
+function toggleChatDrawer() {
+  const drawer = document.getElementById('chat-drawer');
+  if (drawer && drawer.classList.contains('open')) closeChatDrawer();
+  else openChatDrawer();
+}
+
+function initInteraction() {
+  openChatDrawer();
 }
 
 async function fetchRatStatuses() {

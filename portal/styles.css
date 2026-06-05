@@ -306,7 +306,7 @@ pre code { background: none; padding: 0; }
 .container { max-width: 1280px; margin: 0 auto; padding: 24px; }
 .tab-pane { display: none; animation: fade 0.2s ease; }
 .tab-pane.active { display: block; }
-#pane-playground.active { display: flex; }
+#pane-playground.active { display: flex; align-items: center; justify-content: center; min-height: 60vh; }
 @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
 .section-h {
@@ -1288,17 +1288,54 @@ pre code { background: none; padding: 0; }
 
 /* ── Interaction Tab ─────────────────────────────────────────────────────────── */
 
-/* Make the playground pane fill the viewport — bust out of container padding */
-#pane-playground {
-  margin: -24px;
-  padding: 0;
-  height: calc(100vh - var(--topnav-h, 57px));
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
+/* Playground launch card */
+.playground-launch { text-align: center; max-width: 480px; padding: 48px 32px; }
+.playground-launch-icon { font-size: 56px; margin-bottom: 16px; }
+.playground-launch h2 { font-size: 24px; font-weight: 700; margin: 0 0 10px; }
+.playground-launch p { color: var(--fg-muted); font-size: 14px; line-height: 1.6; margin: 0 0 28px; }
+.playground-launch-agents { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 28px; }
+.pla-agent { display: flex; align-items: center; gap: 6px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px; font-size: 12px; cursor: pointer; transition: border-color .15s, background .15s; }
+.pla-agent:hover { border-color: var(--accent); background: var(--bg-3); }
 
-.interact-layout { display: flex; flex: 1; min-height: 0; overflow: hidden; }
+/* ── Global Chat Drawer ──────────────────────────────────────────── */
+.chat-drawer {
+  position: fixed; bottom: 0; right: 0;
+  width: 680px; height: 78vh;
+  max-width: 98vw; max-height: calc(100vh - 70px);
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 -8px 40px rgba(0,0,0,.35);
+  display: flex; flex-direction: column;
+  transform: translateY(100%);
+  transition: transform .25s cubic-bezier(.4,0,.2,1);
+  z-index: 8500;
+}
+.chat-drawer.open { transform: translateY(0); }
+
+.chat-drawer-inner { display: flex; flex: 1; min-height: 0; overflow: hidden; border-radius: 14px 14px 0 0; }
+
+/* Close button inside header */
+.chat-drawer-close { background: none; border: none; color: var(--fg-muted); font-size: 16px; cursor: pointer; padding: 4px 8px; border-radius: 5px; line-height: 1; flex-shrink: 0; }
+.chat-drawer-close:hover { background: var(--bg-inset); color: var(--fg); }
+
+/* FAB */
+.chat-fab {
+  position: fixed; bottom: 24px; right: 24px;
+  width: 52px; height: 52px;
+  border-radius: 50%; border: none;
+  background: var(--accent); color: #fff;
+  font-size: 22px; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,0,0,.3);
+  z-index: 8600;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .15s, box-shadow .15s;
+}
+.chat-fab:hover { transform: scale(1.08); box-shadow: 0 6px 22px rgba(0,0,0,.4); }
+.chat-fab.open { background: var(--fg-muted); }
+@media (max-width: 600px) {
+  .chat-drawer { width: 100vw; height: 90vh; border-radius: 14px 14px 0 0; }
+  .interact-sidebar { width: 160px; }
+}
 
 /* Sidebar */
 .interact-sidebar { width: 210px; flex-shrink: 0; border-right: 1px solid var(--border); display: flex; flex-direction: column; background: var(--bg-inset); overflow-y: auto; padding-bottom: 12px; }
