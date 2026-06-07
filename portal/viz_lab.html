@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LIVLAB · Visualization Gallery</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--border:#30363d;
+  --fg:#e6edf3;--muted:#8b949e;--accent:#2f81f7;--accent2:#56d364;
+  --warn:#d29922;--danger:#f85149;--purple:#bc8cff;
+  --card-radius:10px;
+}
+body{background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;line-height:1.5;min-height:100vh}
+
+/* ── Header ── */
+.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;gap:14px}
+.header-logo{font-size:22px}
+.header-title{font-size:17px;font-weight:700}
+.header-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.header-back{margin-left:auto;color:var(--accent);text-decoration:none;font-size:12px;padding:5px 12px;border:1px solid var(--accent);border-radius:6px;transition:.15s}
+.header-back:hover{background:rgba(47,129,247,.12)}
+
+/* ── Role tabs ── */
+.role-tabs{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 28px;display:flex;gap:2px;overflow-x:auto}
+.role-tab{padding:10px 18px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);font-size:12px;font-weight:600;white-space:nowrap;transition:.15s;display:flex;align-items:center;gap:6px}
+.role-tab:hover{color:var(--fg);background:var(--bg3)}
+.role-tab.active{color:var(--fg);border-bottom-color:var(--accent)}
+.role-tab .tab-icon{font-size:15px}
+
+/* ── Role intro ── */
+.role-intro{padding:20px 28px 0;display:flex;align-items:flex-start;gap:14px}
+.role-intro-icon{font-size:36px;flex-shrink:0}
+.role-intro-title{font-size:18px;font-weight:700;margin-bottom:3px}
+.role-intro-desc{font-size:12px;color:var(--muted);max-width:700px;line-height:1.6}
+.role-intro-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tag{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:2px 9px;font-size:10px;color:var(--muted)}
+
+/* ── Gallery grid ── */
+.gallery{padding:20px 28px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:20px}
+
+/* ── Viz card ── */
+.viz-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--card-radius);overflow:hidden;display:flex;flex-direction:column}
+.viz-card-header{padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.viz-card-title{font-size:13px;font-weight:600}
+.viz-card-sub{font-size:10px;color:var(--muted);margin-top:2px}
+.chart-type-badge{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:2px 8px;font-size:10px;color:var(--accent);white-space:nowrap;flex-shrink:0;font-family:monospace}
+.viz-chart{flex:1;min-height:260px;padding:4px}
+.viz-why{padding:12px 16px;border-top:1px solid var(--border);background:rgba(47,129,247,.04)}
+.viz-why-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.viz-why-text{font-size:11px;color:var(--muted);line-height:1.6}
+.viz-insight{margin-top:6px;font-size:11px;color:var(--fg);padding:6px 10px;background:var(--bg3);border-radius:5px;border-left:2px solid var(--accent2)}
+.viz-insight::before{content:"💡 ";font-size:11px}
+
+/* ── Role panels (hidden by default) ── */
+.role-panel{display:none}
+.role-panel.active{display:block}
+
+/* ── KPI row ── */
+.kpi-row{display:flex;gap:10px;padding:10px 16px}
+.kpi{flex:1;background:var(--bg3);border-radius:7px;padding:10px 14px}
+.kpi-val{font-size:22px;font-weight:700;color:var(--fg)}
+.kpi-label{font-size:10px;color:var(--muted);margin-top:2px}
+.kpi-delta{font-size:10px;margin-top:3px}
+.up{color:var(--accent2)}.down{color:var(--danger)}.neutral{color:var(--warn)}
+
+@media(max-width:680px){.gallery{grid-template-columns:1fr}.role-tabs{padding:0 12px}.gallery{padding:12px}.header{padding:10px 14px}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">📊</div>
+  <div>
+    <div class="header-title">LIVLAB · Visualization Gallery</div>
+    <div class="header-sub">Per-role labor market chart catalogue — mock data · EU/WB6 focus</div>
+  </div>
+  <a class="header-back" href="/">← Back to Lab</a>
+</div>
+
+<div class="role-tabs" id="role-tabs">
+  <div class="role-tab active" data-role="hiring"   onclick="switchRole('hiring',this)">  <span class="tab-icon">🎯</span> Hiring Manager</div>
+  <div class="role-tab"        data-role="planner"  onclick="switchRole('planner',this)"> <span class="tab-icon">🏗️</span> Workforce Planner</div>
+  <div class="role-tab"        data-role="research" onclick="switchRole('research',this)"><span class="tab-icon">🔬</span> Skills Researcher</div>
+  <div class="role-tab"        data-role="policy"   onclick="switchRole('policy',this)">  <span class="tab-icon">🏛️</span> Policy Analyst</div>
+  <div class="role-tab"        data-role="career"   onclick="switchRole('career',this)">  <span class="tab-icon">🎓</span> Career Advisor</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ HIRING MANAGER -->
+<div class="role-panel active" id="panel-hiring">
+  <div class="role-intro">
+    <div class="role-intro-icon">🎯</div>
+    <div>
+      <div class="role-intro-title">Hiring Manager</div>
+      <div class="role-intro-desc">Needs to understand real-time demand trends, which skills to prioritize in job postings, how competitive the market is, and where to source candidates. Visualizations should answer: <em>"What does the market look like right now and where is it going?"</em></div>
+      <div class="role-intro-tags"><span class="tag">Job Postings (OJA)</span><span class="tag">Skills Demand</span><span class="tag">Time-to-Fill</span><span class="tag">Salary Benchmarks</span></div>
+    </div>
+  </div>
+  <div class="gallery">
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Job Posting Demand Index — 5 Occupations</div><div class="viz-card-sub">Quarterly OJA volume, Q1 2020 = 100 · Greece + Western Balkans</div></div>
+        <span class="chart-type-badge">Multi-line</span>
+      </div>
+      <div class="viz-chart" id="c-demand-trend" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>multi-line time series</strong> is the standard for comparing directional trends across categories. The indexed baseline (100 = Q1 2020) removes absolute scale differences and focuses attention on relative acceleration. COVID shock visible in Q2 2020; Data Scientist demand shows steepest climb — driven by GenAI adoption post-2022.</div>
+        <div class="viz-insight">Data Scientist postings grew 4.7× since 2020. Nursing demand grew only 77% — structurally constrained by supply, not appetite.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Skills Demanded vs Available — Software Developer</div><div class="viz-card-sub">% of postings requiring skill (demand) vs % of workforce holding skill (supply)</div></div>
+        <span class="chart-type-badge">Grouped bar</span>
+      </div>
+      <div class="viz-chart" id="c-skills-gap" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>grouped horizontal bar</strong> enables direct side-by-side reading of two values per skill — demand (what employers need) and supply (what workers have). Horizontal layout accommodates long skill labels without rotation. Ordered by demand descending so the most critical gaps appear at the top.</div>
+        <div class="viz-insight">Cloud infrastructure and Docker show the largest gaps (+26–28 pp). SQL and Git are in surplus — don't over-invest in training here.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Hiring Difficulty Matrix</div><div class="viz-card-sub">Median salary (x) vs demand growth % (y) · bubble = market size · color = gap severity</div></div>
+        <span class="chart-type-badge">Bubble chart</span>
+      </div>
+      <div class="viz-chart" id="c-bubble-hiring" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>bubble chart</strong> encodes 4 variables simultaneously: x-axis (salary), y-axis (demand growth), bubble size (market volume), and color (skills gap severity). Roles in the top-right are high-demand, high-paying, fast-growing — the hardest to hire. This view lets a hiring manager instantly prioritize budget and sourcing effort.</div>
+        <div class="viz-insight">Data Scientists are top-right with large gaps — consider talent pipelines (university partnerships, reskilling) rather than pure market hiring.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Skill Demand Seasonality Heatmap</div><div class="viz-card-sub">Relative demand intensity by skill × month (2024)</div></div>
+        <span class="chart-type-badge">Heatmap</span>
+      </div>
+      <div class="viz-chart" id="c-heatmap-skills" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>calendar heatmap (skills × month)</strong> reveals seasonal patterns invisible in yearly averages. Darker cells = higher relative posting volume. Useful for planning recruitment campaigns: knowing that Cloud roles spike in Q1 means launching sourcing campaigns in November–December.</div>
+        <div class="viz-insight">January–March is the universal peak for tech hiring. August is universally quiet across all skills — avoid posting then.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ WORKFORCE PLANNER -->
+<div class="role-panel" id="panel-planner">
+  <div class="role-intro">
+    <div class="role-intro-icon">🏗️</div>
+    <div>
+      <div class="role-intro-title">Workforce Planner</div>
+      <div class="role-intro-desc">Needs to identify structural gaps between labor supply and employer demand, model future workforce needs, and design training interventions. Visualizations should answer: <em>"Where are the structural mismatches and how do we close them?"</em></div>
+      <div class="role-intro-tags"><span class="tag">LFS Employment Stock</span><span class="tag">Supply-Demand Gap</span><span class="tag">Education Pipeline</span><span class="tag">Skills Radar</span></div>
+    </div>
+  </div>
+  <div class="gallery">
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Supply–Demand Balance by Occupation</div><div class="viz-card-sub">Diverging bar — positive = labour surplus, negative = labour shortage · 2025 Q2</div></div>
+        <span class="chart-type-badge">Diverging bar</span>
+      </div>
+      <div class="viz-chart" id="c-diverging" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>diverging bar chart</strong> uses a zero-baseline to show both direction (surplus vs shortage) and magnitude in a single glance. Traditional side-by-side bars require mental subtraction; diverging bars pre-compute the gap. The axis label "surplus ← → shortage" orients any reader instantly — no legend required.</div>
+        <div class="viz-insight">Nursing shows the most critical shortage (−34%). Data Science is in significant shortage despite rapid supply growth — demand is simply outpacing graduates.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Skills Profile Radar — Demand vs Available</div><div class="viz-card-sub">Top 8 skills for Data Scientist role · 0–100 scale</div></div>
+        <span class="chart-type-badge">Radar / spider</span>
+      </div>
+      <div class="viz-chart" id="c-radar" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>radar chart</strong> is uniquely suited for comparing two multivariate profiles on identical axes. The <em>area between the two polygons</em> is the skills gap — the larger the gap area, the more intensive the training intervention needed. Skills where the supply polygon extends beyond demand (e.g. SQL) indicate over-training; shrink that and redirect resource.</div>
+        <div class="viz-insight">LLMs/GenAI shows the largest gap (72 demand vs 22 supply). This is the highest-priority training investment for any Data Science workforce plan.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Education → Occupation Pipeline</div><div class="viz-card-sub">Annual graduate flows by field of study → first destination occupation</div></div>
+        <span class="chart-type-badge">Sankey</span>
+      </div>
+      <div class="viz-chart" id="c-sankey" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>Sankey diagram</strong> is the canonical choice for flow data where the width of links encodes volume. It answers "where do graduates go?" and reveals structural mis-alignments (e.g. engineering graduates not entering tech) and unexpected talent pools (e.g. biology graduates entering data science). No other chart type shows multi-to-multi flows readably.</div>
+        <div class="viz-insight">~30% of Engineering graduates enter non-engineering roles. This is a hidden talent pool for ICT sector hiring — target reskilling, not just new enrollment.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Workforce Change Decomposition (2020–2025)</div><div class="viz-card-sub">Net employment change = new entrants − exits + transitions in − transitions out</div></div>
+        <span class="chart-type-badge">Waterfall</span>
+      </div>
+      <div class="viz-chart" id="c-waterfall" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>waterfall chart</strong> decomposes a net change into contributing factors, each shown as a positive or negative bar running from the prior cumulative value. It answers "why did employment in Software Development grow by X?" in a single image — impossible to do with a pie or standard bar. Essential for identifying which lever (graduation rates, retention, immigration) is most impactful to pull.</div>
+        <div class="viz-insight">Inbound career transitions (from adjacent roles) now account for ~28% of software developer headcount growth — larger than university graduation inflows.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ SKILLS RESEARCHER -->
+<div class="role-panel" id="panel-research">
+  <div class="role-intro">
+    <div class="role-intro-icon">🔬</div>
+    <div>
+      <div class="role-intro-title">Skills Researcher / Economist</div>
+      <div class="role-intro-desc">Needs to map skill relationships, detect emerging skill clusters, track longitudinal changes in skill importance, and quantify the economic returns of specific skills. Visualizations should answer: <em>"How are skills structured and how are they evolving?"</em></div>
+      <div class="role-intro-tags"><span class="tag">ESCO Taxonomy</span><span class="tag">Co-occurrence Analysis</span><span class="tag">Wage Premium</span><span class="tag">Temporal Dynamics</span></div>
+    </div>
+  </div>
+  <div class="gallery">
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Skills Co-occurrence Network</div><div class="viz-card-sub">Node size = demand frequency · edge weight = co-occurrence in same posting · color = cluster</div></div>
+        <span class="chart-type-badge">Force graph</span>
+      </div>
+      <div class="viz-chart" id="c-network" style="height:320px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>force-directed network graph</strong> is the only chart type that reveals both individual skill importance (node size) and skill-cluster topology simultaneously. Clusters that emerge organically from co-occurrence data correspond to real job families. Bridge nodes (between clusters) identify the most versatile, high-value skills. No bar chart or heatmap can show graph topology.</div>
+        <div class="viz-insight">Python is the central bridge between the AI/ML cluster and the Data Engineering cluster — the single highest-leverage skill investment across occupations.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Skill Ranking Evolution (Bump Chart)</div><div class="viz-card-sub">Rank by % of postings mentioning skill · 2020–2025</div></div>
+        <span class="chart-type-badge">Bump chart</span>
+      </div>
+      <div class="viz-chart" id="c-bump" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>bump chart</strong> plots rank (not absolute value) on the Y-axis against time. This is superior to a standard line chart for ranking data because: absolute values vary in scale; crossing lines are legible at rank resolution; and the chart explicitly answers "which skill overtook which?" — the key research question. LLMs/GenAI rising from rank 8 to rank 2 in 5 years is a research finding, not just a data point.</div>
+        <div class="viz-insight">LLMs/GenAI is the fastest-rising skill in the dataset (+6 rank positions). Cloud overtook SQL between 2021–2022 — a structural shift from on-premise to cloud infrastructure.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Skill Demand Volume — Taxonomy Treemap</div><div class="viz-card-sub">Rectangle area = % of postings mentioning skill · grouped by ESCO skill cluster</div></div>
+        <span class="chart-type-badge">Treemap</span>
+      </div>
+      <div class="viz-chart" id="c-treemap" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>treemap</strong> uses rectangular area to show part-of-whole relationships across a hierarchy in limited screen space. Where a pie chart can handle ~6 slices before it becomes unreadable, a treemap handles 30–50 items. It respects the hierarchical structure of ESCO (skill group → skill) naturally. Color encodes the parent cluster; size encodes demand volume.</div>
+        <div class="viz-insight">Digital & ICT skills account for 43% of total skill demand volume — larger than all other ESCO groups combined. This finding drives national digital skills strategies.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Skill Demand Growth vs Wage Premium</div><div class="viz-card-sub">X = YoY demand growth (%) · Y = wage premium over occupation median (%) · bubble = supply volume</div></div>
+        <span class="chart-type-badge">Scatter + regression</span>
+      </div>
+      <div class="viz-chart" id="c-scatter-wage" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>scatter plot with regression line</strong> tests the hypothesis that scarce, growing skills command wage premiums. The regression line shows the average relationship; outliers above the line are "underpriced" skills (high demand growth, unexpectedly low premium) — a finding for wage researchers. Bubble size adds supply volume to show whether premia reflect genuine scarcity or legacy pricing.</div>
+        <div class="viz-insight">LLMs/GenAI and Cloud show both high demand growth AND high wage premium — classic scarcity pricing. Excel shows flat demand growth but persistent premium — grandfathered legacy skill.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ POLICY ANALYST -->
+<div class="role-panel" id="panel-policy">
+  <div class="role-intro">
+    <div class="role-intro-icon">🏛️</div>
+    <div>
+      <div class="role-intro-title">Policy Analyst</div>
+      <div class="role-intro-desc">Needs to compare labor market performance across countries and time, identify structural risks (automation, NEET), and assess the impact of policy interventions. Visualizations should answer: <em>"What is happening at the systemic level and what should governments prioritize?"</em></div>
+      <div class="role-intro-tags"><span class="tag">Eurostat LFS</span><span class="tag">ILOSTAT</span><span class="tag">Automation Risk</span><span class="tag">Cross-country Comparison</span></div>
+    </div>
+  </div>
+  <div class="gallery">
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Employment Rate — Small Multiples by Country</div><div class="viz-card-sub">Ages 20–64 · % employed · 2015–2025 · ELSTAT / Eurostat LFS</div></div>
+        <span class="chart-type-badge">Small multiples</span>
+      </div>
+      <div class="viz-chart" id="c-small-multiples" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text"><strong>Small multiples</strong> (same chart type repeated at small scale for each country) allow direct cross-country comparison without the overplotting that a single multi-line chart produces with 6+ series. Each panel has identical axes, so the reader's eye can scan for shape differences (slope, volatility, recovery speed) rather than decoding a tangle of overlapping lines. Standard practice in Eurostat and OECD publications.</div>
+        <div class="viz-insight">Greece shows the steepest recovery slope post-2015 but remains 8pp below EU average. WB6 countries (Serbia, Montenegro) show accelerating growth from a lower base — a structural catch-up pattern.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Automation Risk vs Employment Share vs Wage</div><div class="viz-card-sub">X = automation risk score (0–100) · Y = employment share (%) · bubble = median wage · color = growth</div></div>
+        <span class="chart-type-badge">Bubble matrix</span>
+      </div>
+      <div class="viz-chart" id="c-automation" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">The <strong>bubble matrix</strong> is used for strategic portfolio analysis. Risk (x), scale of impact (bubble = employment), and economic weight (color = wage) are the three policy-relevant dimensions. Roles in the top-right with large bubbles represent high-automation-risk, high-employment occupations — the priority target for reskilling policy. Roles bottom-left are policy tailwinds (safe + growing).</div>
+        <div class="viz-insight">Logistics Coordinators: high automation risk (62/100), large employment share, moderate wages — the single highest-priority occupation for reskilling investment in the next 5 years.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Employment by Contract Type — Stacked Area</div><div class="viz-card-sub">Full-time permanent · Part-time · Fixed-term · Self-employed · 2015–2025 Greece</div></div>
+        <span class="chart-type-badge">Stacked area</span>
+      </div>
+      <div class="viz-chart" id="c-contract-types" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>stacked area chart</strong> shows composition (the proportional mix) AND total volume trend simultaneously — two charts compressed into one. For labor market policy, the changing mix of contract types is as important as the headline employment rate. A rising share of fixed-term contracts alongside rising total employment is a warning signal that growth is precarious. The baseline of zero makes both absolute and relative changes visible.</div>
+        <div class="viz-insight">Fixed-term contracts grew from 11% to 19% of total employment 2015–2022 — growth is real but increasingly precarious. Post-2022 stabilization may reflect legislative intervention (EU Directive on transparent working conditions).</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Youth NEET Rate — Annotated Timeline</div><div class="viz-card-sub">Ages 15–29 · Not in Employment, Education or Training · % · with key policy events</div></div>
+        <span class="chart-type-badge">Annotated line</span>
+      </div>
+      <div class="viz-chart" id="c-neet" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">An <strong>annotated timeline</strong> overlays policy event markers on a KPI trend line, making causal reasoning explicit. Without annotations, a reader can only observe "the rate fell after 2016" — with annotations, they can see "the rate fell 3pp following the Youth Guarantee expansion." This is the standard format in OECD policy effectiveness reports and Cedefop monitoring publications. Annotations encode qualitative context directly in the visual.</div>
+        <div class="viz-insight">Greece peaked at 28% NEET rate in 2013 (EU's highest). Three visible inflection points align with Youth Guarantee rollout, ESF co-funded apprenticeships, and post-COVID stimulus. Post-2022 rate (16%) still 4pp above EU-27 average.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ CAREER ADVISOR -->
+<div class="role-panel" id="panel-career">
+  <div class="role-intro">
+    <div class="role-intro-icon">🎓</div>
+    <div>
+      <div class="role-intro-title">Career Advisor / Job Seeker</div>
+      <div class="role-intro-desc">Needs to understand what a realistic salary range looks like, which career transitions are common and successful, and what the demand outlook is for a target occupation. Visualizations should answer: <em>"What can I realistically expect and how do I get there?"</em></div>
+      <div class="role-intro-tags"><span class="tag">Salary Distribution</span><span class="tag">Career Transitions</span><span class="tag">Demand Forecast</span><span class="tag">Skills Gap</span></div>
+    </div>
+  </div>
+  <div class="gallery">
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Salary Distribution by Occupation & Experience</div><div class="viz-card-sub">Box = IQR · whiskers = 10th–90th percentile · dot = median · EUR gross annual</div></div>
+        <span class="chart-type-badge">Box plot</span>
+      </div>
+      <div class="viz-chart" id="c-boxplot" style="height:300px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>box plot</strong> is the most information-dense single chart type for a distribution: it shows the median (line), interquartile range (box), tails (whiskers), and outliers (dots) in one compact symbol. A single salary figure ("average: €52k") is misleading — knowing the full distribution (e.g. "50% earn between €35k–€65k, but top 10% earn €88k+") is actionable career information. Multiple grouped boxes enable cross-occupation comparison.</div>
+        <div class="viz-insight">The wide IQR for Data Scientists (€42k–€78k) reflects high experience-premium — worth the investment in skills progression. Nurses show compressed distribution — wages are institutionally set and negotiation headroom is limited.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Career Transition Flows</div><div class="viz-card-sub">Annual occupational moves · flow width = % of movers · based on LFS panel data</div></div>
+        <span class="chart-type-badge">Sankey</span>
+      </div>
+      <div class="viz-chart" id="c-transitions" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>Sankey diagram</strong> encodes career transition volume as link width — the most natural mapping for flow data. The left side shows "leaving occupation" and the right side shows "entering occupation." Wide links indicate high-probability transition paths. For career counseling, this chart replaces anecdote ("I heard developers often move into data science") with empirical evidence ("45% of developers who change occupation enter data science").</div>
+        <div class="viz-insight">Marketing Manager → Data Scientist is a surprisingly large flow (18% of MM changers). The shared analytical and communication skills make this a viable transition path with targeted upskilling.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Demand Outlook 2025–2028 with Uncertainty</div><div class="viz-card-sub">OJA volume forecast · shaded = 80% confidence interval · dashed = baseline scenario</div></div>
+        <span class="chart-type-badge">Line + CI band</span>
+      </div>
+      <div class="viz-chart" id="c-forecast" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>line chart with confidence interval band</strong> makes uncertainty explicit rather than hiding it behind a single point forecast. For career decisions, knowing that Data Scientist demand will "probably be 20–35% higher in 2028" is more useful than a spuriously precise "will be 27% higher." The widening band over time correctly represents increasing uncertainty. This is the standard for Cedefop Skills Forecast (2025–2035) publications.</div>
+        <div class="viz-insight">All five occupations show positive demand outlook through 2028. Data Scientist has both the highest expected growth AND the widest uncertainty band — reflecting ongoing GenAI disruption of the role definition.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card-header">
+        <div><div class="viz-card-title">Your Skills vs Market Demand — Gap Radar</div><div class="viz-card-sub">Illustrative: candidate skills profile vs top 8 skills demanded for Data Scientist role</div></div>
+        <span class="chart-type-badge">Radar / spider</span>
+      </div>
+      <div class="viz-chart" id="c-personal-radar" style="height:280px"></div>
+      <div class="viz-why">
+        <div class="viz-why-label">Why this chart</div>
+        <div class="viz-why-text">A <strong>personal skills radar</strong> gives the job seeker an immediate gestalt of their readiness profile. The area enclosed by the "your skills" polygon versus the "market demand" polygon is the total gap. Unlike a table of scores, the radar shows which gaps are large (require significant upskilling) versus small (easily bridged). It is also the most common self-assessment visualization in career development tools (LinkedIn, Coursera, etc.) — users already know how to read it.</div>
+        <div class="viz-insight">LLMs/GenAI and Deep Learning are the largest gaps. Python and SQL are strong — leverage these as your entry point while upskilling on AI. Target 3 months of structured GenAI training to close the most critical gap.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════ DATA
+const OCC = ['Software Dev.','Data Scientist','Nurse','Logistics','Marketing Mgr'];
+const QTR = ['2020Q1','Q2','Q3','Q4','2021Q1','Q2','Q3','Q4','2022Q1','Q2','Q3','Q4','2023Q1','Q2','Q3','Q4','2024Q1','Q2','Q3','Q4','2025Q1','Q2'];
+
+const DEMAND = {
+  'Software Dev.': [100,72,98,115,128,142,155,163,170,178,185,191,198,205,218,226,235,248,262,275,289,302],
+  'Data Scientist':[100,68,89,108,125,148,172,195,218,238,255,268,282,298,318,335,352,371,395,418,445,468],
+  'Nurse':         [100,95,102,108,112,118,122,128,132,136,140,143,147,150,154,157,160,163,167,170,174,177],
+  'Logistics':     [100,88,105,118,125,132,138,143,148,153,157,161,165,169,173,177,181,185,189,193,197,201],
+  'Marketing Mgr': [100,65,82,95,102,110,118,124,130,136,141,146,151,156,161,165,169,174,178,183,187,192],
+};
+const COLORS = ['#2f81f7','#56d364','#f0883e','#d2a8ff','#f85149'];
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+// ══════════════════════════════════════════════════════════════════════ ROLE SWITCH
+function switchRole(role, el){
+  document.querySelectorAll('.role-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.role-panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-'+role).classList.add('active');
+  setTimeout(()=>renderRole(role),50);
+}
+
+const rendered = new Set();
+function renderRole(role){
+  if(rendered.has(role)) return;
+  rendered.add(role);
+  const fn = RENDERERS[role];
+  if(fn) fn();
+}
+
+// ══════════════════════════════════════════════════════════════════════ CHART HELPERS
+function mkChart(id){ return echarts.init(document.getElementById(id),null,{renderer:'canvas'}); }
+
+const BASE = {
+  backgroundColor:'transparent',
+  textStyle:{color:'#8b949e',fontFamily:'-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif',fontSize:11},
+  tooltip:{backgroundColor:'#161b22',borderColor:'#30363d',textStyle:{color:'#e6edf3',fontSize:11}},
+  grid:{left:10,right:16,top:28,bottom:8,containLabel:true},
+};
+
+// ══════════════════════════════════════════════════════════════════════ HIRING MANAGER
+const RENDERERS = {};
+
+RENDERERS.hiring = function(){
+
+  // 1. Multi-line demand trend
+  const c1 = mkChart('c-demand-trend');
+  c1.setOption({...BASE, tooltip:{...BASE.tooltip,trigger:'axis'},
+    legend:{top:2,textStyle:{color:'#8b949e',fontSize:10},itemWidth:12,itemHeight:3},
+    xAxis:{type:'category',data:QTR,axisLabel:{interval:3,fontSize:9},axisLine:{lineStyle:{color:'#30363d'}}},
+    yAxis:{type:'value',name:'Index (2020Q1=100)',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
+    series: OCC.map((o,i)=>({name:o,type:'line',data:DEMAND[o],smooth:true,lineStyle:{width:2},itemStyle:{color:COLORS[i]},showSymbol:false}))
+  });
+
+  // 2. Skills gap grouped bar (Software Dev)
+  const skills = ['Python','JavaScript','Cloud','Docker','SQL','Git','REST APIs','Agile'];
+  const demand = [89,82,74,68,65,62,58,52];
+  const supply = [72,68,48,42,71,75,55,61];
+  const c2 = mkChart('c-skills-gap');
+  c2.setOption({...BASE, tooltip:{...BASE.tooltip,trigger:'axis'},
+    legend:{top:2,textStyle:{color:'#8b949e',fontSize:10},itemWidth:10,itemHeight:10},
+    grid:{...BASE.grid,left:20},
+    xAxis:{type:'value',max:100,axisLabel:{formatter:'{value}%',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
+    yAxis:{type:'category',data:[...skills].reverse(),axisLabel:{fontSize:10},axisLine:{lineStyle:{color:'#30363d'}}},
+    series:[
+      {name:'Demand',type:'bar',data:[...demand].reverse(),barMaxWidth:12,itemStyle:{color:'#2f81f7',borderRadius:[0,3,3,0]}},
+      {name:'Supply',type:'bar',data:[...supply].reverse(),barMaxWidth:12,itemStyle:{color:'#56d364',borderRadius:[0,3,3,0]}},
+    ]
+  });
+
+  // 3. Bubble – hiring difficulty
+  const c3 = mkChart('c-bubble-hiring');
+  const bubbleData = [
+    {name:'Software Dev.',value:[48,18,3.2,0.35]},
+    {name:'Data Scientist',value:[58,32,1.8,0.55]},
+    {name:'Nurse',value:[31,8,5.4,0.18]},
+    {name:'Logistics',value:[30,-5,4.1,0.12]},
+    {name:'Marketing Mgr',value:[42,6,2.9,0.28]},
+  ];
+  c3.setOption({...BASE,
+    tooltip:{...BASE.tooltip,formatter:p=>`<b>${p.data.name}</b><br>Salary: €${p.data.value[0]}k<br>Growth: ${p.data.value[1]}%<br>Gap: ${Math.round(p.data.value[3]*100)}%`},
+    grid:{...BASE.grid,top:20,bottom:30},
+    xAxis:{type:'value',name:'Median salary (€k)',nameLocation:'middle',nameGap:22,nameTextStyle:{color:'#8b949e',fontSize:10},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
+    yAxis:{type:'value',name:'Demand growth %',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
+    series:[{
+      type:'scatter',
+      data: bubbleData.map((d,i)=>({...d,itemStyle:{color:COLORS[i],opacity:.85}})),
+      symbolSize: d => Math.sqrt(d.value[2])*38,
+      label:{show:true,formatter:p=>p.data.name.split(' ')[0],fontSize:9,color:'#e6edf3',position:'inside'},
+    }]
+  });
+
+  // 4. Heatmap – skill seasonality
+  const skillNames = ['Python','JavaScript','Cloud','Docker','SQL','Machine Learning','LLMs/GenAI','TypeScript'];
+  const baseIntensity = [88,80,70,65,60,72,75,45];
+  const seasonal = [1.15,1.12,1.08,0.95,0.88,0.82,0.85,0.90,0.92,0.98,1.02,0.78];
+  const hmData = [];
+  skillNames.forEach((s,si)=>{ MONTHS.forEach((m,mi)=>{ hmData.push([mi,si,Math.round(baseIntensity[si]*seasonal[mi]*(0.92+Math.random()*0.16))]); }); });
+  const c4 = mkChart('c-heatmap-skills');
+  c4.setOption({...BASE,
+    tooltip:{...BASE.tooltip,formatter:p=>`${skillNames[p.data[1]]} · ${MONTHS[p.data[0]]}<br>Intensity: ${p.data[2]}`},
+    grid:{...BASE.grid,top:12,bottom:28},
+    xAxis:{type:'category',data:MONTHS,axisLabel:{fontSize:10},axisLine:{lineStyle:{color:'#30363d'}}},
+    yAxis:{type:'category',data:skillNames,axisLabel:{fontSize:10},axisLine:{lineStyle:{color:'#30363d'}}},
+    visualMap:{min:55,max:110,calculable:false,show:false,inRange:{color:['#0d1117','#1a3a5c','#2f81f7','#79c0ff']}},
+    series:[{type:'heatmap',data:hmData,itemStyle:{borderWidth:2,borderColor:'#0d1117'}}]
+  });
+};
+
+// ══════════════════════════════════════════════════════════════════════ WORKFORCE PLANNER
+RENDERERS.planner = function(){
+
+  // 1. Diverging bar
+  const gapData = [
+    {name:'Software Dev.',gap:-22},{name:'Data Scientist',gap:-34},{name:'Nurse',gap:-28},
+    {name:'Logistics',gap:8},{name:'Marketing Mgr',gap:-12},
+  ];
+  const c1 = mkChart('c-diverging');
+  c1.setOption({...BASE,
+    tooltip:{...BASE.tooltip,formatter:p=>`${p.name}<br>${p.value>0?'Surplus':'Shortage'}: ${Math.abs(p.value)}%`},
+    grid:{...BASE.grid,left:20},
+    xAxis:{type:'value',name:'← Surplus   |   Shortage →',nameLocation:'middle',nameGap:22,nameTextStyle:{color:'#8b949e',fontSize:10},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}},axisLabel:{formatter:v=>`${Math.abs(v)}%`}},
+    yAxis:{type:'category',data:gapData.map(d=>d.name),axisLabel:{fontSize:10},axisLine:{lineStyle:{color:'#30363d'}}},
+    series:[{type:'bar',data:gapData.map(d=>({value:d.gap,itemStyle:{color:d.gap<0?'#f85149':'#56d364',borderRadius:d.gap<0?[3,0,0,3]:[0,3,3,0]}})),barMaxWidth:18,
+      label:{show:true,position:d=>d.data.value<0?'insideLeft':'insideRight',formatter:p=>`${p.value}%`,fontSize:10,color:'#fff'}}]
+  });
+
+  // 2. Radar
+  const radarIndicators = ['Python','ML','SQL','Stats','Deep Learning','NLP','Data Viz','LLMs/GenAI'];
+  const radarDemand = [95,91,85,82,74,68,52,72];
+  const radarSupply = [72,55,71,62,38,32,58,22];
+  const c2 = mkChart('c-radar');
+  c2.setOption({...BASE,
+    legend:{top:2,textStyle:{color:'#8b949e',fontSize:10},itemWidth:10},
+    radar:{indicator:radarIndicators.map((n,i)=>({name:n,max:100})),axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}},splitArea:{show:false},nameGap:4,axisName:{color:'#8b949e',fontSize:9}},
+    series:[{type:'radar',data:[
+      {name:'Demand',value:radarDemand,lineStyle:{color:'#2f81f7',width:2},areaStyle:{color:'rgba(47,129,247,0.15)'},itemStyle:{color:'#2f81f7'}},
+      {name:'Supply',value:radarSupply,lineStyle:{color:'#56d364',width:2},areaStyle:{color:'rgba(86,211,100,0.15)'},itemStyle:{color:'#56d364'}},
+    ]}]
+  });
+
+  // 3. Sankey — education → occupation
+  const c3 = mkChart('c-sankey');
+  c3.setOption({...BASE,
+    tooltip:{...BASE.tooltip,trigger:'item'},
+    series:[{type:'sankey',
+      nodeGap:12, nodeWidth:14,
+      emphasis:{focus:'adjacency'},
+      data:[
+        {name:'Engineering',itemStyle:{color:'#2f81f7'}},{name:'Computer Science',itemStyle:{color:'#56d364'}},
+        {name:'Economics',itemStyle:{color:'#d2a8ff'}},{name:'Biology/Health',itemStyle:{color:'#f0883e'}},
+        {name:'Business',itemStyle:{color:'#f85149'}},
+        {name:'Software Dev.',itemStyle:{color:'#79c0ff'}},{name:'Data Scientist',itemStyle:{color:'#7ee787'}},
+        {name:'Nurse',itemStyle:{color:'#ffa657'}},{name:'Logistics',itemStyle:{color:'#d2a8ff'}},
+        {name:'Marketing Mgr',itemStyle:{color:'#ff7b72'}},{name:'Other Roles',itemStyle:{color:'#8b949e'}},
+      ],
+      links:[
+        {source:'Engineering',target:'Software Dev.',value:38},{source:'Engineering',target:'Data Scientist',value:18},{source:'Engineering',target:'Logistics',value:12},{source:'Engineering',target:'Other Roles',value:32},
+        {source:'Computer Science',target:'Software Dev.',value:52},{source:'Computer Science',target:'Data Scientist',value:28},{source:'Computer Science',target:'Other Roles',value:20},
+        {source:'Economics',target:'Data Scientist',value:22},{source:'Economics',target:'Marketing Mgr',value:18},{source:'Economics',target:'Logistics',value:15},{source:'Economics',target:'Other Roles',value:45},
+        {source:'Biology/Health',target:'Nurse',value:68},{source:'Biology/Health',target:'Data Scientist',value:8},{source:'Biology/Health',target:'Other Roles',value:24},
+        {source:'Business',target:'Marketing Mgr',value:42},{source:'Business',target:'Logistics',value:22},{source:'Business',target:'Other Roles',value:36},
+      ],
+      lineStyle:{color:'gradient',opacity:0.4},
+      label:{color:'#e6edf3',fontSize:10},
+    }]
+  });
+
+  // 4. Waterfall — workforce decomposition
+  const c4 = mkChart('c-waterfall');
+  const waterfallItems = [
+    {name:'2020\nBaseline',value:100000,type:'total'},
+    {name:'University\nGraduates',value:24000,type:'pos'},
+    {name:'Career\nTransitions In',value:18500,type:'pos'},
+    {name:'Immigration /\nMobility',value:8200,type:'pos'},
+    {name:'Retirements\n& Exits',value:-12400,type:'neg'},
+    {name:'Career\nTransitions Out',value:-9800,type:'neg'},
+    {name:'2025\nTotal',value:128500,type:'total'},
+  ];
+  let cumulative = 0;
+  const wfData = waterfallItems.map(item=>{
+    if(item.type==='total'){ cumulative=item.value; return {value:[0,item.value],type:item.type}; }
+    const start = cumulative; cumulative += item.value;
+    return {value:[start,cumulative],type:item.type};
+  });
+  c4.setOption({...BASE,
+    tooltip:{...BASE.tooltip,formatter:(p)=>{const d=waterfallItems[p.dataIndex];return `${d.name.replace('\n',' ')}<br>${d.value>0?'+':''}${d.value.toLocaleString()}`;}},
+    grid:{...BASE.grid,bottom:40},
+    xAxis:{type:'category',data:waterfallItems.map(d=>d.name),axisLabel:{fontSize:9},axisLine:{lineStyle:{color:'#30363d'}}},
+    yAxis:{type:'value',axisLabel:{formatter:v=>`${(v/1000).toFixed(0)}k`,fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
+    series:[{type:'bar',data:wfData.map((d,i)=>({
+      value:d.value,
+      itemStyle:{color:d.type==='total'?'#2f81f7':d.type==='pos'?'#56d364':'#f85149',borderRadius:[3,3,0,0]}
+    })),barMaxWidth:38}]
+  });
+};
+
+// ══════════════════════════════════════════════════════════════════════ SKILLS RESEARCHER
+RENDERERS.research = function(){
+
+  // 1. Network / force graph
+  const nodeColors = {tech:'#2f81f7',ai:'#56d364',data:'#d2a8ff',infra:'#f0883e',soft:'#8b949e'};
+  const networkNodes = [
+    {id:'Python',group:'tech',size:95},{id:'ML',group:'ai',size:82},{id:'SQL',group:'data',size:78},
+    {id:'JavaScript',group:'tech',size:75},{id:'Deep Learning',group:'ai',size:68},{id:'Cloud',group:'infra',size:65},
+    {id:'Docker',group:'infra',size:58},{id:'Statistics',group:'data',size:62},{id:'NLP',group:'ai',size:55},
+    {id:'Data Viz',group:'data',size:52},{id:'Agile',group:'soft',size:48},{id:'Communication',group:'soft',size:65},
+    {id:'LLMs/GenAI',group:'ai',size:72},{id:'APIs',group:'tech',size:55},
+  ];
+  const networkLinks = [
+    ['Python','ML',88],['Python','Deep Learning',75],['Python','NLP',68],['Python','SQL',62],['Python','Statistics',72],
+    ['ML','Deep Learning',82],['ML','Statistics',75],['ML','LLMs/GenAI',70],['Deep Learning','NLP',78],
+    ['Deep Learning','LLMs/GenAI',82],['JavaScript','APIs',85],['Cloud','Docker',78],['Cloud','APIs',65],
+    ['SQL','Data Viz',68],['Statistics','Data Viz',72],['Agile','Communication',62],['NLP','LLMs/GenAI',88],
+  ].map(([s,t,v])=>({source:s,target:t,value:v}));
+  const c1 = mkChart('c-network');
+  c1.setOption({...BASE,
+    tooltip:{...BASE.tooltip,formatter:p=>p.dataType==='node'?`<b>${p.data.id}</b><br>Demand freq: ${p.data.symbolSize}`:undefined},
+    series:[{type:'graph',layout:'force',
+      roam:true,
+      force:{repulsion:180,gravity:0.12,edgeLength:[40,120]},
+      data:networkNodes.map(n=>({id:n.id,name:n.id,symbolSize:n.size*0.28+8,itemStyle:{color:nodeColors[n.group]},label:{show:n.size>60,fontSize:9,color:'#e6edf3'}})),
+      links:networkLinks.map(l=>({...l,lineStyle:{width:Math.max(1,l.value*0.025),color:'rgba(139,148,158,0.4)'}})),
+      emphasis:{focus:'adjacency'},
+    }]
+  });
+
+  // 2. Bump chart (skill rankings)
+  const YEARS = ['2020','2021','2022','2023','2024','2025'];
+  const rankData = {
+    'Python':       [1,1,1,1,1,1],
+    'JavaScript':   [2,2,2,2,3,3],
+    'Cloud':        [4,3,3,3,2,2],
+    'SQL':          [3,4,4,5,5,5],
+    'ML':           [5,5,5,4,4,4],
+    'LLMs/GenAI':   [8,8,7,6,3,2],
+    'Docker':       [6,6,6,7,6,6],
+    'TypeScript':   [7,7,8,8,7,7],
+  };
+  const bumpColors = ['#2f81f7','#56d364','#f0883e','#d2a8ff','#f85149','#ffa657','#79c0ff','#7ee787'];
+  const c2 = mkChart('c-bump');
+  c2.setOption({...BASE,
+    tooltip:{...BASE.tooltip,trigger:'axis'},
+    legend:{top:2,textStyle:{color:'#8b949e',fontSize:9},itemWidth:12,itemHeight:3},
+    xAxis:{type:'category',data:YEARS,axisLabel:{fontSize:10},axisLine:{lineStyle:{color:'#30363d'}}},
+    yAxis:{type:'value',inverse:true,min:1,max:8,name:'Rank',nameTextStyle:{color:'#8b949e',fontSize:9},
+      axisLabel:{formatter:v=>`#${v}`,fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
+    series: Object.entries(rankData).map(([name,data],i)=>({
+      name,type:'line',data,smooth:false,lineStyle:{width:2,color:bumpColors[i]},
+      itemStyle:{color:bumpColors[i]},symbolSize:6,
+      label:{show:true,position:'right',formatter:p=>p.dataIndex===YEARS.length-1?`#${p.value} ${name}`:'',fontSize:9,color:bumpColors[i]},
+    }))
+  });
+
+  // 3. Treemap — skill taxonomy
+  const c3 = mkChart('c-treemap');
+  c3.setOption({...BASE,
+    tooltip:{...BASE.tooltip,formatter:p=>`<b>${p.name}</b><br>Demand share: ${p.value}%`},
+    series:[{type:'treemap',
+      data:[
+        {name:'Digital & ICT',value:43,itemStyle:{color:'#1a3a5c'},children:[
+          {name:'Python',value:12,itemStyle:{color:'#2f81f7'}},{name:'JavaScript',value:9,itemStyle:{color:'#388bfd'}},
+          {name:'Cloud',value:8,itemStyle:{color:'#1f6feb'}},{name:'Docker',value:7,itemStyle:{color:'#0d419d'}},
+          {name:'APIs',value:7,itemStyle:{color:'#0550ae'}},
+        ]},
+        {name:'AI & Data Science',value:28,itemStyle:{color:'#1a4a2e'},children:[
+          {name:'ML',value:9,itemStyle:{color:'#56d364'}},{name:'Deep Learning',value:7,itemStyle:{color:'#3fb950'}},
+          {name:'LLMs/GenAI',value:8,itemStyle:{color:'#2ea043'}},{name:'NLP',value:4,itemStyle:{color:'#238636'}},
+        ]},
+        {name:'Data & Analytics',value:18,itemStyle:{color:'#3a1f5c'},children:[
+          {name:'SQL',value:7,itemStyle:{color:'#bc8cff'}},{name:'Statistics',value:5,itemStyle:{color:'#a371f7'}},
+          {name:'Data Viz',value:6,itemStyle:{color:'#8957e5'}},
+        ]},
+        {name:'Transversal',value:11,itemStyle:{color:'#3a2a1a'},children:[
+          {name:'Communication',value:5,itemStyle:{color:'#f0883e'}},{name:'Agile',value:4,itemStyle:{color:'#db6d28'}},
+          {name:'Excel',value:2,itemStyle:{color:'#bd561d'}},
+        ]},
+      ],
+      label:{fontSize:10,color:'#e6edf3'},roam:false,visibleMin:4,
+    }]
+  });
+
+  // 4. Scatter — demand growth vs wage premium
+  const scatterSkills = [
+    {name:'Python',growth:22,premium:28,supply:95},
+    {name:'LLMs/GenAI',growth:85,premium:42,supply:22},
+    {name:'Cloud',growth:38,premium:32,supply:65},
+    {name:'Deep Learning',growth:45,premium:38,supply:38},
+    {name:'SQL',growth:5,premium:12,supply:78},
+    {name:'JavaScript',growth:8,premium:15,supply:75},
+    {name:'Docker',growth:28,premium:22,supply:58},
+    {name:'Agile',growth:4,premium:8,supply:48},
+    {name:'Excel',growth:-2,premium:10,supply:82},
+    {name:'NLP',growth:52,premium:35,supply:32},
+    {name:'Statistics',growth:18,premium:24,supply:62},
+    {name:'Communication',growth:2,premium:6,supply:65},
+  ];
+  const c4 = mkChart('c-scatter-wage');
+  // Regression line
+  const xs = scatterSkills.map(d=>d.growth), ys = scatterSkills.map(d=>d.premium);
+  const n = xs.length, sumx = xs.reduce((a,b)=>a+b), sumy = ys.reduce((a,b)=>a+b);
+  const sumxy = xs.reduce((s,x,i)=>s+x*ys[i],0), sumx2 = xs.reduce((s,x)=>s+x*x,0);
+  const slope = (n*sumxy - sumx*sumy)/(n*sumx2 - sumx*sumx);
+  const intercept = (sumy - slope*sumx)/n;
+  const xMin = Math.min(...xs)-5, xMax = Math.max(...xs)+5;
+  c4.setOption({...BASE,
+    tooltip:{...BASE.tooltip,formatter:p=>p.seriesIndex===0?`<b>${p.data.name}</b><br>Demand growth: ${p.data.value[0]}%<br>Wage premium: ${p.data.value[1]}%<br>Supply: ${p.data.value[2]}`:undefined},
+    grid:{...BASE.grid,bottom:30},
+    xAxis:{type:'value',name:'Demand growth YoY (%)',nameLocation:'middle',nameGap:22,nameTextStyle:{color:'#8b949e',fontSize:10},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
+    yAxis:{type:'value',name:'Wage premium (%)',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
+    series:[
+      {type:'scatter',data:scatterSkills.map(d=>({...d,value:[d.growth,d.premium,d.supply],label:{show:true,formatter:d=>d.data.name,fontSize:8.5,color:'#8b949e',position:'top'}})),
+       symbolSize:d=>Math.sqrt(d.value[2])*1.8+6,itemStyle:{color:'#2f81f7',opacity:.8},
+       label:{show:true,formatter:p=>p.data.name,fontSize:8.5,color:'#8b949e',position:'top'},
+      },
+      {type:'line',data:[[xMin,xMin*slope+intercept],[xMax,xMax*slope+intercept]],
+       lineStyle:{color:'#f0883e',type:'dashed',width:1.5},symbol:'none',tooltip:{show:false}},
+    ]
+  });
+};
+
+// ══════════════════════════════════════════════════════════════════════ POLICY ANALYST
+RENDERERS.policy = function(){
+
+  // 1. Small multiples (6 countries)
+  const countries = [{name:'Greece',data:[56.5,57.2,58.1,59.4,60.2,58.9,60.8,62.5,64.1,65.8,66.9]},
+    {name:'Italy',data:[57.2,57.8,58.0,58.5,58.9,57.8,58.5,59.2,60.1,60.8,61.4]},
+    {name:'Spain',data:[60.5,61.2,62.1,62.8,63.4,62.2,63.5,65.2,66.1,67.2,68.1]},
+    {name:'Serbia',data:[52.1,53.4,54.8,56.2,57.5,58.2,59.8,61.2,62.5,63.8,65.1]},
+    {name:'Montenegro',data:[55.2,56.1,57.4,58.8,60.1,59.2,61.2,62.8,63.5,64.8,66.2]},
+    {name:'EU-27 avg',data:[66.6,67.1,67.4,68.1,68.4,67.2,68.5,69.2,70.1,70.8,71.2]},
+  ];
+  const yrs = ['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025'];
+  const c1 = mkChart('c-small-multiples');
+  c1.setOption({...BASE,
+    tooltip:{...BASE.tooltip,trigger:'axis'},
+    legend:{show:false},
+    grid:countries.map((c,i)=>({left:`${(i%3)*34+2}%`,width:'30%',top:`${Math.floor(i/3)*50+16}%`,height:'35%',containLabel:false})),
+    xAxis:countries.map((c,i)=>({gridIndex:i,type:'category',data:yrs,show:true,axisLabel:{show:i>=3,interval:4,fontSize:8},axisLine:{lineStyle:{color:'#30363d'}},axisTick:{show:false}})),
+    yAxis:countries.map((c,i)=>({gridIndex:i,type:'value',min:50,max:75,show:true,axisLabel:{show:i%3===0,fontSize:7.5,formatter:v=>`${v}%`},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d',type:'dashed'}}})),
+    series:countries.map((c,i)=>({name:c.name,type:'line',data:c.data,xAxisIndex:i,yAxisIndex:i,smooth:true,
+      lineStyle:{color:i<5?COLORS[i]:'#f0883e',width:i===5?1.5:2,type:i===5?'dashed':'solid'},
+      itemStyle:{color:COLORS[i]||'#f0883e'},showSymbol:false,
+      markArea:{itemStyle:{color:'rgba(47,129,247,0.04)'},data:[[{xAxis:'2020'},{xAxis:'2021'}]]},
+      label:{show:true,position:'insideTopLeft',formatter:c.name,fontSize:9,color:COLORS[i]||'#f0883e',offset:[2,2]},
+    }))
+  });
+
+  // 2. Bubble — automation risk matrix
+  const c2 = mkChart('c-automation');
+  const autoData = [
+    {name:'Software Dev.',risk:25,emp:3.2,wage:48000,growth:18},
+    {name:'Data Scientist',risk:18,emp:1.8,wage:58000,growth:32},
+    {name:'Nurse',risk:12,emp:5.4,wage:31000,growth:8},
+    {name:'Logistics',risk:62,emp:4.1,wage:30000,growth:-5},
+    {name:'Marketing Mgr',risk:45,emp:2.9,wage:42000,growth:6},
+    {name:'Cashier',risk:88,emp:3.8,wage:18000,growth:-18},
+    {name:'Teacher',risk:15,emp:4.5,wage:34000,growth:5},
+    {name:'Accountant',risk:70,emp:2.2,wage:38000,growth:-8},
+  ];
+  c2.setOption({...BASE,
+    tooltip:{...BASE.tooltip,formatter:p=>`<b>${p.data.name}</b><br>Automation risk: ${p.data.value[0]}/100<br>Employment: ${p.data.value[1]}%<br>Median wage: €${p.data.value[2].toLocaleString()}<br>Growth: ${p.data.value[3]}%`},
+    grid:{...BASE.grid,bottom:30},
+    xAxis:{type:'value',name:'Automation Risk Score (0–100)',nameLocation:'middle',nameGap:22,nameTextStyle:{color:'#8b949e',fontSize:10},min:0,max:100,axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
+    yAxis:{type:'value',name:'Employment Share (%)',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
+    visualMap:{show:false,min:-20,max:35,dimension:3,inRange:{color:['#f85149','#8b949e','#56d364']}},
+    series:[{type:'scatter',
+      data:autoData.map(d=>({name:d.name,value:[d.risk,d.emp,d.wage,d.growth]})),
+      symbolSize:d=>Math.sqrt(d[2])*0.012+12,
+      label:{show:true,formatter:p=>p.data.name,fontSize:8.5,color:'#e6edf3',position:'top'},
+      emphasis:{label:{show:true}},
+    }]
+  });
+
+  // 3. Stacked area — contract types
+  const c3 = mkChart('c-contract-types');
+  const cYrs = ['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025'];
+  c3.setOption({...BASE,
+    tooltip:{...BASE.tooltip,trigger:'axis',axisPointer:{type:'cross'}},
+    legend:{top:2,textStyle:{color:'#8b949e',fontSize:10},itemWidth:10},
+    xAxis:{type:'category',data:cYrs,axisLabel:{fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},boundaryGap:false},
+    yAxis:{type:'value',name:'Employment (000s)',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
+    series:[
+      {name:'Full-time Perm.',type:'line',stack:'total',data:[2850,2920,3010,3120,3250,3100,3280,3450,3580,3680,3780],areaStyle:{color:'rgba(47,129,247,0.6)'},lineStyle:{width:0},itemStyle:{color:'#2f81f7'},showSymbol:false},
+      {name:'Fixed-term',type:'line',stack:'total',data:[380,405,430,460,490,440,510,560,590,610,630],areaStyle:{color:'rgba(240,136,62,0.6)'},lineStyle:{width:0},itemStyle:{color:'#f0883e'},showSymbol:false},
+      {name:'Part-time',type:'line',stack:'total',data:[420,435,448,462,478,490,508,522,535,548,558],areaStyle:{color:'rgba(86,211,100,0.5)'},lineStyle:{width:0},itemStyle:{color:'#56d364'},showSymbol:false},
+      {name:'Self-employed',type:'line',stack:'total',data:[680,695,708,722,738,750,762,775,788,800,812],areaStyle:{color:'rgba(188,140,255,0.5)'},lineStyle:{width:0},itemStyle:{color:'#bc8cff'},showSymbol:false},
+    ]
+  });
+
+  // 4. NEET annotated line
+  const c4 = mkChart('c-neet');
+  const neetYrs = ['2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025'];
+  const neetGR = [22.4,24.8,27.1,28.2,26.5,23.8,21.2,19.5,17.8,16.9,18.2,17.1,15.8,15.0,14.2,13.8];
+  const neetEU = [15.2,15.8,16.1,16.2,16.0,15.5,14.9,14.2,13.5,12.8,13.5,13.0,12.2,11.8,11.2,10.8];
+  c4.setOption({...BASE,
+    tooltip:{...BASE.tooltip,trigger:'axis'},
+    legend:{top:2,textStyle:{color:'#8b949e',fontSize:10},itemWidth:12,itemHeight:3},
+    grid:{...BASE.grid,bottom:20},
+    xAxis:{type:'category',data:neetYrs,axisLabel:{fontSize:9},axisLine:{lineStyle:{color:'#30363d'}}},
+    yAxis:{type:'value',name:'NEET rate (%)',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
+    series:[
+      {name:'Greece',type:'line',data:neetGR,smooth:true,lineStyle:{color:'#2f81f7',width:2.5},itemStyle:{color:'#2f81f7'},showSymbol:false,
+        markPoint:{data:[
+          {coord:['2013',28.2],value:'Peak\n28.2%',label:{fontSize:8,color:'#f85149'}},
+        ],symbol:'pin',symbolSize:28,itemStyle:{color:'#f85149'},label:{fontSize:7,color:'#fff'}},
+        markLine:{data:[
+          {xAxis:'2016',label:{formatter:'Youth\nGuarantee',fontSize:8,color:'#56d364'},lineStyle:{color:'#56d364',type:'dashed',width:1}},
+          {xAxis:'2019',label:{formatter:'ESF\nApprentice',fontSize:8,color:'#56d364'},lineStyle:{color:'#56d364',type:'dashed',width:1}},
+          {xAxis:'2022',label:{formatter:'Post-COVID\nStimulus',fontSize:8,color:'#56d364'},lineStyle:{color:'#56d364',type:'dashed',width:1}},
+        ]}},
+      {name:'EU-27',type:'line',data:neetEU,smooth:true,lineStyle:{color:'#8b949e',width:1.5,type:'dashed'},itemStyle:{color:'#8b949e'},showSymbol:false},
+    ]
+  });
+};
+
+// ══════════════════════════════════════════════════════════════════════ CAREER ADVISOR
+RENDERERS.career = function(){
+
+  // 1. Box plot — salary by occupation
+  const c1 = mkChart('c-boxplot');
+  const boxData = [
+    {name:'Software Dev.',p10:28,p25:35,med:48,p75:65,p90:88},
+    {name:'Data Scientist',p10:32,p25:42,med:58,p75:78,p90:105},
+    {name:'Nurse',p10:22,p25:26,med:31,p75:38,p90:45},
+    {name:'Logistics',p10:20,p25:25,med:30,p75:37,p90:44},
+    {name:'Marketing Mgr',p10:25,p25:32,med:42,p75:58,p90:78},
+  ];
+  c1.setOption({...BASE,
+    tooltip:{...BASE.tooltip,formatter:p=>{const d=boxData[p.dataIndex];return `<b>${d.name}</b><br>P90: €${d.p90}k<br>P75: €${d.p75}k<br>Median: €${d.med}k<br>P25: €${d.p25}k<br>P10: €${d.p10}k`;}},
+    grid:{...BASE.grid,bottom:30},
+    xAxis:{type:'category',data:boxData.map(d=>d.name),axisLabel:{fontSize:9},axisLine:{lineStyle:{color:'#30363d'}}},
+    yAxis:{type:'value',name:'Annual gross (€k)',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
+    series:[
+      {type:'candlestick',data:boxData.map(d=>[d.p25,d.p90,d.p10,d.p75]),
+       itemStyle:{color:'#2f81f7',color0:'#2f81f7',borderColor:'#2f81f7',borderColor0:'#56d364'},barMaxWidth:28},
+      {type:'scatter',data:boxData.map(d=>[d.name,d.med]),symbolSize:8,
+       itemStyle:{color:'#f0883e'},tooltip:{show:false},
+       label:{show:true,formatter:p=>`€${p.value[1]}k`,fontSize:9,color:'#f0883e',position:'right'}},
+    ]
+  });
+
+  // 2. Sankey — career transitions
+  const c2 = mkChart('c-transitions');
+  c2.setOption({...BASE,
+    tooltip:{...BASE.tooltip,trigger:'item'},
+    series:[{type:'sankey',nodeGap:14,nodeWidth:14,
+      emphasis:{focus:'adjacency'},
+      data:[
+        {name:'From: Software Dev.',itemStyle:{color:'#2f81f7'}},{name:'From: Data Scientist',itemStyle:{color:'#56d364'}},
+        {name:'From: Marketing Mgr',itemStyle:{color:'#f0883e'}},{name:'From: Logistics',itemStyle:{color:'#d2a8ff'}},
+        {name:'To: Software Dev.',itemStyle:{color:'#388bfd'}},{name:'To: Data Scientist',itemStyle:{color:'#3fb950'}},
+        {name:'To: Marketing Mgr',itemStyle:{color:'#db6d28'}},{name:'To: Other',itemStyle:{color:'#8b949e'}},
+      ],
+      links:[
+        {source:'From: Software Dev.',target:'To: Data Scientist',value:45},
+        {source:'From: Software Dev.',target:'To: Marketing Mgr',value:8},
+        {source:'From: Software Dev.',target:'To: Other',value:12},
+        {source:'From: Data Scientist',target:'To: Software Dev.',value:25},
+        {source:'From: Data Scientist',target:'To: Marketing Mgr',value:12},
+        {source:'From: Data Scientist',target:'To: Other',value:8},
+        {source:'From: Marketing Mgr',target:'To: Data Scientist',value:18},
+        {source:'From: Marketing Mgr',target:'To: Software Dev.',value:10},
+        {source:'From: Marketing Mgr',target:'To: Other',value:14},
+        {source:'From: Logistics',target:'To: Marketing Mgr',value:14},
+        {source:'From: Logistics',target:'To: Data Scientist',value:8},
+        {source:'From: Logistics',target:'To: Other',value:22},
+      ],
+      lineStyle:{color:'gradient',opacity:.45},
+      label:{color:'#e6edf3',fontSize:9},
+    }]
+  });
+
+  // 3. Forecast line with CI
+  const fYrs = ['2020Q1','2021Q1','2022Q1','2023Q1','2024Q1','2025Q1','2026Q1','2027Q1','2028Q1'];
+  const hist = {
+    'Software Dev.': [100,128,170,198,235,302,null,null,null],
+    'Data Scientist': [100,125,218,282,352,445,null,null,null],
+  };
+  const forecast = {
+    'Software Dev.': {mid:[null,null,null,null,null,302,338,378,420],lo:[null,null,null,null,null,302,308,328,348],hi:[null,null,null,null,null,302,365,425,492]},
+    'Data Scientist': {mid:[null,null,null,null,null,445,502,568,638],lo:[null,null,null,null,null,445,458,495,522],hi:[null,null,null,null,null,445,548,645,762]},
+  };
+  const c3 = mkChart('c-forecast');
+  c3.setOption({...BASE,
+    tooltip:{...BASE.tooltip,trigger:'axis'},
+    legend:{top:2,textStyle:{color:'#8b949e',fontSize:10},itemWidth:12,itemHeight:3,
+      data:['Software Dev.','Data Scientist','Forecast: SW Dev','Forecast: Data Sci']},
+    grid:{...BASE.grid,bottom:20},
+    xAxis:{type:'category',data:fYrs,axisLabel:{fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},boundaryGap:false},
+    yAxis:{type:'value',name:'Demand Index',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
+    series:[
+      {name:'Software Dev.',type:'line',data:hist['Software Dev.'],smooth:true,lineStyle:{color:'#2f81f7',width:2.5},itemStyle:{color:'#2f81f7'},showSymbol:false,connectNulls:false},
+      {name:'Data Scientist',type:'line',data:hist['Data Scientist'],smooth:true,lineStyle:{color:'#56d364',width:2.5},itemStyle:{color:'#56d364'},showSymbol:false,connectNulls:false},
+      // Confidence bands as area between hi/lo
+      {name:'CI: SW hi',type:'line',data:forecast['Software Dev.'].hi,lineStyle:{opacity:0},itemStyle:{color:'transparent'},areaStyle:{color:'rgba(47,129,247,0.15)'},showSymbol:false,stack:'sw',tooltip:{show:false},legendHoverLink:false},
+      {name:'CI: SW lo',type:'line',data:forecast['Software Dev.'].lo,lineStyle:{opacity:0},itemStyle:{color:'transparent'},areaStyle:{color:'rgba(13,17,23,1)'},showSymbol:false,stack:'sw',tooltip:{show:false},legendHoverLink:false},
+      {name:'Forecast: SW Dev',type:'line',data:forecast['Software Dev.'].mid,smooth:true,lineStyle:{color:'#2f81f7',type:'dashed',width:1.5},itemStyle:{color:'#2f81f7'},showSymbol:false,connectNulls:false},
+      {name:'CI: DS hi',type:'line',data:forecast['Data Scientist'].hi,lineStyle:{opacity:0},itemStyle:{color:'transparent'},areaStyle:{color:'rgba(86,211,100,0.15)'},showSymbol:false,stack:'ds',tooltip:{show:false},legendHoverLink:false},
+      {name:'CI: DS lo',type:'line',data:forecast['Data Scientist'].lo,lineStyle:{opacity:0},itemStyle:{color:'transparent'},areaStyle:{color:'rgba(13,17,23,1)'},showSymbol:false,stack:'ds',tooltip:{show:false},legendHoverLink:false},
+      {name:'Forecast: Data Sci',type:'line',data:forecast['Data Scientist'].mid,smooth:true,lineStyle:{color:'#56d364',type:'dashed',width:1.5},itemStyle:{color:'#56d364'},showSymbol:false,connectNulls:false},
+    ]
+  });
+
+  // 4. Personal skills radar (career advisor)
+  const c4 = mkChart('c-personal-radar');
+  const pIndicators = ['Python','ML','SQL','Statistics','Deep Learning','NLP','Data Viz','LLMs/GenAI'];
+  const marketDemand = [95,91,85,82,74,68,52,72];
+  const candidateSkills = [75,42,80,65,28,25,60,18];
+  c4.setOption({...BASE,
+    legend:{top:2,textStyle:{color:'#8b949e',fontSize:10},itemWidth:10},
+    radar:{indicator:pIndicators.map(n=>({name:n,max:100})),
+      axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}},splitArea:{show:false},
+      nameGap:4,axisName:{color:'#8b949e',fontSize:9}},
+    series:[{type:'radar',data:[
+      {name:'Market Demand',value:marketDemand,lineStyle:{color:'#2f81f7',width:2},areaStyle:{color:'rgba(47,129,247,0.12)'},itemStyle:{color:'#2f81f7'}},
+      {name:'Your Skills',value:candidateSkills,lineStyle:{color:'#f0883e',width:2},areaStyle:{color:'rgba(240,136,62,0.2)'},itemStyle:{color:'#f0883e'}},
+    ]}]
+  });
+};
+
+// ══════════════════════════════════════════════════════════════════════ INIT
+window.addEventListener('DOMContentLoaded', ()=>{
+  renderRole('hiring');
+  window.addEventListener('resize', ()=>{
+    document.querySelectorAll('[id^="c-"]').forEach(el=>{
+      const chart = echarts.getInstanceByDom(el);
+      if(chart) chart.resize();
+    });
+  });
+});
+</script>
+</body>
+</html>
