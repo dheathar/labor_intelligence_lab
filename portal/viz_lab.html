@@ -6,956 +6,654 @@
 <title>LIVLAB · Visualization Gallery</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--border:#30363d;
-  --fg:#e6edf3;--muted:#8b949e;--accent:#2f81f7;--accent2:#56d364;
-  --warn:#d29922;--danger:#f85149;--purple:#bc8cff;
-  --card-radius:10px;
+/* ── Themes (mirror portal/styles.css) ────────────────────────────────────── */
+:root[data-theme="dark"]{
+  --bg:#0d1117;--bg-2:#161b22;--bg-3:#21262d;--bg-hover:#1f242c;
+  --border:#30363d;--fg:#e6edf3;--fg-muted:#8b949e;
+  --accent:#2f81f7;--accent-bg:rgba(56,139,253,.15);
+  --green:#56d364;--orange:#f0883e;--red:#f85149;--purple:#bc8cff;--warn:#d29922;
 }
+:root[data-theme="light"]{
+  --bg:#ffffff;--bg-2:#f6f8fa;--bg-3:#eaeef2;--bg-hover:#f3f4f6;
+  --border:#d0d7de;--fg:#1f2328;--fg-muted:#59636e;
+  --accent:#0969da;--accent-bg:#ddf4ff;
+  --green:#1a7f37;--orange:#bc4c00;--red:#cf222e;--purple:#8250df;--warn:#9a6700;
+}
+:root[data-theme="rat"]{
+  --bg:#141710;--bg-2:#1d2115;--bg-3:#272c1b;--bg-hover:#2a3020;
+  --border:#3d4a2a;--fg:#e2dbbf;--fg-muted:#8a9560;
+  --accent:#9acd32;--accent-bg:rgba(154,205,50,.12);
+  --green:#7cb87c;--orange:#d4a44c;--red:#c94a4a;--purple:#b08080;--warn:#c8943a;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;line-height:1.5;min-height:100vh}
 
-/* ── Header ── */
-.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;gap:14px}
-.header-logo{font-size:22px}
-.header-title{font-size:17px;font-weight:700}
-.header-sub{font-size:11px;color:var(--muted);margin-top:1px}
-.header-back{margin-left:auto;color:var(--accent);text-decoration:none;font-size:12px;padding:5px 12px;border:1px solid var(--accent);border-radius:6px;transition:.15s}
-.header-back:hover{background:rgba(47,129,247,.12)}
+/* Header */
+.header{background:var(--bg-2);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50;box-shadow:0 1px 0 rgba(0,0,0,.1)}
+.hdr-logo{font-size:20px}
+.hdr-title{font-size:16px;font-weight:700}
+.hdr-sub{font-size:11px;color:var(--fg-muted)}
+.hdr-actions{margin-left:auto;display:flex;align-items:center;gap:8px}
+.btn-sm{background:var(--bg-3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px;color:var(--fg);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:.15s}
+.btn-sm:hover{background:var(--bg-hover)}
 
-/* ── Role tabs ── */
-.role-tabs{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 28px;display:flex;gap:2px;overflow-x:auto}
-.role-tab{padding:10px 18px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);font-size:12px;font-weight:600;white-space:nowrap;transition:.15s;display:flex;align-items:center;gap:6px}
-.role-tab:hover{color:var(--fg);background:var(--bg3)}
-.role-tab.active{color:var(--fg);border-bottom-color:var(--accent)}
-.role-tab .tab-icon{font-size:15px}
+/* Tab bar */
+.tab-bar{background:var(--bg-2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:stretch;overflow-x:auto;gap:0}
+.tb-section{display:flex;align-items:stretch}
+.tb-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-muted);padding:0 10px;display:flex;align-items:center;opacity:.6;flex-shrink:0}
+.tb-sep{width:1px;background:var(--border);margin:8px 4px;flex-shrink:0}
+.tab-btn{background:none;border:none;border-bottom:2px solid transparent;padding:10px 15px;cursor:pointer;color:var(--fg-muted);font-size:12px;font-weight:600;white-space:nowrap;display:flex;align-items:center;gap:5px;transition:.15s}
+.tab-btn:hover{color:var(--fg);background:var(--bg-3)}
+.tab-btn.active{color:var(--fg);border-bottom-color:var(--accent)}
 
-/* ── Role intro ── */
-.role-intro{padding:20px 28px 0;display:flex;align-items:flex-start;gap:14px}
-.role-intro-icon{font-size:36px;flex-shrink:0}
-.role-intro-title{font-size:18px;font-weight:700;margin-bottom:3px}
-.role-intro-desc{font-size:12px;color:var(--muted);max-width:700px;line-height:1.6}
-.role-intro-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.tag{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:2px 9px;font-size:10px;color:var(--muted)}
+/* Panel */
+.panel{display:none}
+.panel.active{display:block}
 
-/* ── Gallery grid ── */
-.gallery{padding:20px 28px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:20px}
+/* Panel intro */
+.panel-intro{padding:18px 24px 0;display:flex;align-items:flex-start;gap:14px}
+.pi-icon{font-size:30px;flex-shrink:0}
+.pi-title{font-size:16px;font-weight:700;margin-bottom:3px}
+.pi-desc{font-size:12px;color:var(--fg-muted);max-width:700px;line-height:1.6}
+.pi-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tag{background:var(--bg-3);border:1px solid var(--border);border-radius:12px;padding:2px 9px;font-size:10px;color:var(--fg-muted)}
 
-/* ── Viz card ── */
-.viz-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--card-radius);overflow:hidden;display:flex;flex-direction:column}
-.viz-card-header{padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-.viz-card-title{font-size:13px;font-weight:600}
-.viz-card-sub{font-size:10px;color:var(--muted);margin-top:2px}
-.chart-type-badge{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:2px 8px;font-size:10px;color:var(--accent);white-space:nowrap;flex-shrink:0;font-family:monospace}
-.viz-chart{flex:1;min-height:260px;padding:4px}
-.viz-why{padding:12px 16px;border-top:1px solid var(--border);background:rgba(47,129,247,.04)}
-.viz-why-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
-.viz-why-text{font-size:11px;color:var(--muted);line-height:1.6}
-.viz-insight{margin-top:6px;font-size:11px;color:var(--fg);padding:6px 10px;background:var(--bg3);border-radius:5px;border-left:2px solid var(--accent2)}
-.viz-insight::before{content:"💡 ";font-size:11px}
+/* Gallery grid */
+.gallery{padding:16px 24px 48px;display:grid;grid-template-columns:repeat(auto-fill,minmax(460px,1fr));gap:16px}
 
-/* ── Role panels (hidden by default) ── */
-.role-panel{display:none}
-.role-panel.active{display:block}
+/* Viz card */
+.viz-card{background:var(--bg-2);border:1px solid var(--border);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.vc-header{padding:12px 14px 8px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.vc-title{font-size:13px;font-weight:600;line-height:1.3}
+.vc-sub{font-size:10px;color:var(--fg-muted);margin-top:2px;line-height:1.4}
+.vc-badges{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;align-items:flex-start;flex-shrink:0;max-width:160px}
+.b-type{background:var(--bg-3);border:1px solid var(--border);border-radius:5px;padding:2px 7px;font-size:9.5px;color:var(--accent);font-family:monospace;white-space:nowrap}
+.b-oja {background:rgba(47,129,247,.1);border:1px solid rgba(47,129,247,.3);border-radius:5px;padding:2px 6px;font-size:9px;font-weight:700;color:#2f81f7;white-space:nowrap}
+.b-lfs {background:rgba(86,211,100,.1);border:1px solid rgba(86,211,100,.3);border-radius:5px;padding:2px 6px;font-size:9px;font-weight:700;color:#56d364;white-space:nowrap}
+.b-both{background:rgba(188,140,255,.1);border:1px solid rgba(188,140,255,.3);border-radius:5px;padding:2px 6px;font-size:9px;font-weight:700;color:#bc8cff;white-space:nowrap}
 
-/* ── KPI row ── */
-.kpi-row{display:flex;gap:10px;padding:10px 16px}
-.kpi{flex:1;background:var(--bg3);border-radius:7px;padding:10px 14px}
-.kpi-val{font-size:22px;font-weight:700;color:var(--fg)}
-.kpi-label{font-size:10px;color:var(--muted);margin-top:2px}
-.kpi-delta{font-size:10px;margin-top:3px}
-.up{color:var(--accent2)}.down{color:var(--danger)}.neutral{color:var(--warn)}
+/* Chart area */
+.viz-chart{flex:1;min-height:250px;padding:4px}
 
-@media(max-width:680px){.gallery{grid-template-columns:1fr}.role-tabs{padding:0 12px}.gallery{padding:12px}.header{padding:10px 14px}}
+/* Data fields section */
+.vc-fields{padding:8px 14px;border-top:1px solid var(--border);background:var(--bg-3)}
+.vcf-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--fg-muted);margin-bottom:5px}
+.vcf-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:5px}
+.vcf-tag{background:var(--bg-2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:9.5px;font-family:monospace;color:var(--fg-muted)}
+.vcf-meta{font-size:10px;color:var(--fg-muted);opacity:.75;line-height:1.5}
+
+/* Why section */
+.vc-why{padding:10px 14px;border-top:1px solid var(--border);background:color-mix(in srgb,var(--accent-bg) 50%,transparent)}
+.vcw-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);margin-bottom:3px}
+.vcw-text{font-size:11px;color:var(--fg-muted);line-height:1.6}
+.vcw-insight{margin-top:5px;font-size:11px;color:var(--fg);padding:5px 9px;background:var(--bg-3);border-radius:5px;border-left:2px solid var(--green)}
+.vcw-insight::before{content:"💡 "}
+
+/* Filter control inside card header */
+.chart-filter{background:var(--bg-3);border:1px solid var(--border);border-radius:5px;padding:3px 7px;font-size:11px;color:var(--fg);cursor:pointer;max-width:130px}
+
+/* Rat FAB */
+.rat-fab{position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:var(--bg-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.3);z-index:100;transition:.2s}
+.rat-fab:hover{transform:scale(1.1);background:var(--accent-bg)}
+
+@media(max-width:720px){.gallery{grid-template-columns:1fr}.tab-bar{padding:0 10px}.header,.panel-intro{padding:10px 14px 0}}
 </style>
 </head>
 <body>
 
+<!-- ═══ HEADER ═══════════════════════════════════════════════════════════════ -->
 <div class="header">
-  <div class="header-logo">📊</div>
+  <div class="hdr-logo">📊</div>
   <div>
-    <div class="header-title">LIVLAB · Visualization Gallery</div>
-    <div class="header-sub">Per-role labor market chart catalogue — mock data · EU/WB6 focus</div>
+    <div class="hdr-title">LIVLAB · Visualization Gallery</div>
+    <div class="hdr-sub">54 charts · OJA demand, LFS supply, combined, geographic & per-role · mock data · EU/WB6</div>
   </div>
-  <a class="header-back" href="/">← Back to Lab</a>
+  <div class="hdr-actions">
+    <button class="btn-sm" id="theme-btn" onclick="cycleTheme()" title="Cycle theme">🌙</button>
+    <a class="btn-sm" href="/">← Lab</a>
+  </div>
 </div>
 
-<div class="role-tabs" id="role-tabs">
-  <div class="role-tab active" data-role="hiring"   onclick="switchRole('hiring',this)">  <span class="tab-icon">🎯</span> Hiring Manager</div>
-  <div class="role-tab"        data-role="planner"  onclick="switchRole('planner',this)"> <span class="tab-icon">🏗️</span> Workforce Planner</div>
-  <div class="role-tab"        data-role="research" onclick="switchRole('research',this)"><span class="tab-icon">🔬</span> Skills Researcher</div>
-  <div class="role-tab"        data-role="policy"   onclick="switchRole('policy',this)">  <span class="tab-icon">🏛️</span> Policy Analyst</div>
-  <div class="role-tab"        data-role="career"   onclick="switchRole('career',this)">  <span class="tab-icon">🎓</span> Career Advisor</div>
+<!-- ═══ TAB BAR ══════════════════════════════════════════════════════════════ -->
+<div class="tab-bar">
+  <div class="tb-section">
+    <span class="tb-label">Data</span>
+    <button class="tab-btn active" onclick="switchTab('demand',this)">📥 OJA Demand</button>
+    <button class="tab-btn"        onclick="switchTab('supply',this)">📤 LFS Supply</button>
+    <button class="tab-btn"        onclick="switchTab('combined',this)">🔄 Combined</button>
+    <button class="tab-btn"        onclick="switchTab('geo',this)">🌍 Geographic</button>
+  </div>
+  <div class="tb-sep"></div>
+  <div class="tb-section">
+    <span class="tb-label">Role</span>
+    <button class="tab-btn" onclick="switchTab('hiring',this)">🎯 Hiring</button>
+    <button class="tab-btn" onclick="switchTab('planner',this)">🏗️ Planner</button>
+    <button class="tab-btn" onclick="switchTab('research',this)">🔬 Researcher</button>
+    <button class="tab-btn" onclick="switchTab('policy',this)">🏛️ Policy</button>
+    <button class="tab-btn" onclick="switchTab('career',this)">🎓 Career</button>
+  </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════ HIRING MANAGER -->
-<div class="role-panel active" id="panel-hiring">
-  <div class="role-intro">
-    <div class="role-intro-icon">🎯</div>
+<!-- ═══════════════════════════════════ DEMAND PANEL ════════════════════════ -->
+<div class="panel active" id="panel-demand">
+  <div class="panel-intro">
+    <div class="pi-icon">📥</div>
     <div>
-      <div class="role-intro-title">Hiring Manager</div>
-      <div class="role-intro-desc">Needs to understand real-time demand trends, which skills to prioritize in job postings, how competitive the market is, and where to source candidates. Visualizations should answer: <em>"What does the market look like right now and where is it going?"</em></div>
-      <div class="role-intro-tags"><span class="tag">Job Postings (OJA)</span><span class="tag">Skills Demand</span><span class="tag">Time-to-Fill</span><span class="tag">Salary Benchmarks</span></div>
+      <div class="pi-title">OJA Demand Intelligence</div>
+      <div class="pi-desc">What employers are actively posting — real-time signal for skill demand, sector trends, geographic hotspots, and hiring conditions. Derived from Online Job Advertisement portals scraped and normalised by Cedefop Web Intelligence Hub, DYPA/Ergani, and national portals.</div>
+      <div class="pi-tags"><span class="tag">Cedefop OJA Monitor</span><span class="tag">DYPA/Ergani (GR)</span><span class="tag">Eurostat Web Intel. Hub</span><span class="tag">8 country portals</span><span class="tag">2022–2025</span></div>
     </div>
   </div>
   <div class="gallery">
 
     <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Job Posting Demand Index — 5 Occupations</div><div class="viz-card-sub">Quarterly OJA volume, Q1 2020 = 100 · Greece + Western Balkans</div></div>
-        <span class="chart-type-badge">Multi-line</span>
+      <div class="vc-header">
+        <div><div class="vc-title">OJA Volume by Sector — Quarterly Trend</div><div class="vc-sub">Postings (000s) · Q1 2022–Q2 2025 · Greece + WB6 aggregated</div></div>
+        <div class="vc-badges"><span class="b-type">Multi-line</span><span class="b-oja">📥 OJA</span></div>
       </div>
-      <div class="viz-chart" id="c-demand-trend" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>multi-line time series</strong> is the standard for comparing directional trends across categories. The indexed baseline (100 = Q1 2020) removes absolute scale differences and focuses attention on relative acceleration. COVID shock visible in Q2 2020; Data Scientist demand shows steepest climb — driven by GenAI adoption post-2022.</div>
-        <div class="viz-insight">Data Scientist postings grew 4.7× since 2020. Nursing demand grew only 77% — structurally constrained by supply, not appetite.</div>
+      <div class="viz-chart" id="d-sector" style="height:270px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">sector (categorical)</span><span class="vcf-tag">period (date, quarterly)</span><span class="vcf-tag">posting_count (integer)</span></div>
+        <div class="vcf-meta">Source: Cedefop WIH + national portals · Quarterly aggregation · 2022–2025</div>
       </div>
-    </div>
-
-    <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Skills Demanded vs Available — Software Developer</div><div class="viz-card-sub">% of postings requiring skill (demand) vs % of workforce holding skill (supply)</div></div>
-        <span class="chart-type-badge">Grouped bar</span>
-      </div>
-      <div class="viz-chart" id="c-skills-gap" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>grouped horizontal bar</strong> enables direct side-by-side reading of two values per skill — demand (what employers need) and supply (what workers have). Horizontal layout accommodates long skill labels without rotation. Ordered by demand descending so the most critical gaps appear at the top.</div>
-        <div class="viz-insight">Cloud infrastructure and Docker show the largest gaps (+26–28 pp). SQL and Git are in surplus — don't over-invest in training here.</div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Multi-line over time tracks sector-specific hiring cycles simultaneously. COVID shock (2020) and post-pandemic recovery shape differ by sector — ICT continued climbing while hospitality collapsed. Quarterly granularity smooths noise while preserving seasonal patterns.</div>
+        <div class="vcw-insight">ICT postings grew 85% since Q1 2022 with no slowdown. Hospitality shows strong seasonality — summer peaks 40% above Q1. Construction is the fastest-growing physical sector post-2023.</div>
       </div>
     </div>
 
     <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Hiring Difficulty Matrix</div><div class="viz-card-sub">Median salary (x) vs demand growth % (y) · bubble = market size · color = gap severity</div></div>
-        <span class="chart-type-badge">Bubble chart</span>
+      <div class="vc-header">
+        <div><div class="vc-title">Top 15 Skills by Posting Frequency</div><div class="vc-sub">% of job postings mentioning skill · NLP extraction · Q2 2025 snapshot</div></div>
+        <div class="vc-badges"><span class="b-type">Ranked horiz. bar</span><span class="b-oja">📥 OJA</span></div>
       </div>
-      <div class="viz-chart" id="c-bubble-hiring" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>bubble chart</strong> encodes 4 variables simultaneously: x-axis (salary), y-axis (demand growth), bubble size (market volume), and color (skills gap severity). Roles in the top-right are high-demand, high-paying, fast-growing — the hardest to hire. This view lets a hiring manager instantly prioritize budget and sourcing effort.</div>
-        <div class="viz-insight">Data Scientists are top-right with large gaps — consider talent pipelines (university partnerships, reskilling) rather than pure market hiring.</div>
+      <div class="viz-chart" id="d-skills" style="height:300px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">skill_name (text)</span><span class="vcf-tag">mentions_pct (float 0–100)</span><span class="vcf-tag">rank (integer)</span><span class="vcf-tag">esco_uri (text, optional)</span></div>
+        <div class="vcf-meta">Source: OJA NLP skill extraction (spaCy + ESCO matching) · Snapshot Q2 2025 · All sectors</div>
+      </div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Ranked horizontal bar is optimal for many labelled categories — labels are legible and length encodes frequency directly. Ordering by descending demand surfaces the most critical skills immediately. Colour grouping (ICT / transversal / cognitive) adds a second dimension without clutter.</div>
+        <div class="vcw-insight">Communication and Teamwork appear in 82–85% of postings — nearly as frequent as Python (89%). Transversal skills are chronically under-invested in training curricula relative to their demand weight.</div>
       </div>
     </div>
 
     <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Skill Demand Seasonality Heatmap</div><div class="viz-card-sub">Relative demand intensity by skill × month (2024)</div></div>
-        <span class="chart-type-badge">Heatmap</span>
+      <div class="vc-header">
+        <div><div class="vc-title">Posting Intensity by Country</div><div class="vc-sub">OJA postings per 1 000 labour force · 12 LIVLAB countries · Q2 2025</div></div>
+        <div class="vc-badges"><span class="b-type">Bar (normalised)</span><span class="b-oja">📥 OJA</span></div>
       </div>
-      <div class="viz-chart" id="c-heatmap-skills" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>calendar heatmap (skills × month)</strong> reveals seasonal patterns invisible in yearly averages. Darker cells = higher relative posting volume. Useful for planning recruitment campaigns: knowing that Cloud roles spike in Q1 means launching sourcing campaigns in November–December.</div>
-        <div class="viz-insight">January–March is the universal peak for tech hiring. August is universally quiet across all skills — avoid posting then.</div>
+      <div class="viz-chart" id="d-country" style="height:270px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">country_code (ISO-2)</span><span class="vcf-tag">posting_count (integer)</span><span class="vcf-tag">labour_force (integer, Eurostat LFS)</span><span class="vcf-tag">rate_per_1k (float, derived)</span></div>
+        <div class="vcf-meta">Source: Cedefop WIH + national portals · Eurostat LFS for denominator · Q2 2025</div>
+      </div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Raw posting counts favour large countries. Normalising by labour force size (per 1 000 LF) removes country-size bias and creates a comparable intensity metric. Bar chart over a map: 12 countries is manageable as bars and far more precise for magnitude comparison.</div>
+        <div class="vcw-insight">Denmark leads at 8.5/1k — the most digitised OJA ecosystem in the region. Cyprus and Kosovo trail despite active markets — likely OJA portal coverage gaps, not low demand. Greece (5.2) ranks 3rd, above Spain and Italy.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="vc-header">
+        <div><div class="vc-title">Contract Type Distribution</div><div class="vc-sub">% of postings by contract type · structured field extraction · Q2 2025</div></div>
+        <div class="vc-badges"><span class="b-type">Donut</span><span class="b-oja">📥 OJA</span></div>
+      </div>
+      <div class="viz-chart" id="d-contract" style="height:250px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">contract_type (categorical)</span><span class="vcf-tag">share_pct (float)</span></div>
+        <div class="vcf-meta">Source: OJA structured field (contract_type) + NLP fallback · Q2 2025 · All countries</div>
+      </div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Donut is appropriate for ≤6 part-of-whole categories where precise comparison matters less than overall composition. The hole emphasises the total is 100%. Note: ~30% of OJAs omit this field — displayed shares are of those that disclose it, a known data quality caveat.</div>
+        <div class="vcw-insight">Fixed-term contracts (24%) far exceed EU-27 average (14%). This is a structural precarity signal: employers using OJAs disproportionately for temporary roles, not permanent hires.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="vc-header">
+        <div><div class="vc-title">Seniority Level Required — Trend</div><div class="vc-sub">Share of postings by seniority level · quarterly · 2022–2025</div></div>
+        <div class="vc-badges"><span class="b-type">Stacked bar</span><span class="b-oja">📥 OJA</span></div>
+      </div>
+      <div class="viz-chart" id="d-seniority" style="height:270px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">period (date, quarterly)</span><span class="vcf-tag">seniority_level (categorical: Entry/Mid/Senior/Mgmt)</span><span class="vcf-tag">share_pct (float)</span></div>
+        <div class="vcf-meta">Source: OJA seniority field + NLP classification (experience years extracted) · 2022–2025</div>
+      </div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Stacked bar shows both total volume trend AND seniority mix shift over time in a single view. The progressive shift from Entry to Senior visible in the mix is a key workforce planning signal: junior hiring is declining as employers prefer experienced candidates and automate entry tasks.</div>
+        <div class="vcw-insight">Entry-level postings fell from 35% to 19% of total (2022–2025). Senior-level rose from 18% to 27%. AI-assisted automation of entry tasks is the likely driver — a structural shift, not a cyclical one.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="vc-header">
+        <div><div class="vc-title">Job Posting Duration (Time Active)</div><div class="vc-sub">Distribution of days posting remained active before removal · 2024–2025</div></div>
+        <div class="vc-badges"><span class="b-type">Histogram (bar)</span><span class="b-oja">📥 OJA</span></div>
+      </div>
+      <div class="viz-chart" id="d-duration" style="height:250px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">posting_id (text)</span><span class="vcf-tag">published_date (date)</span><span class="vcf-tag">removed_date (date)</span><span class="vcf-tag">duration_days (integer, derived)</span></div>
+        <div class="vcf-meta">Source: OJA scraper timestamps (published vs removed) · 2024–2025 · All roles</div>
+      </div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Duration distribution is a proxy for market tightness: roles filled in &lt;7 days indicate extreme scarcity; roles active 60+ days signal either employer selectivity or weak demand. The shape of this histogram changes meaning dramatically by occupation — compare ICT vs hospitality roles.</div>
+        <div class="vcw-insight">78% of ICT postings are filled within 21 days. Nursing postings average 45 days active — structural shortage. Retail postings cluster at 60+ days, indicating employer difficulties or misaligned salary expectations.</div>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════ WORKFORCE PLANNER -->
-<div class="role-panel" id="panel-planner">
-  <div class="role-intro">
-    <div class="role-intro-icon">🏗️</div>
+<!-- ═══════════════════════════════════ SUPPLY PANEL ════════════════════════ -->
+<div class="panel" id="panel-supply">
+  <div class="panel-intro">
+    <div class="pi-icon">📤</div>
     <div>
-      <div class="role-intro-title">Workforce Planner</div>
-      <div class="role-intro-desc">Needs to identify structural gaps between labor supply and employer demand, model future workforce needs, and design training interventions. Visualizations should answer: <em>"Where are the structural mismatches and how do we close them?"</em></div>
-      <div class="role-intro-tags"><span class="tag">LFS Employment Stock</span><span class="tag">Supply-Demand Gap</span><span class="tag">Education Pipeline</span><span class="tag">Skills Radar</span></div>
+      <div class="pi-title">LFS Supply Intelligence</div>
+      <div class="pi-desc">Who is in the workforce, where they are, and how they are engaged — drawn from Labour Force Surveys (Eurostat LFS, ELSTAT, Cedefop). Supply data is slower-moving than OJA but reflects structural realities: education levels, demographics, participation barriers.</div>
+      <div class="pi-tags"><span class="tag">Eurostat LFS (LFSA_*)</span><span class="tag">ELSTAT Greek LFS</span><span class="tag">ILOSTAT SDMX</span><span class="tag">Annual/Quarterly</span><span class="tag">Greece focus</span></div>
     </div>
   </div>
   <div class="gallery">
 
     <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Supply–Demand Balance by Occupation</div><div class="viz-card-sub">Diverging bar — positive = labour surplus, negative = labour shortage · 2025 Q2</div></div>
-        <span class="chart-type-badge">Diverging bar</span>
+      <div class="vc-header">
+        <div><div class="vc-title">Employed Population — Age-Gender Pyramid</div><div class="vc-sub">Employed persons by age group and gender · Greece 2024 · thousands</div></div>
+        <div class="vc-badges"><span class="b-type">Diverging bar</span><span class="b-lfs">📤 LFS</span></div>
       </div>
-      <div class="viz-chart" id="c-diverging" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>diverging bar chart</strong> uses a zero-baseline to show both direction (surplus vs shortage) and magnitude in a single glance. Traditional side-by-side bars require mental subtraction; diverging bars pre-compute the gap. The axis label "surplus ← → shortage" orients any reader instantly — no legend required.</div>
-        <div class="viz-insight">Nursing shows the most critical shortage (−34%). Data Science is in significant shortage despite rapid supply growth — demand is simply outpacing graduates.</div>
+      <div class="viz-chart" id="s-pyramid" style="height:270px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">age_group (categorical: 15–24, 25–34…)</span><span class="vcf-tag">gender (M/F)</span><span class="vcf-tag">employed_count (integer, 000s)</span></div>
+        <div class="vcf-meta">Source: Eurostat LFSA_EGAN · Annual 2024 · Greece · Variable: EMP_LFS</div>
       </div>
-    </div>
-
-    <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Skills Profile Radar — Demand vs Available</div><div class="viz-card-sub">Top 8 skills for Data Scientist role · 0–100 scale</div></div>
-        <span class="chart-type-badge">Radar / spider</span>
-      </div>
-      <div class="viz-chart" id="c-radar" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>radar chart</strong> is uniquely suited for comparing two multivariate profiles on identical axes. The <em>area between the two polygons</em> is the skills gap — the larger the gap area, the more intensive the training intervention needed. Skills where the supply polygon extends beyond demand (e.g. SQL) indicate over-training; shrink that and redirect resource.</div>
-        <div class="viz-insight">LLMs/GenAI shows the largest gap (72 demand vs 22 supply). This is the highest-priority training investment for any Data Science workforce plan.</div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">The population pyramid is the canonical demographic supply chart — negative values for one gender enables direct visual comparison of the gender balance within each age cohort. Aging of peak cohorts (35–44) signals medium-term attrition risk. Gender gaps within age bands reveal structural participation barriers.</div>
+        <div class="vcw-insight">The 35–44 cohort is the largest employed group — this cohort exits the workforce in 20–25 years, creating a structural replacement challenge. Female employment is 23% lower than male in the 25–34 cohort — the care-duty penalty is largest at family formation age.</div>
       </div>
     </div>
 
     <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Education → Occupation Pipeline</div><div class="viz-card-sub">Annual graduate flows by field of study → first destination occupation</div></div>
-        <span class="chart-type-badge">Sankey</span>
+      <div class="vc-header">
+        <div><div class="vc-title">Labour Force Participation Rate by Gender</div><div class="vc-sub">Ages 15–74 · % participating · Greece 1995–2025 · long-run trend</div></div>
+        <div class="vc-badges"><span class="b-type">Dual line</span><span class="b-lfs">📤 LFS</span></div>
       </div>
-      <div class="viz-chart" id="c-sankey" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>Sankey diagram</strong> is the canonical choice for flow data where the width of links encodes volume. It answers "where do graduates go?" and reveals structural mis-alignments (e.g. engineering graduates not entering tech) and unexpected talent pools (e.g. biology graduates entering data science). No other chart type shows multi-to-multi flows readably.</div>
-        <div class="viz-insight">~30% of Engineering graduates enter non-engineering roles. This is a hidden talent pool for ICT sector hiring — target reskilling, not just new enrollment.</div>
+      <div class="viz-chart" id="s-lfp" style="height:260px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">period (date, annual)</span><span class="vcf-tag">gender (M/F)</span><span class="vcf-tag">participation_rate (float)</span></div>
+        <div class="vcf-meta">Source: Eurostat LFSA_ARGAN · Annual 1995–2025 · Greece · Variable: LFPR</div>
+      </div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Dual line (M vs F on same axis) makes the gender gap immediately visible as the vertical distance between series. The 30-year view captures structural shifts (EU accession, crisis, recovery) that shorter windows miss. Area fill for female series emphasises the historically suppressed participation level and its recent upward trend.</div>
+        <div class="vcw-insight">Female LFP rose from 42% (1995) to 59% (2025) — a structural transformation driven by education attainment and policy. Male LFP declined from 77% to 67%, likely due to earlier retirement and education extension. The gender gap closed from 35pp to 8pp in 30 years.</div>
       </div>
     </div>
 
     <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Workforce Change Decomposition (2020–2025)</div><div class="viz-card-sub">Net employment change = new entrants − exits + transitions in − transitions out</div></div>
-        <span class="chart-type-badge">Waterfall</span>
+      <div class="vc-header">
+        <div><div class="vc-title">Employment by Education Level</div><div class="vc-sub">Share of employed by ISCED level · Greece 2010–2024 · structural shift</div></div>
+        <div class="vc-badges"><span class="b-type">Stacked bar</span><span class="b-lfs">📤 LFS</span></div>
       </div>
-      <div class="viz-chart" id="c-waterfall" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>waterfall chart</strong> decomposes a net change into contributing factors, each shown as a positive or negative bar running from the prior cumulative value. It answers "why did employment in Software Development grow by X?" in a single image — impossible to do with a pie or standard bar. Essential for identifying which lever (graduation rates, retention, immigration) is most impactful to pull.</div>
-        <div class="viz-insight">Inbound career transitions (from adjacent roles) now account for ~28% of software developer headcount growth — larger than university graduation inflows.</div>
+      <div class="viz-chart" id="s-edu" style="height:260px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">period (date, annual)</span><span class="vcf-tag">isced_level (categorical: 0–2 / 3–4 / 5–8)</span><span class="vcf-tag">employed_share_pct (float)</span></div>
+        <div class="vcf-meta">Source: Eurostat LFSA_EGISED · Annual 2010–2024 · Greece · Total employed 20–64</div>
+      </div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Stacked bar with composition adds up to 100% at each period, revealing structural upgrade of the employed workforce. The shrinking low-education share and growing high-education share is the education premium in action. Cross-reference with wages to quantify the premium per ISCED level.</div>
+        <div class="vcw-insight">High-education workers grew from 20% to 39% of employed Greeks (2010–2024). Low-education share halved. The workforce is structurally upgrading faster than many EU peers — creating a supply of qualified workers that demand is not yet absorbing fully (visible in graduate unemployment data).</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="vc-header">
+        <div><div class="vc-title">Unemployment Duration Distribution</div><div class="vc-sub">% of unemployed by duration bucket · Greece 2024 · long-term unemployment signal</div></div>
+        <div class="vc-badges"><span class="b-type">Bar (distribution)</span><span class="b-lfs">📤 LFS</span></div>
+      </div>
+      <div class="viz-chart" id="s-unemp-dur" style="height:250px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">duration_bucket (categorical)</span><span class="vcf-tag">share_of_unemployed (float)</span><span class="vcf-tag">country (text)</span><span class="vcf-tag">period (date, annual)</span></div>
+        <div class="vcf-meta">Source: Eurostat LFSA_UGAD · Annual 2024 · Greece · Colour: green &lt;6m / amber 6–12m / red 12m+</div>
+      </div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Long-term unemployment (12+ months) signals skills erosion and social exclusion — a qualitatively different problem from frictional unemployment. Colour-coding the bars by severity turns a neutral distribution into an urgency map. The 37% in 2+ years is the policy intervention target.</div>
+        <div class="vcw-insight">Greece has 37% of its unemployed out of work for 2+ years — one of the highest in the EU. This cohort has largely detached from the labour market and requires active policy (not just job matching) to re-engage.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="vc-header">
+        <div><div class="vc-title">Employment by Sector (NACE Rev.2)</div><div class="vc-sub">Share of total employment by sector · Greece Q2 2025</div></div>
+        <div class="vc-badges"><span class="b-type">Donut</span><span class="b-lfs">📤 LFS</span></div>
+      </div>
+      <div class="viz-chart" id="s-sector" style="height:250px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">nace_section (categorical, NACE Rev.2)</span><span class="vcf-tag">employed_share_pct (float)</span></div>
+        <div class="vcf-meta">Source: Eurostat LFSA_EGAN2 · Q2 2025 · Greece · Aggregated to A / B–F / G–U</div>
+      </div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Sectoral composition is the structural baseline for any workforce planning — it tells you the size of each labour pool. Donut works here because there are only 4 major categories. Cross-reference with OJA sector demand data to detect mismatches: a large supply sector with low OJA activity may signal displacement risk.</div>
+        <div class="vcw-insight">Services employ 73% of the Greek workforce — extremely service-oriented even by Southern European standards. Industry accounts for only 14%, limiting the manufacturing base for any green/digital industrial transition.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="vc-header">
+        <div><div class="vc-title">Economic Inactivity Reasons by Gender</div><div class="vc-sub">% of inactive population by reason · Greece 2024 · gendered breakdown</div></div>
+        <div class="vc-badges"><span class="b-type">Grouped horiz. bar</span><span class="b-lfs">📤 LFS</span></div>
+      </div>
+      <div class="viz-chart" id="s-inactivity" style="height:270px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">reason (categorical)</span><span class="vcf-tag">gender (M/F)</span><span class="vcf-tag">inactive_share_pct (float)</span></div>
+        <div class="vcf-meta">Source: Eurostat LFSA_INAIN · Annual 2024 · Greece · Age 15–74</div>
+      </div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Inactivity reasons reveal non-participation potential — the "hidden workforce" that could re-enter with the right policy. Grouped bars by gender on the same chart expose the care penalty: women's inactivity is dominated by care duties (38%) vs men's by disability and retirement. These are different policy problems requiring different interventions.</div>
+        <div class="vcw-insight">38% of inactive women report care duties vs only 8% of men — the largest gendered gap of any inactivity reason. Affordable childcare and long-term care infrastructure would unlock a substantial female labour supply that is currently involuntarily inactive.</div>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════ SKILLS RESEARCHER -->
-<div class="role-panel" id="panel-research">
-  <div class="role-intro">
-    <div class="role-intro-icon">🔬</div>
+<!-- ═══════════════════════════════════ COMBINED PANEL ══════════════════════ -->
+<div class="panel" id="panel-combined">
+  <div class="panel-intro">
+    <div class="pi-icon">🔄</div>
     <div>
-      <div class="role-intro-title">Skills Researcher / Economist</div>
-      <div class="role-intro-desc">Needs to map skill relationships, detect emerging skill clusters, track longitudinal changes in skill importance, and quantify the economic returns of specific skills. Visualizations should answer: <em>"How are skills structured and how are they evolving?"</em></div>
-      <div class="role-intro-tags"><span class="tag">ESCO Taxonomy</span><span class="tag">Co-occurrence Analysis</span><span class="tag">Wage Premium</span><span class="tag">Temporal Dynamics</span></div>
+      <div class="pi-title">Combined Demand + Supply Analysis</div>
+      <div class="pi-desc">Demand (OJA) and supply (LFS) signals compared side by side — where is the market tight, where is there slack? These charts require merging two datasets and are the most analytically rich but also the most data-intensive to produce.</div>
+      <div class="pi-tags"><span class="tag">OJA + Eurostat LFS</span><span class="tag">Cedefop Skills Gap</span><span class="tag">Eurostat JVS</span><span class="tag">Structure of Earnings Survey</span></div>
     </div>
   </div>
   <div class="gallery">
 
     <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Skills Co-occurrence Network</div><div class="viz-card-sub">Node size = demand frequency · edge weight = co-occurrence in same posting · color = cluster</div></div>
-        <span class="chart-type-badge">Force graph</span>
+      <div class="vc-header">
+        <div><div class="vc-title">Beveridge Curve — Greece 2010–2025</div><div class="vc-sub">Vacancy rate (y) vs unemployment rate (x) · each dot = 1 year · curve shift = structural change</div></div>
+        <div class="vc-badges"><span class="b-type">Scatter + path</span><span class="b-both">🔀 OJA+LFS</span></div>
       </div>
-      <div class="viz-chart" id="c-network" style="height:320px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>force-directed network graph</strong> is the only chart type that reveals both individual skill importance (node size) and skill-cluster topology simultaneously. Clusters that emerge organically from co-occurrence data correspond to real job families. Bridge nodes (between clusters) identify the most versatile, high-value skills. No bar chart or heatmap can show graph topology.</div>
-        <div class="viz-insight">Python is the central bridge between the AI/ML cluster and the Data Engineering cluster — the single highest-leverage skill investment across occupations.</div>
+      <div class="viz-chart" id="c-beveridge" style="height:280px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">period (date, annual)</span><span class="vcf-tag">unemployment_rate (float, Eurostat LFS)</span><span class="vcf-tag">vacancy_rate (float, Eurostat JVS)</span></div>
+        <div class="vcf-meta">Source: Eurostat JVS (job vacancy rate) + lfsq_urgan (unemployment) · Annual 2010–2025 · Greece</div>
       </div>
-    </div>
-
-    <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Skill Ranking Evolution (Bump Chart)</div><div class="viz-card-sub">Rank by % of postings mentioning skill · 2020–2025</div></div>
-        <span class="chart-type-badge">Bump chart</span>
-      </div>
-      <div class="viz-chart" id="c-bump" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>bump chart</strong> plots rank (not absolute value) on the Y-axis against time. This is superior to a standard line chart for ranking data because: absolute values vary in scale; crossing lines are legible at rank resolution; and the chart explicitly answers "which skill overtook which?" — the key research question. LLMs/GenAI rising from rank 8 to rank 2 in 5 years is a research finding, not just a data point.</div>
-        <div class="viz-insight">LLMs/GenAI is the fastest-rising skill in the dataset (+6 rank positions). Cloud overtook SQL between 2021–2022 — a structural shift from on-premise to cloud infrastructure.</div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">The Beveridge curve is the canonical macro-labor chart — it distinguishes cyclical from structural unemployment. Movement along the curve is cyclical (recovery/recession). An outward shift of the curve signals structural mismatch: more vacancies coexisting with more unemployment than before. Greece's curve has shifted outward post-2020 — a matching efficiency problem.</div>
+        <div class="vcw-insight">Greece shows classic Beveridge curve dynamics: crisis-era movement to the right (2011–2013), then recovery back left. The 2022–2025 cluster at low-U / moderate-V suggests the market has tightened structurally — skills mismatch is now the binding constraint, not lack of demand.</div>
       </div>
     </div>
 
     <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Skill Demand Volume — Taxonomy Treemap</div><div class="viz-card-sub">Rectangle area = % of postings mentioning skill · grouped by ESCO skill cluster</div></div>
-        <span class="chart-type-badge">Treemap</span>
+      <div class="vc-header">
+        <div><div class="vc-title">Labour Market Tightness by Occupation</div><div class="vc-sub">Vacancy / Unemployment ratio · all 18 ISCO occupations · Q2 2025 · &gt;1 = employer's market</div></div>
+        <div class="vc-badges"><span class="b-type">Horizontal bar</span><span class="b-both">🔀 OJA+LFS</span></div>
       </div>
-      <div class="viz-chart" id="c-treemap" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>treemap</strong> uses rectangular area to show part-of-whole relationships across a hierarchy in limited screen space. Where a pie chart can handle ~6 slices before it becomes unreadable, a treemap handles 30–50 items. It respects the hierarchical structure of ESCO (skill group → skill) naturally. Color encodes the parent cluster; size encodes demand volume.</div>
-        <div class="viz-insight">Digital & ICT skills account for 43% of total skill demand volume — larger than all other ESCO groups combined. This finding drives national digital skills strategies.</div>
+      <div class="viz-chart" id="c-tightness" style="height:380px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">occupation (ISCO-08 text)</span><span class="vcf-tag">vacancy_count (integer, OJA proxy)</span><span class="vcf-tag">unemployed_count (integer, LFS)</span><span class="vcf-tag">tightness_ratio (float, derived)</span></div>
+        <div class="vcf-meta">Source: Cedefop OJA as vacancy proxy + Eurostat LFS occupation unemployment · Q2 2025</div>
+      </div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">V/U ratio by occupation separates genuine skill shortages (high V, low U) from general unemployment concentrations. A ratio &gt;1 means more vacancies than unemployed in that field — employers compete for candidates. &lt;0.5 means many more unemployed than openings — a supply-side problem. The vertical reference line at 1.0 makes the comparison instant.</div>
+        <div class="vcw-insight">Data Scientists show V/U ratio of 2.5+ — severe shortage. Warehouse Operatives and Admin Assistants have ratios below 0.3 — structural surplus that cannot be easily redirected to shortage occupations without significant reskilling investment.</div>
       </div>
     </div>
 
     <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Skill Demand Growth vs Wage Premium</div><div class="viz-card-sub">X = YoY demand growth (%) · Y = wage premium over occupation median (%) · bubble = supply volume</div></div>
-        <span class="chart-type-badge">Scatter + regression</span>
+      <div class="vc-header">
+        <div><div class="vc-title">OJA Postings vs Active Workforce — Dual Axis</div><div class="vc-sub">Demand signal (bars, 000s postings) vs labour supply (line, M persons) · Greece 2015–2025</div></div>
+        <div class="vc-badges"><span class="b-type">Dual-axis (bar+line)</span><span class="b-both">🔀 OJA+LFS</span></div>
       </div>
-      <div class="viz-chart" id="c-scatter-wage" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>scatter plot with regression line</strong> tests the hypothesis that scarce, growing skills command wage premiums. The regression line shows the average relationship; outliers above the line are "underpriced" skills (high demand growth, unexpectedly low premium) — a finding for wage researchers. Bubble size adds supply volume to show whether premia reflect genuine scarcity or legacy pricing.</div>
-        <div class="viz-insight">LLMs/GenAI and Cloud show both high demand growth AND high wage premium — classic scarcity pricing. Excel shows flat demand growth but persistent premium — grandfathered legacy skill.</div>
+      <div class="viz-chart" id="c-dual" style="height:260px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">period (date, annual)</span><span class="vcf-tag">oja_postings_k (float, OJA portals)</span><span class="vcf-tag">labour_force_M (float, Eurostat LFS lfsq_act)</span></div>
+        <div class="vcf-meta">Source: Cedefop WIH (OJA annual totals) + Eurostat LFS lfsa_argan (active population) · Annual 2015–2025 · Greece</div>
+      </div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Dual Y-axis is necessary here because OJA postings and workforce count differ by orders of magnitude. The diverging trend — postings growing 4× while workforce grew &lt;15% — is the core finding. A single-axis chart would obscure either the scale of demand growth or the stability of supply. The bar+line type visually differentiates the two series without requiring a legend.</div>
+        <div class="vcw-insight">OJA postings grew 4× between 2015–2025 while active workforce grew only 13.9%. Demand is structurally outpacing supply expansion — the tightening labour market will accelerate wage growth and skills premiums regardless of macroeconomic conditions.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="vc-header">
+        <div><div class="vc-title">Skills Gap Ranking — Demand vs Supply</div><div class="vc-sub">OJA demand share minus LFS supply share (pp) · negative = shortage · positive = surplus · Q2 2025</div></div>
+        <div class="vc-badges"><span class="b-type">Diverging bar</span><span class="b-both">🔀 OJA+LFS</span></div>
+      </div>
+      <div class="viz-chart" id="c-skillgap" style="height:320px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">skill_name (text)</span><span class="vcf-tag">oja_demand_pct (float, NLP extraction)</span><span class="vcf-tag">lfs_supply_pct (float, LFS skills supplement)</span><span class="vcf-tag">gap_pp (float, derived)</span></div>
+        <div class="vcf-meta">Source: OJA NLP extraction + Eurostat LFS Adult Education Survey (AES) skills module · Q2 2025</div>
+      </div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Diverging bar at a zero baseline is the canonical skills gap chart — it shows both direction (shortage vs surplus) and magnitude in one view without mental arithmetic. Traditional side-by-side bars require the reader to compute the difference. Ordering by gap severity puts the highest-priority training investments at the top and bottom.</div>
+        <div class="vcw-insight">LLMs/GenAI shows the largest shortage (−30pp): 48% demand vs 18% supply. Excel shows the largest surplus (+26pp): over-trained relative to actual demand. These two findings alone should restructure most digital skills training curricula.</div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="vc-header">
+        <div><div class="vc-title">Wage Convergence — OJA Posted vs LFS Reported</div><div class="vc-sub">Posted salary (x) vs survey-reported wage (y) · diagonal = parity · deviations = market signalling gaps</div></div>
+        <div class="vc-badges"><span class="b-type">Scatter + parity line</span><span class="b-both">🔀 OJA+LFS</span></div>
+      </div>
+      <div class="viz-chart" id="c-wage-conv" style="height:280px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">occupation (text)</span><span class="vcf-tag">oja_salary_median (float, €k, OJA salary field)</span><span class="vcf-tag">lfs_wage_median (float, €k, Structure of Earnings Survey)</span></div>
+        <div class="vcf-meta">Source: OJA salary fields (extracted where disclosed) + Eurostat Structure of Earnings Survey · 2024 · Greece</div>
+      </div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Points above the parity diagonal have OJA-posted salaries below actual market wages — employers are under-posting, risking rejection. Points below indicate over-posting — inflated offers that may not materialise. This systematic comparison is only possible by merging two normally separate datasets and reveals systematic OJA salary disclosure bias by occupation.</div>
+        <div class="vcw-insight">ICT roles consistently over-post salaries (OJA &gt; LFS) — employers attracting candidates by publishing aspirational offers. Nursing roles show the opposite: OJA underreports actual wages — likely because the disclosed salary is starting pay only. Healthcare salary benchmarking from OJA data alone would be systematically misleading.</div>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════ POLICY ANALYST -->
-<div class="role-panel" id="panel-policy">
-  <div class="role-intro">
-    <div class="role-intro-icon">🏛️</div>
+<!-- ═══════════════════════════════════ GEO PANEL ═══════════════════════════ -->
+<div class="panel" id="panel-geo">
+  <div class="panel-intro">
+    <div class="pi-icon">🌍</div>
     <div>
-      <div class="role-intro-title">Policy Analyst</div>
-      <div class="role-intro-desc">Needs to compare labor market performance across countries and time, identify structural risks (automation, NEET), and assess the impact of policy interventions. Visualizations should answer: <em>"What is happening at the systemic level and what should governments prioritize?"</em></div>
-      <div class="role-intro-tags"><span class="tag">Eurostat LFS</span><span class="tag">ILOSTAT</span><span class="tag">Automation Risk</span><span class="tag">Cross-country Comparison</span></div>
+      <div class="pi-title">Geographic Labour Market Intelligence</div>
+      <div class="pi-desc">Spatial distribution of labour market activity across the 12 LIVLAB target countries: Greece, Italy, Spain, Serbia, Montenegro, N. Macedonia, Albania, Bosnia, Kosovo, Slovenia, Cyprus, Denmark. Geographic views reveal coverage gaps, regional disparities, and cross-border patterns.</div>
+      <div class="pi-tags"><span class="tag">12 LIVLAB countries</span><span class="tag">Eurostat Regional (NUTS2)</span><span class="tag">Cedefop WIH</span><span class="tag">OJA portals</span></div>
     </div>
   </div>
   <div class="gallery">
 
     <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Employment Rate — Small Multiples by Country</div><div class="viz-card-sub">Ages 20–64 · % employed · 2015–2025 · ELSTAT / Eurostat LFS</div></div>
-        <span class="chart-type-badge">Small multiples</span>
+      <div class="vc-header">
+        <div><div class="vc-title">OJA Posting Intensity by Country</div><div class="vc-sub">Postings per 1 000 labour force + employment rate overlay · 12 countries · Q2 2025</div></div>
+        <div class="vc-badges"><span class="b-type">Sorted bar</span><span class="b-oja">📥 OJA</span></div>
       </div>
-      <div class="viz-chart" id="c-small-multiples" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text"><strong>Small multiples</strong> (same chart type repeated at small scale for each country) allow direct cross-country comparison without the overplotting that a single multi-line chart produces with 6+ series. Each panel has identical axes, so the reader's eye can scan for shape differences (slope, volatility, recovery speed) rather than decoding a tangle of overlapping lines. Standard practice in Eurostat and OECD publications.</div>
-        <div class="viz-insight">Greece shows the steepest recovery slope post-2015 but remains 8pp below EU average. WB6 countries (Serbia, Montenegro) show accelerating growth from a lower base — a structural catch-up pattern.</div>
+      <div class="viz-chart" id="g-country" style="height:280px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">country_code (ISO-2)</span><span class="vcf-tag">posting_count (integer)</span><span class="vcf-tag">labour_force (integer, Eurostat LFS)</span><span class="vcf-tag">employment_rate (float)</span></div>
+        <div class="vcf-meta">Source: Cedefop WIH + national portals (OJA) · Eurostat LFS for labour force denominator · Q2 2025</div>
       </div>
-    </div>
-
-    <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Automation Risk vs Employment Share vs Wage</div><div class="viz-card-sub">X = automation risk score (0–100) · Y = employment share (%) · bubble = median wage · color = growth</div></div>
-        <span class="chart-type-badge">Bubble matrix</span>
-      </div>
-      <div class="viz-chart" id="c-automation" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">The <strong>bubble matrix</strong> is used for strategic portfolio analysis. Risk (x), scale of impact (bubble = employment), and economic weight (color = wage) are the three policy-relevant dimensions. Roles in the top-right with large bubbles represent high-automation-risk, high-employment occupations — the priority target for reskilling policy. Roles bottom-left are policy tailwinds (safe + growing).</div>
-        <div class="viz-insight">Logistics Coordinators: high automation risk (62/100), large employment share, moderate wages — the single highest-priority occupation for reskilling investment in the next 5 years.</div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Sorting by normalised rate (per 1k LF) removes country-size bias and reveals the true intensity of OJA activity relative to market size. Colour coding by intensity tier provides immediate visual grouping. Tooltip shows both the rate and raw counts — always necessary when presenting normalised metrics to avoid misleading impressions about market scale.</div>
+        <div class="vcw-insight">Denmark's high rate (8.5) reflects a mature, digitised OJA ecosystem — nearly all hiring goes through job portals. Kosovo's low rate (2.1) is partly a coverage gap — significant informal and word-of-mouth hiring not captured. Comparisons across this range require methodological caution.</div>
       </div>
     </div>
 
     <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Employment by Contract Type — Stacked Area</div><div class="viz-card-sub">Full-time permanent · Part-time · Fixed-term · Self-employed · 2015–2025 Greece</div></div>
-        <span class="chart-type-badge">Stacked area</span>
+      <div class="vc-header">
+        <div><div class="vc-title">Geographic Labour Market Overview — Pseudo-Map</div><div class="vc-sub">Countries positioned by approximate coordinates · bubble = OJA intensity · colour = employment rate</div></div>
+        <div class="vc-badges"><span class="b-type">Geo scatter (lon/lat)</span><span class="b-both">🔀 OJA+LFS</span></div>
       </div>
-      <div class="viz-chart" id="c-contract-types" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>stacked area chart</strong> shows composition (the proportional mix) AND total volume trend simultaneously — two charts compressed into one. For labor market policy, the changing mix of contract types is as important as the headline employment rate. A rising share of fixed-term contracts alongside rising total employment is a warning signal that growth is precarious. The baseline of zero makes both absolute and relative changes visible.</div>
-        <div class="viz-insight">Fixed-term contracts grew from 11% to 19% of total employment 2015–2022 — growth is real but increasingly precarious. Post-2022 stabilization may reflect legislative intervention (EU Directive on transparent working conditions).</div>
+      <div class="viz-chart" id="g-map" style="height:320px"></div>
+      <div class="vc-fields">
+        <div class="vcf-label">Data fields required</div>
+        <div class="vcf-tags"><span class="vcf-tag">country (text)</span><span class="vcf-tag">longitude (float)</span><span class="vcf-tag">latitude (float)</span><span class="vcf-tag">oja_intensity (float, per 1k LF)</span><span class="vcf-tag">employment_rate (float, Eurostat)</span></div>
+        <div class="vcf-meta">Source: Cedefop WIH + Eurostat LFS lfsa_ergan · Q2 2025 · 12 countries · Coordinates: approximate country centroids</div>
       </div>
-    </div>
-
-    <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Youth NEET Rate — Annotated Timeline</div><div class="viz-card-sub">Ages 15–29 · Not in Employment, Education or Training · % · with key policy events</div></div>
-        <span class="chart-type-badge">Annotated line</span>
-      </div>
-      <div class="viz-chart" id="c-neet" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">An <strong>annotated timeline</strong> overlays policy event markers on a KPI trend line, making causal reasoning explicit. Without annotations, a reader can only observe "the rate fell after 2016" — with annotations, they can see "the rate fell 3pp following the Youth Guarantee expansion." This is the standard format in OECD policy effectiveness reports and Cedefop monitoring publications. Annotations encode qualitative context directly in the visual.</div>
-        <div class="viz-insight">Greece peaked at 28% NEET rate in 2013 (EU's highest). Three visible inflection points align with Youth Guarantee rollout, ESF co-funded apprenticeships, and post-COVID stimulus. Post-2022 rate (16%) still 4pp above EU-27 average.</div>
+      <div class="vc-why">
+        <div class="vcw-label">Why this chart</div>
+        <div class="vcw-text">Geographic scatter using real lon/lat coordinates gives spatial intuition without requiring GeoJSON registration. Bubble size encodes OJA intensity; colour encodes employment rate — two variables readable simultaneously. This "pseudo-map" approach is fully portable (no map tiles, no CORS) and works in any browser. For a full choropleth, register Eurostat NUTS GeoJSON with <code>echarts.registerMap()</code>.</div>
+        <div class="vcw-insight">The WB6 cluster (Serbia, Montenegro, N. Macedonia, Albania, Bosnia, Kosovo) forms a visible geographic group — all within a 400km radius — enabling regional cross-border labour mobility analysis. Cyprus appears as an outlier due to its Mediterranean position and known portal coverage issue (Carierista blocked).</div>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════ CAREER ADVISOR -->
-<div class="role-panel" id="panel-career">
-  <div class="role-intro">
-    <div class="role-intro-icon">🎓</div>
-    <div>
-      <div class="role-intro-title">Career Advisor / Job Seeker</div>
-      <div class="role-intro-desc">Needs to understand what a realistic salary range looks like, which career transitions are common and successful, and what the demand outlook is for a target occupation. Visualizations should answer: <em>"What can I realistically expect and how do I get there?"</em></div>
-      <div class="role-intro-tags"><span class="tag">Salary Distribution</span><span class="tag">Career Transitions</span><span class="tag">Demand Forecast</span><span class="tag">Skills Gap</span></div>
-    </div>
-  </div>
+<!-- ═══════════════════════════════════ ROLE PANELS ══════════════════════════ -->
+<!-- Hiring Manager -->
+<div class="panel" id="panel-hiring">
+  <div class="panel-intro"><div class="pi-icon">🎯</div><div>
+    <div class="pi-title">Hiring Manager</div>
+    <div class="pi-desc">Real-time market intelligence: which roles are hardest to fill, what skills to prioritise, where candidates come from, and when to post. <em>"What does the market look like right now — and how do I compete for the best candidates?"</em></div>
+    <div class="pi-tags"><span class="tag">OJA (demand)</span><span class="tag">Skills frequency</span><span class="tag">Time-to-fill</span><span class="tag">Salary benchmarks</span><span class="tag">Seasonality</span></div>
+  </div></div>
   <div class="gallery">
-
-    <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Salary Distribution by Occupation & Experience</div><div class="viz-card-sub">Box = IQR · whiskers = 10th–90th percentile · dot = median · EUR gross annual</div></div>
-        <span class="chart-type-badge">Box plot</span>
-      </div>
-      <div class="viz-chart" id="c-boxplot" style="height:300px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>box plot</strong> is the most information-dense single chart type for a distribution: it shows the median (line), interquartile range (box), tails (whiskers), and outliers (dots) in one compact symbol. A single salary figure ("average: €52k") is misleading — knowing the full distribution (e.g. "50% earn between €35k–€65k, but top 10% earn €88k+") is actionable career information. Multiple grouped boxes enable cross-occupation comparison.</div>
-        <div class="viz-insight">The wide IQR for Data Scientists (€42k–€78k) reflects high experience-premium — worth the investment in skills progression. Nurses show compressed distribution — wages are institutionally set and negotiation headroom is limited.</div>
-      </div>
-    </div>
-
-    <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Career Transition Flows</div><div class="viz-card-sub">Annual occupational moves · flow width = % of movers · based on LFS panel data</div></div>
-        <span class="chart-type-badge">Sankey</span>
-      </div>
-      <div class="viz-chart" id="c-transitions" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>Sankey diagram</strong> encodes career transition volume as link width — the most natural mapping for flow data. The left side shows "leaving occupation" and the right side shows "entering occupation." Wide links indicate high-probability transition paths. For career counseling, this chart replaces anecdote ("I heard developers often move into data science") with empirical evidence ("45% of developers who change occupation enter data science").</div>
-        <div class="viz-insight">Marketing Manager → Data Scientist is a surprisingly large flow (18% of MM changers). The shared analytical and communication skills make this a viable transition path with targeted upskilling.</div>
-      </div>
-    </div>
-
-    <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Demand Outlook 2025–2028 with Uncertainty</div><div class="viz-card-sub">OJA volume forecast · shaded = 80% confidence interval · dashed = baseline scenario</div></div>
-        <span class="chart-type-badge">Line + CI band</span>
-      </div>
-      <div class="viz-chart" id="c-forecast" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>line chart with confidence interval band</strong> makes uncertainty explicit rather than hiding it behind a single point forecast. For career decisions, knowing that Data Scientist demand will "probably be 20–35% higher in 2028" is more useful than a spuriously precise "will be 27% higher." The widening band over time correctly represents increasing uncertainty. This is the standard for Cedefop Skills Forecast (2025–2035) publications.</div>
-        <div class="viz-insight">All five occupations show positive demand outlook through 2028. Data Scientist has both the highest expected growth AND the widest uncertainty band — reflecting ongoing GenAI disruption of the role definition.</div>
-      </div>
-    </div>
-
-    <div class="viz-card">
-      <div class="viz-card-header">
-        <div><div class="viz-card-title">Your Skills vs Market Demand — Gap Radar</div><div class="viz-card-sub">Illustrative: candidate skills profile vs top 8 skills demanded for Data Scientist role</div></div>
-        <span class="chart-type-badge">Radar / spider</span>
-      </div>
-      <div class="viz-chart" id="c-personal-radar" style="height:280px"></div>
-      <div class="viz-why">
-        <div class="viz-why-label">Why this chart</div>
-        <div class="viz-why-text">A <strong>personal skills radar</strong> gives the job seeker an immediate gestalt of their readiness profile. The area enclosed by the "your skills" polygon versus the "market demand" polygon is the total gap. Unlike a table of scores, the radar shows which gaps are large (require significant upskilling) versus small (easily bridged). It is also the most common self-assessment visualization in career development tools (LinkedIn, Coursera, etc.) — users already know how to read it.</div>
-        <div class="viz-insight">LLMs/GenAI and Deep Learning are the largest gaps. Python and SQL are strong — leverage these as your entry point while upskilling on AI. Target 3 months of structured GenAI training to close the most critical gap.</div>
-      </div>
-    </div>
-
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Job Demand Index — 5 Occupations (Q1 2020=100)</div><div class="vc-sub">OJA quarterly volume index · normalised baseline · 2020–2025</div></div><div class="vc-badges"><span class="b-type">Multi-line</span><span class="b-oja">📥 OJA</span></div></div><div class="viz-chart" id="h-trend" style="height:270px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">occupation (text)</span><span class="vcf-tag">period (quarterly)</span><span class="vcf-tag">demand_index (float, base 100)</span></div><div class="vcf-meta">Source: OJA portals · Quarterly index · Q1 2020 = 100 · Derived from raw posting count</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Indexed series removes absolute scale differences and focuses attention on relative acceleration. COVID shock visible in Q2 2020; Data Scientist demand shows steepest climb driven by GenAI adoption post-2022.</div><div class="vcw-insight">Data Scientist postings grew 4.7× since 2020. Nursing grew only 77% — structurally constrained by supply, not appetite.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Skills Demanded vs Available — Software Developer</div><div class="vc-sub">% of postings requiring skill vs % of workforce holding skill</div></div><div class="vc-badges"><span class="b-type">Grouped horiz. bar</span><span class="b-both">🔀 OJA+LFS</span></div></div><div class="viz-chart" id="h-skillgap" style="height:280px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">skill (text)</span><span class="vcf-tag">demand_pct (float, OJA NLP)</span><span class="vcf-tag">supply_pct (float, LFS/AES)</span></div><div class="vcf-meta">Source: OJA NLP extraction + Eurostat AES skills module · Q2 2025 · Software Developer occupation</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Grouped horizontal bar enables direct side-by-side reading per skill. Horizontal layout handles long skill labels. Ordered by demand descending — most critical gaps at top.</div><div class="vcw-insight">Cloud and Docker show the largest gaps (+26–28pp). SQL and Git are in surplus — don't over-invest training here.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Hiring Difficulty Matrix</div><div class="vc-sub">Salary (x) × demand growth (y) · bubble = market size · colour = gap severity</div></div><div class="vc-badges"><span class="b-type">Bubble chart</span><span class="b-both">🔀 OJA+LFS</span></div></div><div class="viz-chart" id="h-bubble" style="height:270px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">occupation (text)</span><span class="vcf-tag">salary_median_k (float)</span><span class="vcf-tag">demand_growth_pct (float)</span><span class="vcf-tag">market_size (float)</span><span class="vcf-tag">skills_gap_pct (float)</span></div><div class="vcf-meta">Source: OJA (demand growth, market size) + SES (salary) + LFS (gap) · Q2 2025</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Bubble chart encodes 4 variables simultaneously. Roles top-right with large bubbles are high-demand, high-paying, fast-growing — the hardest to hire. Instantly prioritises sourcing budget.</div><div class="vcw-insight">Data Scientists: top-right + large gap → consider talent pipelines (uni partnerships, reskilling) over pure market hiring.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Skill Demand Seasonality Heatmap</div><div class="vc-sub">Relative demand intensity by skill × month (2024)</div></div><div class="vc-badges"><span class="b-type">Heatmap</span><span class="b-oja">📥 OJA</span></div></div><div class="viz-chart" id="h-heatmap" style="height:280px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">skill (text)</span><span class="vcf-tag">month (1–12)</span><span class="vcf-tag">relative_intensity (float)</span></div><div class="vcf-meta">Source: OJA NLP skill extraction · Monthly aggregation 2024 · All sectors · Intensity = (monthly count / annual avg) × 100</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Calendar heatmap (skills × month) reveals seasonal patterns invisible in yearly averages. Useful for planning recruitment campaigns: knowing Cloud roles spike in Q1 means sourcing campaigns should launch in November–December.</div><div class="vcw-insight">January–March is the universal peak for tech hiring. August is universally quiet — avoid posting then regardless of budget pressure.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Recruiting Funnel — Stage Conversion Rates</div><div class="vc-sub">Candidates at each stage · 2024 hiring cycles · where does the pipeline leak?</div></div><div class="vc-badges"><span class="b-type">Funnel</span><span class="b-oja">📥 ATS data</span></div></div><div class="viz-chart" id="h-funnel" style="height:280px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">stage (categorical: Sourced/Applied/Screened/Interviewed/Offered/Hired)</span><span class="vcf-tag">count (integer)</span><span class="vcf-tag">conversion_rate (float)</span></div><div class="vcf-meta">Source: ATS system (Workable/Greenhouse/SAP SuccessFactors) · Annual export · 2024 · All roles</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Funnel chart quantifies where candidates drop at each stage — the stage with the steepest drop is the process bottleneck. Unlike a bar chart, the funnel shape makes conversion implicit and the comparison to the stage above immediate. Essential for hiring process optimization.</div><div class="vcw-insight">Only 2.4% of sourced candidates are hired. The largest drop is Screened→Interviewed (40% pass rate) — CV screening criteria may be overly strict for the available talent pool.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Median Time-to-Fill by Occupation</div><div class="vc-sub">Days from posting to hire · sorted by difficulty · 2024</div></div><div class="vc-badges"><span class="b-type">Lollipop</span><span class="b-oja">📥 ATS+OJA</span></div></div><div class="viz-chart" id="h-ttf" style="height:300px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">occupation (text)</span><span class="vcf-tag">ttf_median_days (float)</span><span class="vcf-tag">ttf_p25 (float)</span><span class="vcf-tag">ttf_p75 (float)</span></div><div class="vcf-meta">Source: ATS posting date vs acceptance date · OJA duration as proxy where ATS unavailable · Annual 2024</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Lollipop (stem + dot) is a cleaner alternative to a bar chart for median comparison — less ink, more focus on the value. Sorting by descending duration makes the hardest-to-fill roles immediately visible. The dot's precision contrasts with bar's mass, appropriate for a single-point estimate like the median.</div><div class="vcw-insight">Data Scientists take 85 days to fill — nearly 3× the average. Every week of vacancy has an estimated productivity cost. At this duration, employer brand and candidate experience investments have higher ROI than increasing comp.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Source of Hire Mix</div><div class="vc-sub">% of successful hires by sourcing channel · 2024 · channel ROI input</div></div><div class="vc-badges"><span class="b-type">Donut</span><span class="b-oja">📥 ATS data</span></div></div><div class="viz-chart" id="h-source" style="height:250px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">source_channel (categorical)</span><span class="vcf-tag">hire_count (integer)</span><span class="vcf-tag">cost_per_hire (float, optional)</span></div><div class="vcf-meta">Source: ATS source tagging (manual or UTM) · Annual 2024 · All roles · Cross with finance for cost-per-hire</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Donut shows channel mix composition. Cross-referencing with cost-per-hire data (tooltip) enables ROI analysis — referrals typically have low cost and high retention despite small volume. The key insight is usually that the highest-volume channel is not the highest-ROI channel.</div><div class="vcw-insight">Job boards generate 38% of hires but have the highest cost-per-hire. Referrals produce 22% at &lt;30% of the cost and typically outperform on 90-day retention. Referral programme investment is systematically under-resourced in most organisations.</div></div></div>
   </div>
 </div>
 
-<script>
-// ══════════════════════════════════════════════════════════════════════ DATA
-const OCC = ['Software Dev.','Data Scientist','Nurse','Logistics','Marketing Mgr'];
-const QTR = ['2020Q1','Q2','Q3','Q4','2021Q1','Q2','Q3','Q4','2022Q1','Q2','Q3','Q4','2023Q1','Q2','Q3','Q4','2024Q1','Q2','Q3','Q4','2025Q1','Q2'];
+<!-- Workforce Planner -->
+<div class="panel" id="panel-planner">
+  <div class="panel-intro"><div class="pi-icon">🏗️</div><div>
+    <div class="pi-title">Workforce Planner</div>
+    <div class="pi-desc">Structural gaps between supply and demand, future workforce modelling, training intervention design, and headcount planning. <em>"Where are the structural mismatches and how do we close them over 3–5 years?"</em></div>
+    <div class="pi-tags"><span class="tag">LFS employment stock</span><span class="tag">Skills gap</span><span class="tag">Education pipeline</span><span class="tag">Headcount planning</span></div>
+  </div></div>
+  <div class="gallery">
+    <div class="viz-card" style="grid-column:1/-1">
+      <div class="vc-header">
+        <div><div class="vc-title">Supply–Demand Balance by Occupation</div><div class="vc-sub">Positive = labour surplus · negative = labour shortage · 2025 Q2 · filter by sector</div></div>
+        <div class="vc-badges">
+          <select id="balance-filter" class="chart-filter" onchange="filterBalance()">
+            <option value="all">All sectors</option>
+            <option value="ict">ICT & Digital</option>
+            <option value="health">Healthcare</option>
+            <option value="biz">Business & Finance</option>
+            <option value="eng">Engineering & Construction</option>
+            <option value="edu">Education & Social</option>
+            <option value="srv">Services & Hospitality</option>
+            <option value="trn">Transport & Logistics</option>
+            <option value="adm">Administrative</option>
+          </select>
+          <span class="b-type">Diverging bar</span><span class="b-both">🔀 OJA+LFS</span>
+        </div>
+      </div>
+      <div class="viz-chart" id="p-balance" style="height:520px"></div>
+      <div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">occupation (text, ISCO-08)</span><span class="vcf-tag">sector (categorical)</span><span class="vcf-tag">supply_demand_gap_pct (float)</span></div><div class="vcf-meta">Source: OJA (demand proxy) + Eurostat LFS occupation employment (supply proxy) · Computed as (supply−demand)/demand × 100 · Q2 2025</div></div>
+      <div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Diverging bar at zero baseline shows both direction (surplus/shortage) and magnitude simultaneously, without the mental arithmetic required by side-by-side bars. The sector filter makes this parametrized: planners can focus on their sector without losing the full-spectrum reference. At 18 occupations the chart height scales to remain readable.</div><div class="vcw-insight">ICT and Healthcare show the deepest shortages (−22% to −34%). Transport and Administrative show surpluses of 18–25% — structural overcapacity at risk of displacement by automation. The filter reveals these sector stories instantly.</div></div>
+    </div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Skills Profile Radar — Demand vs Available</div><div class="vc-sub">Top 8 skills for Data Scientist · 0–100 scale · demand vs workforce supply</div></div><div class="vc-badges"><span class="b-type">Radar / spider</span><span class="b-both">🔀 OJA+LFS</span></div></div><div class="viz-chart" id="p-radar" style="height:280px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">skill (text, ESCO)</span><span class="vcf-tag">demand_score (float 0–100)</span><span class="vcf-tag">supply_score (float 0–100)</span></div><div class="vcf-meta">Source: OJA NLP skill frequency (demand) + Eurostat AES skills self-assessment (supply) · Q2 2025 · Data Scientist ISCO 2411</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Radar is uniquely suited for comparing two multivariate profiles on identical axes. The area between polygons is the skills gap — larger area means more intensive intervention needed. Surplus areas (supply exceeds demand) suggest over-training opportunity costs.</div><div class="vcw-insight">LLMs/GenAI shows the largest gap (72 demand vs 22 supply). SQL is in surplus (71 supply vs 85 demand) — redirect SQL training budget to GenAI.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Education → Occupation Pipeline</div><div class="vc-sub">Annual graduate flows by field of study → first destination occupation · Sankey</div></div><div class="vc-badges"><span class="b-type">Sankey</span><span class="b-lfs">📤 LFS</span></div></div><div class="viz-chart" id="p-sankey" style="height:290px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">field_of_study (ISCED-F 2013)</span><span class="vcf-tag">first_destination_occupation (ISCO-08)</span><span class="vcf-tag">graduate_count (integer)</span></div><div class="vcf-meta">Source: Eurostat graduates by field (educ_uoe_grad) + LFS first occupation after graduation · Annual 2023</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Sankey is the canonical flow chart — link width encodes volume, revealing structural misalignments (e.g. engineering graduates not entering tech) and unexpected talent pools. No other chart type shows multi-to-multi flows readably.</div><div class="vcw-insight">~30% of Engineering graduates enter non-engineering roles — a hidden talent pool for ICT hiring. Target reskilling, not just new enrolment.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Workforce Change Decomposition 2020–2025</div><div class="vc-sub">Net employment change = graduates + transitions in + immigration − exits − transitions out</div></div><div class="vc-badges"><span class="b-type">Waterfall</span><span class="b-lfs">📤 LFS</span></div></div><div class="viz-chart" id="p-waterfall" style="height:280px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">component (text)</span><span class="vcf-tag">flow_count (integer, +/-)</span><span class="vcf-tag">period_start / period_end (date)</span></div><div class="vcf-meta">Source: Eurostat LFS panel (occupational transitions) + DEIE immigration data + HR system attrition · 2020–2025</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Waterfall decomposes net change into contributing factors, each shown running from the prior cumulative value. It answers "why did employment in Software Development grow by X?" — impossible to do with any other chart type. Identifies which lever (graduation rates, retention, immigration) has most impact.</div><div class="vcw-insight">Inbound career transitions now account for 28% of software developer headcount growth — larger than university graduation inflows. Cross-occupation reskilling programmes have higher short-term ROI than expanding STEM enrolment.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Internal Workforce Age Pyramid</div><div class="vc-sub">Headcount by age band and gender · internal HR snapshot · 2024</div></div><div class="vc-badges"><span class="b-type">Diverging bar</span><span class="b-lfs">📤 HR system</span></div></div><div class="viz-chart" id="p-pyramid" style="height:270px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">age_band (categorical: 20–29, 30–39…)</span><span class="vcf-tag">gender (M/F)</span><span class="vcf-tag">headcount (integer)</span></div><div class="vcf-meta">Source: HR system (Workday / SAP HR) employee age and gender fields · Annual snapshot 2024</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Internal age pyramid mirrors the LFS supply pyramid but applied to a specific organisation's workforce. Aging of peak cohorts signals medium-term attrition risk. Gender gaps within bands reveal internal equity issues distinct from market supply gaps.</div><div class="vcw-insight">40–49 cohort is the largest internal segment — 65% of this cohort exits within 15–20 years. With current graduate pipeline supplying only 35% of projected replacements, a structural recruitment gap is forming for senior roles.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Headcount vs Target by Department</div><div class="vc-sub">Current headcount vs approved headcount target · current quarter · open roles as gap</div></div><div class="vc-badges"><span class="b-type">Grouped horiz. bar</span><span class="b-lfs">📤 HR system</span></div></div><div class="viz-chart" id="p-headcount" style="height:270px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">department (text)</span><span class="vcf-tag">current_headcount (integer)</span><span class="vcf-tag">target_headcount (integer)</span><span class="vcf-tag">open_roles (integer, derived)</span></div><div class="vcf-meta">Source: HR system + Finance headcount plan · Current quarter · All departments</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Grouped bar (current vs target) is the most direct way to show attainment against a plan. The gap between bars is the open roles count — readable without annotation. This chart drives staffing committee conversations and priority-setting for TA resources.</div><div class="vcw-insight">ICT and R&D are furthest below target (17% and 20% below respectively). Operations is above target — a reallocation signal. Reviewing this monthly identifies where to concentrate sourcing effort vs where to pause hiring.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Department Headcount Trend</div><div class="vc-sub">Stacked area by department · 2022–2025 · composition + total volume evolution</div></div><div class="vc-badges"><span class="b-type">Stacked area</span><span class="b-lfs">📤 HR system</span></div></div><div class="viz-chart" id="p-stream" style="height:270px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">period (date, quarterly)</span><span class="vcf-tag">department (categorical)</span><span class="vcf-tag">headcount (integer)</span></div><div class="vcf-meta">Source: HR system quarterly headcount snapshot · Q3 2022–Q2 2025 · All departments</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Stacked area shows both absolute total trend AND departmental composition shift simultaneously. Attrition spikes (drop in a layer) and growth spurts (expanding layer) are immediately visible. Stream-style (smooth area) is appropriate when evolution is gradual; use stepped bar for discrete hiring events.</div><div class="vcw-insight">ICT headcount grew 41% over 3 years while total headcount grew 22% — ICT is gaining share of total workforce. Operations remains stable in absolute terms but is shrinking as a proportion — a deliberate automation strategy signal.</div></div></div>
+  </div>
+</div>
 
-const DEMAND = {
-  'Software Dev.': [100,72,98,115,128,142,155,163,170,178,185,191,198,205,218,226,235,248,262,275,289,302],
-  'Data Scientist':[100,68,89,108,125,148,172,195,218,238,255,268,282,298,318,335,352,371,395,418,445,468],
-  'Nurse':         [100,95,102,108,112,118,122,128,132,136,140,143,147,150,154,157,160,163,167,170,174,177],
-  'Logistics':     [100,88,105,118,125,132,138,143,148,153,157,161,165,169,173,177,181,185,189,193,197,201],
-  'Marketing Mgr': [100,65,82,95,102,110,118,124,130,136,141,146,151,156,161,165,169,174,178,183,187,192],
-};
-const COLORS = ['#2f81f7','#56d364','#f0883e','#d2a8ff','#f85149'];
-const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+<!-- Skills Researcher -->
+<div class="panel" id="panel-research">
+  <div class="panel-intro"><div class="pi-icon">🔬</div><div>
+    <div class="pi-title">Skills Researcher / Economist</div>
+    <div class="pi-desc">Skill relationship mapping, emerging cluster detection, longitudinal importance tracking, economic returns quantification, and taxonomy analysis. <em>"How are skills structured, how do they cluster, and how are they evolving?"</em></div>
+    <div class="pi-tags"><span class="tag">ESCO taxonomy</span><span class="tag">Co-occurrence analysis</span><span class="tag">Wage premium</span><span class="tag">Temporal dynamics</span><span class="tag">OJA NLP</span></div>
+  </div></div>
+  <div class="gallery">
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Skills Co-occurrence Network</div><div class="vc-sub">Node = skill frequency · edge = co-occurrence in same posting · colour = cluster · drag to explore</div></div><div class="vc-badges"><span class="b-type">Force graph</span><span class="b-oja">📥 OJA</span></div></div><div class="viz-chart" id="r-network" style="height:320px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">skill_a (text, ESCO)</span><span class="vcf-tag">skill_b (text, ESCO)</span><span class="vcf-tag">co_occurrence_count (integer)</span><span class="vcf-tag">demand_frequency (float)</span></div><div class="vcf-meta">Source: OJA NLP skill co-extraction per posting · Co-occurrence matrix computed over Q2 2025 corpus · ~45k postings</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Force-directed network reveals both skill importance (node size) and cluster topology simultaneously. Bridge nodes (between clusters) are the highest-value, most versatile skills. No bar chart or heatmap can show graph topology. Drag interaction allows exploratory navigation.</div><div class="vcw-insight">Python is the central bridge between the AI/ML cluster and Data Engineering cluster — the single highest-leverage skill investment across occupations. LLMs/GenAI has very dense internal edges but few bridges yet — a rapidly self-contained cluster still forming.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Skill Ranking Evolution — Bump Chart</div><div class="vc-sub">Rank by % of postings mentioning skill · 2020–2025 · which skills are overtaking which?</div></div><div class="vc-badges"><span class="b-type">Bump chart</span><span class="b-oja">📥 OJA</span></div></div><div class="viz-chart" id="r-bump" style="height:280px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">skill (text)</span><span class="vcf-tag">year (integer)</span><span class="vcf-tag">rank (integer)</span><span class="vcf-tag">mention_pct (float)</span></div><div class="vcf-meta">Source: OJA annual NLP extraction · Ranked by mention_pct within year · Annual 2020–2025</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Bump chart plots rank (not absolute value) on the Y-axis, making crossing lines the story. Superior to line charts for ranking data because absolute values vary in scale across skills. Answers "which skill overtook which?" — the key longitudinal research question.</div><div class="vcw-insight">LLMs/GenAI rose from rank 8 to rank 2 in 5 years (+6 positions) — the fastest-climbing skill ever recorded in the dataset. Cloud overtook SQL in 2021–2022 — a structural shift from on-premise to cloud infrastructure now complete.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Skill Demand Volume — ESCO Taxonomy Treemap</div><div class="vc-sub">Rectangle area = % of postings mentioning skill · grouped by ESCO skill cluster</div></div><div class="vc-badges"><span class="b-type">Treemap</span><span class="b-oja">📥 OJA</span></div></div><div class="viz-chart" id="r-treemap" style="height:280px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">skill_group (ESCO level 2)</span><span class="vcf-tag">skill (ESCO level 3)</span><span class="vcf-tag">demand_share_pct (float)</span></div><div class="vcf-meta">Source: OJA NLP extraction mapped to ESCO v1.2 hierarchy · Q2 2025 · All sectors</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Treemap uses area to show part-of-whole relationships across a hierarchy. Where a pie handles ~6 slices before becoming unreadable, treemaps handle 30–50 items. It respects the hierarchical structure of ESCO naturally — colour encodes parent cluster, size encodes demand volume.</div><div class="vcw-insight">Digital & ICT skills account for 43% of total demand volume — larger than all other ESCO groups combined. This single finding drives the EU digital skills agenda and Cedefop's skills forecast priorities.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Skill Demand Growth vs Wage Premium</div><div class="vc-sub">X = YoY demand growth % · Y = wage premium over occupation median % · bubble = supply volume · regression line</div></div><div class="vc-badges"><span class="b-type">Scatter + regression</span><span class="b-both">🔀 OJA+SES</span></div></div><div class="viz-chart" id="r-scatter" style="height:280px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">skill (text)</span><span class="vcf-tag">demand_growth_yoy_pct (float, OJA)</span><span class="vcf-tag">wage_premium_pct (float, SES)</span><span class="vcf-tag">supply_volume (float, LFS)</span></div><div class="vcf-meta">Source: OJA annual NLP (demand growth) + Eurostat SES (wage premium) + LFS AES (supply volume) · Annual 2024</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Scatter with regression tests the scarcity pricing hypothesis: growing, scarce skills command wage premiums. Outliers above the line are "underpriced" — potentially a training investment opportunity before the market corrects. Bubble size adds supply volume without cluttering.</div><div class="vcw-insight">LLMs/GenAI and Cloud show both high demand growth AND high wage premium — classic scarcity pricing. Excel shows flat demand growth but persistent wage premium — grandfathered legacy pricing that will erode as Excel users age out.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">ESCO Skill Hierarchy — Sunburst</div><div class="vc-sub">Click to drill down · area = demand share · ESCO group → subgroup → skill</div></div><div class="vc-badges"><span class="b-type">Sunburst</span><span class="b-oja">📥 OJA</span></div></div><div class="viz-chart" id="r-sunburst" style="height:290px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">skill_group (ESCO L1)</span><span class="vcf-tag">skill_subgroup (ESCO L2)</span><span class="vcf-tag">skill (ESCO L3)</span><span class="vcf-tag">demand_share (float)</span></div><div class="vcf-meta">Source: OJA NLP mapped to ESCO v1.2 full hierarchy · Q2 2025 · Aggregated to 3-level hierarchy for readability</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Sunburst is the interactive drill-down alternative to a treemap — radial layout groups hierarchy levels visually by ring depth. Clicking a sector zooms into that branch. Ideal for researchers navigating a taxonomy: start at the ESCO group level, drill into the specific skill cluster of interest.</div><div class="vcw-insight">The AI & Data ring is disproportionate in size relative to its taxonomy breadth — 28% of demand from only 4 ESCO skills. Programming (Python + JavaScript) accounts for the single largest leaf-level share at 21%.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Multi-Skill Profile — Parallel Coordinates</div><div class="vc-sub">Each line = one occupation · axis = % of postings requiring skill · patterns = occupation families</div></div><div class="vc-badges"><span class="b-type">Parallel coordinates</span><span class="b-oja">📥 OJA</span></div></div><div class="viz-chart" id="r-parallel" style="height:290px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">occupation (text, ISCO)</span><span class="vcf-tag">skill_1..N (float 0–100, one column per skill)</span></div><div class="vcf-meta">Source: OJA NLP skill frequency matrix by occupation · Q2 2025 · Top 6 cross-occupation skills as axes</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Parallel coordinates compare multivariate profiles across occupations simultaneously. Lines that stay close to each other indicate similar skill profiles — occupation families. Crossings reveal where occupations differ sharply on a specific skill. No radar can compare more than 2–3 occupations readably.</div><div class="vcw-insight">Nurses and Logistics Coordinators share similar low technical skill profiles but diverge sharply on Communication (Nursing: 85%, Logistics: 72%). Software Developers and Data Scientists are nearly identical except on ML (DS: 88%, SD: 55%) — a narrow but defining specialisation.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Skill Adoption S-Curves</div><div class="vc-sub">% of job postings mentioning skill · 2015–2025 · technology diffusion pattern</div></div><div class="vc-badges"><span class="b-type">S-curve (line)</span><span class="b-oja">📥 OJA</span></div></div><div class="viz-chart" id="r-adoption" style="height:270px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">skill (text)</span><span class="vcf-tag">year (integer)</span><span class="vcf-tag">adoption_pct (float, % of postings)</span></div><div class="vcf-meta">Source: OJA annual NLP extraction · Annual 2015–2025 · Consistent skill vocabulary required for longitudinal comparison</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">S-curves reveal the diffusion stage of each skill: skills in exponential phase are the highest training priority (early mover advantage). Skills in plateau (Python) still matter but training ROI is declining. Skills just emerging (LLMs/GenAI) are in the steepest exponential phase — typical S-curve inflection point.</div><div class="vcw-insight">LLMs/GenAI is at the inflection point (steepest exponential growth 2022–2024) — the highest-priority training investment for 2025–2026. Python has plateaued at ~89% — nearly universal; train everyone to threshold, not depth.</div></div></div>
+  </div>
+</div>
 
-// ══════════════════════════════════════════════════════════════════════ ROLE SWITCH
-function switchRole(role, el){
-  document.querySelectorAll('.role-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.role-panel').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('panel-'+role).classList.add('active');
-  setTimeout(()=>renderRole(role),50);
-}
+<!-- Policy Analyst -->
+<div class="panel" id="panel-policy">
+  <div class="panel-intro"><div class="pi-icon">🏛️</div><div>
+    <div class="pi-title">Policy Analyst</div>
+    <div class="pi-desc">Systemic labour market performance comparison across countries and time, structural risk identification (automation, NEET, gender gaps), and policy intervention impact assessment. <em>"What is happening at the systemic level and what should governments prioritise?"</em></div>
+    <div class="pi-tags"><span class="tag">Eurostat LFS</span><span class="tag">ILOSTAT</span><span class="tag">Automation risk</span><span class="tag">NEET rates</span><span class="tag">NUTS2 regional</span></div>
+  </div></div>
+  <div class="gallery">
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Employment Rate — Small Multiples by Country</div><div class="vc-sub">Ages 20–64 · % employed · 2015–2025 · ELSTAT / Eurostat LFS · 6 countries</div></div><div class="vc-badges"><span class="b-type">Small multiples</span><span class="b-lfs">📤 LFS</span></div></div><div class="viz-chart" id="po-multiples" style="height:290px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">country (text)</span><span class="vcf-tag">year (integer)</span><span class="vcf-tag">employment_rate_pct (float)</span></div><div class="vcf-meta">Source: Eurostat lfsa_ergan + national statistical offices · Annual 2015–2025 · Ages 20–64</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Small multiples (same chart type, identical axes, repeated for each country) allow cross-country comparison without the overplotting of multi-line charts with 6+ series. Shape differences (slope, volatility, recovery speed) are read by eye-scanning. Standard format in Eurostat and OECD publications.</div><div class="vcw-insight">Greece shows steepest recovery slope post-2015 but remains 5pp below EU average. WB6 countries show accelerating growth from a lower base — a structural catch-up pattern that will narrow the gap within 5–7 years at current rates.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Automation Risk vs Employment Share vs Wage</div><div class="vc-sub">X = automation risk (0–100) · Y = employment share (%) · bubble = wage · colour = growth trend</div></div><div class="vc-badges"><span class="b-type">Bubble matrix</span><span class="b-both">🔀 OJA+LFS</span></div></div><div class="viz-chart" id="po-automation" style="height:280px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">occupation (ISCO text)</span><span class="vcf-tag">automation_risk (float 0–100, Frey-Osborne / ONET tasks)</span><span class="vcf-tag">employment_share_pct (float, LFS)</span><span class="vcf-tag">median_wage_eur (float, SES)</span><span class="vcf-tag">demand_growth_pct (float, OJA)</span></div><div class="vcf-meta">Source: Automation risk scores (ONET task-based, Frey-Osborne method) + Eurostat LFS + SES + OJA · 2024</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Bubble matrix for strategic portfolio analysis: risk (x), scale of impact (bubble = employment), economic weight (colour = wage) are the three policy dimensions. Roles top-right with large bubbles are high-automation-risk, high-employment — the priority target for reskilling policy. Roles bottom-left are policy tailwinds.</div><div class="vcw-insight">Admin Assistants: highest automation risk (82/100), large employment share, moderate wage — the single highest-priority occupation for reskilling investment. Truck Drivers follow at risk 72 — but also high V/U ratio (shortage), suggesting autonomous vehicle timeline is slower than feared.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Employment by Contract Type — Stacked Area</div><div class="vc-sub">Composition of employed by contract type · Greece 2015–2025</div></div><div class="vc-badges"><span class="b-type">Stacked area</span><span class="b-lfs">📤 LFS</span></div></div><div class="viz-chart" id="po-contract" style="height:270px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">period (date, annual)</span><span class="vcf-tag">contract_type (categorical: Perm/Fixed-term/Part-time/Self-empl)</span><span class="vcf-tag">employed_count (integer, 000s)</span></div><div class="vcf-meta">Source: Eurostat lfsa_etgar (employment by contract) + ELSTAT LFS microdata · Annual 2015–2025 · Greece</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Stacked area shows composition AND total simultaneously. A rising share of fixed-term contracts alongside rising total employment is a precarity warning signal. The zero baseline makes absolute changes visible alongside proportional shifts.</div><div class="vcw-insight">Fixed-term contracts grew from 11% to 19% of total employment (2015–2022) — growth is real but increasingly precarious. Post-2022 stabilisation may reflect EU Directive on transparent working conditions (implemented 2023).</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Youth NEET Rate — Annotated Timeline</div><div class="vc-sub">Ages 15–29 · Not in Employment, Education or Training · % · with key policy events · Greece vs EU-27</div></div><div class="vc-badges"><span class="b-type">Annotated line</span><span class="b-lfs">📤 LFS</span></div></div><div class="viz-chart" id="po-neet" style="height:280px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">period (date, annual)</span><span class="vcf-tag">country (text)</span><span class="vcf-tag">neet_rate_pct (float)</span><span class="vcf-tag">policy_events (list of {year, label})</span></div><div class="vcf-meta">Source: Eurostat edat_lfse_20 (NEET rate) · Annual 2010–2025 · Ages 15–29 · Policy events: OECD Policy Database</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Annotated timeline overlays policy event markers on a KPI trend line, making causal reasoning explicit. Without annotations, a reader can only observe "the rate fell" — with annotations they see "the rate fell 3pp following Youth Guarantee expansion." Standard format in OECD effectiveness reports and Cedefop monitoring publications.</div><div class="vcw-insight">Greece peaked at 28.2% NEET (2013, EU's highest). Three visible inflection points align with Youth Guarantee rollout, ESF apprenticeships, and post-COVID stimulus. Post-2022 rate (13.8%) still 3pp above EU-27 average — gap narrowing but structural residual persists.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Employment Rate Change — Slope Chart 2015 vs 2024</div><div class="vc-sub">Direct comparison of two time points · each line = one country · slope = magnitude of change</div></div><div class="vc-badges"><span class="b-type">Slope chart</span><span class="b-lfs">📤 LFS</span></div></div><div class="viz-chart" id="po-slope" style="height:270px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">country (text)</span><span class="vcf-tag">employment_rate_2015 (float)</span><span class="vcf-tag">employment_rate_2024 (float)</span><span class="vcf-tag">change_pp (float, derived)</span></div><div class="vcf-meta">Source: Eurostat lfsa_ergan · Annual 2015 and 2024 · Ages 20–64 · 6 LIVLAB countries</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Slope chart (line between exactly 2 time points) is cleaner than a bar chart for showing change when there are multiple entities. The slope's angle encodes magnitude and direction simultaneously. Unlike a full time-series line chart, it focuses attention on "before vs after" rather than intermediate fluctuations — ideal for policy evaluation comparisons.</div><div class="vcw-insight">Serbia shows the steepest positive slope (+13.7pp) — a structural transformation driven by FDI inflows and private sector development. Greece improved +9.3pp despite starting from the lowest base. Montenegro and N. Macedonia show consistent positive momentum.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Gender Employment Gap by Country</div><div class="vc-sub">Male vs female employment rate · 2024 · gap width = policy priority</div></div><div class="vc-badges"><span class="b-type">Grouped bar</span><span class="b-lfs">📤 LFS</span></div></div><div class="viz-chart" id="po-gender" style="height:260px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">country (text)</span><span class="vcf-tag">gender (M/F)</span><span class="vcf-tag">employment_rate_pct (float)</span><span class="vcf-tag">gap_pp (float, derived)</span></div><div class="vcf-meta">Source: Eurostat lfsa_ergan by sex · Annual 2024 · Ages 20–64 · 7 LIVLAB countries</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Grouped bar (male/female per country) makes the within-country gap visible as the space between adjacent bars. Countries are ordered by female employment rate to rank policy performance. This is preferable to a dumbbell chart when absolute levels (not just the gap) carry policy meaning — Denmark's near-equal bars are structurally different from Italy's large gap even if the gap size were the same.</div><div class="vcw-insight">Italy has the largest gender gap (14.7pp) in this group — driven by the South. Greece (11.3pp gap) is improving but still above the EU target of 5pp. Denmark has nearly achieved gender parity (0.4pp) — proof that policy can close the gap within a generation.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">NUTS2 Regional Employment Rates — Greece</div><div class="vc-sub">Employment rate by NUTS2 region · sorted · 2024 · national average reference line</div></div><div class="vc-badges"><span class="b-type">Sorted bar</span><span class="b-lfs">📤 LFS</span></div></div><div class="viz-chart" id="po-nuts2" style="height:290px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">nuts2_code (text)</span><span class="vcf-tag">nuts2_name (text)</span><span class="vcf-tag">employment_rate_pct (float)</span><span class="vcf-tag">national_avg_pct (float)</span></div><div class="vcf-meta">Source: Eurostat lfst_r_lfe2emprt (regional employment) · Annual 2024 · Greek NUTS2 regions (EL) · Ages 20–64</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">NUTS2 is the EU policy-planning unit — the level at which Structural Funds are allocated. Sorting by employment rate with a national average reference line identifies below-average regions (policy priority) and above-average regions (can absorb workers from elsewhere). This chart feeds directly into ESIF programming decisions.</div><div class="vcw-insight">15pp gap between Attica (70.2%) and Western Macedonia (55.2%) within a single country. Western Macedonia is a post-coal transition region — EU Just Transition Fund projects are correctly targeting this NUTS2. Regional disparities within Greece exceed cross-country differences in some comparisons.</div></div></div>
+  </div>
+</div>
 
-const rendered = new Set();
-function renderRole(role){
-  if(rendered.has(role)) return;
-  rendered.add(role);
-  const fn = RENDERERS[role];
-  if(fn) fn();
-}
+<!-- Career Advisor -->
+<div class="panel" id="panel-career">
+  <div class="panel-intro"><div class="pi-icon">🎓</div><div>
+    <div class="pi-title">Career Advisor / Job Seeker</div>
+    <div class="pi-desc">Realistic salary ranges, common and viable career transitions, demand outlook for target occupations, and individual skills gap to market requirements. <em>"What can I realistically expect and what is my fastest path to get there?"</em></div>
+    <div class="pi-tags"><span class="tag">Salary distribution</span><span class="tag">Career transitions</span><span class="tag">Demand forecast</span><span class="tag">Individual skills gap</span></div>
+  </div></div>
+  <div class="gallery">
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Salary Distribution by Occupation</div><div class="vc-sub">Box = IQR · whiskers = P10–P90 · dot = median · EUR gross annual · 5 occupations</div></div><div class="vc-badges"><span class="b-type">Box plot</span><span class="b-both">🔀 OJA+SES</span></div></div><div class="viz-chart" id="ca-boxplot" style="height:290px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">occupation (text)</span><span class="vcf-tag">p10 (float, €k)</span><span class="vcf-tag">p25 (float)</span><span class="vcf-tag">median (float)</span><span class="vcf-tag">p75 (float)</span><span class="vcf-tag">p90 (float)</span></div><div class="vcf-meta">Source: Eurostat SES (Structure of Earnings Survey) + OJA salary fields · 2024 · 5 occupations · Annual gross €k</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Box plot is the most information-dense single chart type for a distribution: median, IQR, tails, and outliers in one compact symbol. A single "average salary" figure is misleading — knowing the full distribution (P25–P75 IQR) is actionable career information. Multiple grouped boxes enable cross-occupation comparison.</div><div class="vcw-insight">Data Scientists: wide IQR (€42k–€78k) reflects high experience premium — worth the investment. Nurses: compressed distribution (€26k–€38k) — institutionally set wages with limited negotiation headroom. Salary negotiation for Data Scientists can yield 30%+ above the entry point.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Career Transition Flows</div><div class="vc-sub">Annual occupational moves · flow width = % of movers · based on LFS panel data</div></div><div class="vc-badges"><span class="b-type">Sankey</span><span class="b-lfs">📤 LFS</span></div></div><div class="viz-chart" id="ca-transitions" style="height:280px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">from_occupation (ISCO-08 text)</span><span class="vcf-tag">to_occupation (ISCO-08 text)</span><span class="vcf-tag">transition_count (integer)</span><span class="vcf-tag">transition_pct (float)</span></div><div class="vcf-meta">Source: Eurostat LFS longitudinal panel (ELFS) or national LFS panel · Occupational switches between survey waves · Annual 2023</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Sankey encodes transition volume as link width — the most natural mapping for flow data. Replaces anecdote ("I heard developers move into data science") with empirical evidence ("45% of developers who change occupation enter data science"). Wide links indicate high-probability, well-worn transition paths.</div><div class="vcw-insight">Marketing Manager → Data Scientist is a surprisingly large flow (18% of MM changers). Shared analytical and communication skills make this a viable transition path. Software Developers dominate inflows to Data Science — the fastest-growing transition path in the dataset.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Demand Outlook 2025–2028 with Uncertainty</div><div class="vc-sub">OJA volume forecast · shaded = 80% CI · dashed = baseline scenario · 2 occupations</div></div><div class="vc-badges"><span class="b-type">Line + CI band</span><span class="b-oja">📥 OJA</span></div></div><div class="viz-chart" id="ca-forecast" style="height:280px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">period (quarterly)</span><span class="vcf-tag">demand_index_hist (float)</span><span class="vcf-tag">forecast_mid (float)</span><span class="vcf-tag">forecast_lo (float, P10)</span><span class="vcf-tag">forecast_hi (float, P90)</span></div><div class="vcf-meta">Source: OJA historical series (2020–2025) + Cedefop Skills Forecast methodology · Forecast horizon 2025–2028 · 80% CI</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Line + confidence interval band makes uncertainty explicit. For career decisions, knowing demand will "probably be 20–35% higher in 2028" is more actionable than a spuriously precise "27% higher." Widening band over time correctly represents increasing uncertainty. Standard format in Cedefop Skills Forecast publications.</div><div class="vcw-insight">Both occupations show positive demand outlook through 2028. Data Scientist has the highest expected growth AND widest CI — reflecting ongoing GenAI disruption of the role definition. Choose this occupation if you can tolerate high variance; Software Developer offers a steadier growth path.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Your Skills vs Market Demand — Gap Radar</div><div class="vc-sub">Illustrative: candidate skills profile vs top 8 skills demanded for Data Scientist</div></div><div class="vc-badges"><span class="b-type">Radar / spider</span><span class="b-both">🔀 OJA+Self</span></div></div><div class="viz-chart" id="ca-radar" style="height:280px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">skill (text, ESCO)</span><span class="vcf-tag">market_demand_score (float 0–100, OJA frequency)</span><span class="vcf-tag">self_assessment_score (float 0–100)</span></div><div class="vcf-meta">Source: OJA NLP demand frequency (market) + self-assessment survey / skills tool · Point-in-time snapshot · Data Scientist target role</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Personal skills radar gives the job seeker an immediate gestalt of readiness profile. The area enclosed by "your skills" vs "market demand" is the total gap. Unlike a table of scores, the radar shows which gaps are large (require significant upskilling) vs small (easily bridged). Widely used in career development tools (LinkedIn, Coursera) — users already know how to read it.</div><div class="vcw-insight">LLMs/GenAI and Deep Learning are the largest personal gaps. Python and SQL are strong — use these as your entry point. Target 3 months of structured GenAI training to close the most critical gap before the next hiring cycle.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Seniority Salary Progression</div><div class="vc-sub">Annual gross salary by seniority level and occupation · 5 occupations · 4 seniority levels</div></div><div class="vc-badges"><span class="b-type">Grouped bar</span><span class="b-both">🔀 OJA+SES</span></div></div><div class="viz-chart" id="ca-seniority" style="height:270px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">occupation (text)</span><span class="vcf-tag">seniority_level (categorical: Entry/Mid/Senior/Lead)</span><span class="vcf-tag">salary_median_k (float)</span></div><div class="vcf-meta">Source: OJA salary fields (disclosed postings) + Eurostat SES by occupational group · Annual 2024 · 5 occupations</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Grouped bar by seniority level across occupations shows both the career earnings premium for progression AND cross-occupation comparison at each level. The slope of bars within an occupation is the seniority premium — steep slopes favour staying deep in a specialisation rather than switching; flat slopes suggest switching for higher pay is rational.</div><div class="vcw-insight">Data Scientist Lead (€98k) earns 3× the entry level (€32k) — the steepest seniority premium of the group. Nurse Lead (€42k) earns only 1.9× entry — institutionally compressed. Occupation choice at entry is a long-term salary trajectory decision, not just a short-term one.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Career Readiness Score — Composite Gauge</div><div class="vc-sub">Illustrative composite readiness score for target role · 0–100 · based on skills self-assessment</div></div><div class="vc-badges"><span class="b-type">Gauge</span><span class="b-both">🔀 OJA+Self</span></div></div><div class="viz-chart" id="ca-gauge" style="height:260px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">readiness_score (float 0–100, composite)</span><span class="vcf-tag">component_scores (dict: skills/experience/certifications/education)</span></div><div class="vcf-meta">Source: Weighted composite of self-assessment scores against OJA demand-weighted skill importance · Point-in-time · Target role: Data Scientist</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Gauge chart gives an immediate single-number gestalt of readiness — the most common UX pattern in career tools, fitness apps, and risk dashboards. It works precisely because it simplifies: users act on a score of 68 differently than they'd act on a table of 8 skill sub-scores. The colour band (red → amber → green) adds urgency encoding without additional explanation.</div><div class="vcw-insight">Score of 68/100 means "approaching ready" — typically the P60 percentile of active candidates in this role. Focus on the LLMs/GenAI and Deep Learning sub-scores (see Radar above) to break through to the 75+ threshold where interview callback rates increase sharply.</div></div></div>
+    <div class="viz-card"><div class="vc-header"><div><div class="vc-title">Skills Gap — Current vs Required</div><div class="vc-sub">Current proficiency vs market-required level per skill · horizontal bar · gap = training priority</div></div><div class="vc-badges"><span class="b-type">Grouped horiz. bar</span><span class="b-both">🔀 OJA+Self</span></div></div><div class="viz-chart" id="ca-dumbbell" style="height:280px"></div><div class="vc-fields"><div class="vcf-label">Data fields required</div><div class="vcf-tags"><span class="vcf-tag">skill (text, ESCO)</span><span class="vcf-tag">current_proficiency (float 0–100, self-assessed)</span><span class="vcf-tag">required_proficiency (float 0–100, OJA-weighted demand)</span><span class="vcf-tag">gap_pp (float, derived)</span></div><div class="vcf-meta">Source: Self-assessment questionnaire + OJA demand-weighted importance scores · Point-in-time · Target role: Data Scientist</div></div><div class="vc-why"><div class="vcw-label">Why this chart</div><div class="vcw-text">Grouped horizontal bar (current vs required per skill) is the operational training roadmap. Horizontal layout handles long skill labels. Gap between bars directly encodes training intensity needed per skill. Unlike a diverging bar, this layout keeps both absolute levels visible — knowing that ML is at 42/100 current vs 88/100 required tells you both the gap AND the starting competence level.</div><div class="vcw-insight">LLMs/GenAI has the largest gap (18 current vs 72 required — 54pp gap). Deep Learning is second (28 vs 68 — 40pp). SQL is near parity (80 vs 72) — no training needed here; redirect SQL time to GenAI. Sequencing matters: upskill Python first (75→89), it unlocks LLMs/GenAI acceleration.</div></div></div>
+  </div>
+</div>
 
-// ══════════════════════════════════════════════════════════════════════ CHART HELPERS
-function mkChart(id){ return echarts.init(document.getElementById(id),null,{renderer:'canvas'}); }
+<!-- ═══ RAT FAB ══════════════════════════════════════════════════════════════ -->
+<a class="rat-fab" href="/?chat=1" title="Open Lab Chat">🐀</a>
 
-const BASE = {
-  backgroundColor:'transparent',
-  textStyle:{color:'#8b949e',fontFamily:'-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif',fontSize:11},
-  tooltip:{backgroundColor:'#161b22',borderColor:'#30363d',textStyle:{color:'#e6edf3',fontSize:11}},
-  grid:{left:10,right:16,top:28,bottom:8,containLabel:true},
-};
-
-// ══════════════════════════════════════════════════════════════════════ HIRING MANAGER
-const RENDERERS = {};
-
-RENDERERS.hiring = function(){
-
-  // 1. Multi-line demand trend
-  const c1 = mkChart('c-demand-trend');
-  c1.setOption({...BASE, tooltip:{...BASE.tooltip,trigger:'axis'},
-    legend:{top:2,textStyle:{color:'#8b949e',fontSize:10},itemWidth:12,itemHeight:3},
-    xAxis:{type:'category',data:QTR,axisLabel:{interval:3,fontSize:9},axisLine:{lineStyle:{color:'#30363d'}}},
-    yAxis:{type:'value',name:'Index (2020Q1=100)',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
-    series: OCC.map((o,i)=>({name:o,type:'line',data:DEMAND[o],smooth:true,lineStyle:{width:2},itemStyle:{color:COLORS[i]},showSymbol:false}))
-  });
-
-  // 2. Skills gap grouped bar (Software Dev)
-  const skills = ['Python','JavaScript','Cloud','Docker','SQL','Git','REST APIs','Agile'];
-  const demand = [89,82,74,68,65,62,58,52];
-  const supply = [72,68,48,42,71,75,55,61];
-  const c2 = mkChart('c-skills-gap');
-  c2.setOption({...BASE, tooltip:{...BASE.tooltip,trigger:'axis'},
-    legend:{top:2,textStyle:{color:'#8b949e',fontSize:10},itemWidth:10,itemHeight:10},
-    grid:{...BASE.grid,left:20},
-    xAxis:{type:'value',max:100,axisLabel:{formatter:'{value}%',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
-    yAxis:{type:'category',data:[...skills].reverse(),axisLabel:{fontSize:10},axisLine:{lineStyle:{color:'#30363d'}}},
-    series:[
-      {name:'Demand',type:'bar',data:[...demand].reverse(),barMaxWidth:12,itemStyle:{color:'#2f81f7',borderRadius:[0,3,3,0]}},
-      {name:'Supply',type:'bar',data:[...supply].reverse(),barMaxWidth:12,itemStyle:{color:'#56d364',borderRadius:[0,3,3,0]}},
-    ]
-  });
-
-  // 3. Bubble – hiring difficulty
-  const c3 = mkChart('c-bubble-hiring');
-  const bubbleData = [
-    {name:'Software Dev.',value:[48,18,3.2,0.35]},
-    {name:'Data Scientist',value:[58,32,1.8,0.55]},
-    {name:'Nurse',value:[31,8,5.4,0.18]},
-    {name:'Logistics',value:[30,-5,4.1,0.12]},
-    {name:'Marketing Mgr',value:[42,6,2.9,0.28]},
-  ];
-  c3.setOption({...BASE,
-    tooltip:{...BASE.tooltip,formatter:p=>`<b>${p.data.name}</b><br>Salary: €${p.data.value[0]}k<br>Growth: ${p.data.value[1]}%<br>Gap: ${Math.round(p.data.value[3]*100)}%`},
-    grid:{...BASE.grid,top:20,bottom:30},
-    xAxis:{type:'value',name:'Median salary (€k)',nameLocation:'middle',nameGap:22,nameTextStyle:{color:'#8b949e',fontSize:10},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
-    yAxis:{type:'value',name:'Demand growth %',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
-    series:[{
-      type:'scatter',
-      data: bubbleData.map((d,i)=>({...d,itemStyle:{color:COLORS[i],opacity:.85}})),
-      symbolSize: d => Math.sqrt(d.value[2])*38,
-      label:{show:true,formatter:p=>p.data.name.split(' ')[0],fontSize:9,color:'#e6edf3',position:'inside'},
-    }]
-  });
-
-  // 4. Heatmap – skill seasonality
-  const skillNames = ['Python','JavaScript','Cloud','Docker','SQL','Machine Learning','LLMs/GenAI','TypeScript'];
-  const baseIntensity = [88,80,70,65,60,72,75,45];
-  const seasonal = [1.15,1.12,1.08,0.95,0.88,0.82,0.85,0.90,0.92,0.98,1.02,0.78];
-  const hmData = [];
-  skillNames.forEach((s,si)=>{ MONTHS.forEach((m,mi)=>{ hmData.push([mi,si,Math.round(baseIntensity[si]*seasonal[mi]*(0.92+Math.random()*0.16))]); }); });
-  const c4 = mkChart('c-heatmap-skills');
-  c4.setOption({...BASE,
-    tooltip:{...BASE.tooltip,formatter:p=>`${skillNames[p.data[1]]} · ${MONTHS[p.data[0]]}<br>Intensity: ${p.data[2]}`},
-    grid:{...BASE.grid,top:12,bottom:28},
-    xAxis:{type:'category',data:MONTHS,axisLabel:{fontSize:10},axisLine:{lineStyle:{color:'#30363d'}}},
-    yAxis:{type:'category',data:skillNames,axisLabel:{fontSize:10},axisLine:{lineStyle:{color:'#30363d'}}},
-    visualMap:{min:55,max:110,calculable:false,show:false,inRange:{color:['#0d1117','#1a3a5c','#2f81f7','#79c0ff']}},
-    series:[{type:'heatmap',data:hmData,itemStyle:{borderWidth:2,borderColor:'#0d1117'}}]
-  });
-};
-
-// ══════════════════════════════════════════════════════════════════════ WORKFORCE PLANNER
-RENDERERS.planner = function(){
-
-  // 1. Diverging bar
-  const gapData = [
-    {name:'Software Dev.',gap:-22},{name:'Data Scientist',gap:-34},{name:'Nurse',gap:-28},
-    {name:'Logistics',gap:8},{name:'Marketing Mgr',gap:-12},
-  ];
-  const c1 = mkChart('c-diverging');
-  c1.setOption({...BASE,
-    tooltip:{...BASE.tooltip,formatter:p=>`${p.name}<br>${p.value>0?'Surplus':'Shortage'}: ${Math.abs(p.value)}%`},
-    grid:{...BASE.grid,left:20},
-    xAxis:{type:'value',name:'← Surplus   |   Shortage →',nameLocation:'middle',nameGap:22,nameTextStyle:{color:'#8b949e',fontSize:10},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}},axisLabel:{formatter:v=>`${Math.abs(v)}%`}},
-    yAxis:{type:'category',data:gapData.map(d=>d.name),axisLabel:{fontSize:10},axisLine:{lineStyle:{color:'#30363d'}}},
-    series:[{type:'bar',data:gapData.map(d=>({value:d.gap,itemStyle:{color:d.gap<0?'#f85149':'#56d364',borderRadius:d.gap<0?[3,0,0,3]:[0,3,3,0]}})),barMaxWidth:18,
-      label:{show:true,position:d=>d.data.value<0?'insideLeft':'insideRight',formatter:p=>`${p.value}%`,fontSize:10,color:'#fff'}}]
-  });
-
-  // 2. Radar
-  const radarIndicators = ['Python','ML','SQL','Stats','Deep Learning','NLP','Data Viz','LLMs/GenAI'];
-  const radarDemand = [95,91,85,82,74,68,52,72];
-  const radarSupply = [72,55,71,62,38,32,58,22];
-  const c2 = mkChart('c-radar');
-  c2.setOption({...BASE,
-    legend:{top:2,textStyle:{color:'#8b949e',fontSize:10},itemWidth:10},
-    radar:{indicator:radarIndicators.map((n,i)=>({name:n,max:100})),axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}},splitArea:{show:false},nameGap:4,axisName:{color:'#8b949e',fontSize:9}},
-    series:[{type:'radar',data:[
-      {name:'Demand',value:radarDemand,lineStyle:{color:'#2f81f7',width:2},areaStyle:{color:'rgba(47,129,247,0.15)'},itemStyle:{color:'#2f81f7'}},
-      {name:'Supply',value:radarSupply,lineStyle:{color:'#56d364',width:2},areaStyle:{color:'rgba(86,211,100,0.15)'},itemStyle:{color:'#56d364'}},
-    ]}]
-  });
-
-  // 3. Sankey — education → occupation
-  const c3 = mkChart('c-sankey');
-  c3.setOption({...BASE,
-    tooltip:{...BASE.tooltip,trigger:'item'},
-    series:[{type:'sankey',
-      nodeGap:12, nodeWidth:14,
-      emphasis:{focus:'adjacency'},
-      data:[
-        {name:'Engineering',itemStyle:{color:'#2f81f7'}},{name:'Computer Science',itemStyle:{color:'#56d364'}},
-        {name:'Economics',itemStyle:{color:'#d2a8ff'}},{name:'Biology/Health',itemStyle:{color:'#f0883e'}},
-        {name:'Business',itemStyle:{color:'#f85149'}},
-        {name:'Software Dev.',itemStyle:{color:'#79c0ff'}},{name:'Data Scientist',itemStyle:{color:'#7ee787'}},
-        {name:'Nurse',itemStyle:{color:'#ffa657'}},{name:'Logistics',itemStyle:{color:'#d2a8ff'}},
-        {name:'Marketing Mgr',itemStyle:{color:'#ff7b72'}},{name:'Other Roles',itemStyle:{color:'#8b949e'}},
-      ],
-      links:[
-        {source:'Engineering',target:'Software Dev.',value:38},{source:'Engineering',target:'Data Scientist',value:18},{source:'Engineering',target:'Logistics',value:12},{source:'Engineering',target:'Other Roles',value:32},
-        {source:'Computer Science',target:'Software Dev.',value:52},{source:'Computer Science',target:'Data Scientist',value:28},{source:'Computer Science',target:'Other Roles',value:20},
-        {source:'Economics',target:'Data Scientist',value:22},{source:'Economics',target:'Marketing Mgr',value:18},{source:'Economics',target:'Logistics',value:15},{source:'Economics',target:'Other Roles',value:45},
-        {source:'Biology/Health',target:'Nurse',value:68},{source:'Biology/Health',target:'Data Scientist',value:8},{source:'Biology/Health',target:'Other Roles',value:24},
-        {source:'Business',target:'Marketing Mgr',value:42},{source:'Business',target:'Logistics',value:22},{source:'Business',target:'Other Roles',value:36},
-      ],
-      lineStyle:{color:'gradient',opacity:0.4},
-      label:{color:'#e6edf3',fontSize:10},
-    }]
-  });
-
-  // 4. Waterfall — workforce decomposition
-  const c4 = mkChart('c-waterfall');
-  const waterfallItems = [
-    {name:'2020\nBaseline',value:100000,type:'total'},
-    {name:'University\nGraduates',value:24000,type:'pos'},
-    {name:'Career\nTransitions In',value:18500,type:'pos'},
-    {name:'Immigration /\nMobility',value:8200,type:'pos'},
-    {name:'Retirements\n& Exits',value:-12400,type:'neg'},
-    {name:'Career\nTransitions Out',value:-9800,type:'neg'},
-    {name:'2025\nTotal',value:128500,type:'total'},
-  ];
-  let cumulative = 0;
-  const wfData = waterfallItems.map(item=>{
-    if(item.type==='total'){ cumulative=item.value; return {value:[0,item.value],type:item.type}; }
-    const start = cumulative; cumulative += item.value;
-    return {value:[start,cumulative],type:item.type};
-  });
-  c4.setOption({...BASE,
-    tooltip:{...BASE.tooltip,formatter:(p)=>{const d=waterfallItems[p.dataIndex];return `${d.name.replace('\n',' ')}<br>${d.value>0?'+':''}${d.value.toLocaleString()}`;}},
-    grid:{...BASE.grid,bottom:40},
-    xAxis:{type:'category',data:waterfallItems.map(d=>d.name),axisLabel:{fontSize:9},axisLine:{lineStyle:{color:'#30363d'}}},
-    yAxis:{type:'value',axisLabel:{formatter:v=>`${(v/1000).toFixed(0)}k`,fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
-    series:[{type:'bar',data:wfData.map((d,i)=>({
-      value:d.value,
-      itemStyle:{color:d.type==='total'?'#2f81f7':d.type==='pos'?'#56d364':'#f85149',borderRadius:[3,3,0,0]}
-    })),barMaxWidth:38}]
-  });
-};
-
-// ══════════════════════════════════════════════════════════════════════ SKILLS RESEARCHER
-RENDERERS.research = function(){
-
-  // 1. Network / force graph
-  const nodeColors = {tech:'#2f81f7',ai:'#56d364',data:'#d2a8ff',infra:'#f0883e',soft:'#8b949e'};
-  const networkNodes = [
-    {id:'Python',group:'tech',size:95},{id:'ML',group:'ai',size:82},{id:'SQL',group:'data',size:78},
-    {id:'JavaScript',group:'tech',size:75},{id:'Deep Learning',group:'ai',size:68},{id:'Cloud',group:'infra',size:65},
-    {id:'Docker',group:'infra',size:58},{id:'Statistics',group:'data',size:62},{id:'NLP',group:'ai',size:55},
-    {id:'Data Viz',group:'data',size:52},{id:'Agile',group:'soft',size:48},{id:'Communication',group:'soft',size:65},
-    {id:'LLMs/GenAI',group:'ai',size:72},{id:'APIs',group:'tech',size:55},
-  ];
-  const networkLinks = [
-    ['Python','ML',88],['Python','Deep Learning',75],['Python','NLP',68],['Python','SQL',62],['Python','Statistics',72],
-    ['ML','Deep Learning',82],['ML','Statistics',75],['ML','LLMs/GenAI',70],['Deep Learning','NLP',78],
-    ['Deep Learning','LLMs/GenAI',82],['JavaScript','APIs',85],['Cloud','Docker',78],['Cloud','APIs',65],
-    ['SQL','Data Viz',68],['Statistics','Data Viz',72],['Agile','Communication',62],['NLP','LLMs/GenAI',88],
-  ].map(([s,t,v])=>({source:s,target:t,value:v}));
-  const c1 = mkChart('c-network');
-  c1.setOption({...BASE,
-    tooltip:{...BASE.tooltip,formatter:p=>p.dataType==='node'?`<b>${p.data.id}</b><br>Demand freq: ${p.data.symbolSize}`:undefined},
-    series:[{type:'graph',layout:'force',
-      roam:true,
-      force:{repulsion:180,gravity:0.12,edgeLength:[40,120]},
-      data:networkNodes.map(n=>({id:n.id,name:n.id,symbolSize:n.size*0.28+8,itemStyle:{color:nodeColors[n.group]},label:{show:n.size>60,fontSize:9,color:'#e6edf3'}})),
-      links:networkLinks.map(l=>({...l,lineStyle:{width:Math.max(1,l.value*0.025),color:'rgba(139,148,158,0.4)'}})),
-      emphasis:{focus:'adjacency'},
-    }]
-  });
-
-  // 2. Bump chart (skill rankings)
-  const YEARS = ['2020','2021','2022','2023','2024','2025'];
-  const rankData = {
-    'Python':       [1,1,1,1,1,1],
-    'JavaScript':   [2,2,2,2,3,3],
-    'Cloud':        [4,3,3,3,2,2],
-    'SQL':          [3,4,4,5,5,5],
-    'ML':           [5,5,5,4,4,4],
-    'LLMs/GenAI':   [8,8,7,6,3,2],
-    'Docker':       [6,6,6,7,6,6],
-    'TypeScript':   [7,7,8,8,7,7],
-  };
-  const bumpColors = ['#2f81f7','#56d364','#f0883e','#d2a8ff','#f85149','#ffa657','#79c0ff','#7ee787'];
-  const c2 = mkChart('c-bump');
-  c2.setOption({...BASE,
-    tooltip:{...BASE.tooltip,trigger:'axis'},
-    legend:{top:2,textStyle:{color:'#8b949e',fontSize:9},itemWidth:12,itemHeight:3},
-    xAxis:{type:'category',data:YEARS,axisLabel:{fontSize:10},axisLine:{lineStyle:{color:'#30363d'}}},
-    yAxis:{type:'value',inverse:true,min:1,max:8,name:'Rank',nameTextStyle:{color:'#8b949e',fontSize:9},
-      axisLabel:{formatter:v=>`#${v}`,fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
-    series: Object.entries(rankData).map(([name,data],i)=>({
-      name,type:'line',data,smooth:false,lineStyle:{width:2,color:bumpColors[i]},
-      itemStyle:{color:bumpColors[i]},symbolSize:6,
-      label:{show:true,position:'right',formatter:p=>p.dataIndex===YEARS.length-1?`#${p.value} ${name}`:'',fontSize:9,color:bumpColors[i]},
-    }))
-  });
-
-  // 3. Treemap — skill taxonomy
-  const c3 = mkChart('c-treemap');
-  c3.setOption({...BASE,
-    tooltip:{...BASE.tooltip,formatter:p=>`<b>${p.name}</b><br>Demand share: ${p.value}%`},
-    series:[{type:'treemap',
-      data:[
-        {name:'Digital & ICT',value:43,itemStyle:{color:'#1a3a5c'},children:[
-          {name:'Python',value:12,itemStyle:{color:'#2f81f7'}},{name:'JavaScript',value:9,itemStyle:{color:'#388bfd'}},
-          {name:'Cloud',value:8,itemStyle:{color:'#1f6feb'}},{name:'Docker',value:7,itemStyle:{color:'#0d419d'}},
-          {name:'APIs',value:7,itemStyle:{color:'#0550ae'}},
-        ]},
-        {name:'AI & Data Science',value:28,itemStyle:{color:'#1a4a2e'},children:[
-          {name:'ML',value:9,itemStyle:{color:'#56d364'}},{name:'Deep Learning',value:7,itemStyle:{color:'#3fb950'}},
-          {name:'LLMs/GenAI',value:8,itemStyle:{color:'#2ea043'}},{name:'NLP',value:4,itemStyle:{color:'#238636'}},
-        ]},
-        {name:'Data & Analytics',value:18,itemStyle:{color:'#3a1f5c'},children:[
-          {name:'SQL',value:7,itemStyle:{color:'#bc8cff'}},{name:'Statistics',value:5,itemStyle:{color:'#a371f7'}},
-          {name:'Data Viz',value:6,itemStyle:{color:'#8957e5'}},
-        ]},
-        {name:'Transversal',value:11,itemStyle:{color:'#3a2a1a'},children:[
-          {name:'Communication',value:5,itemStyle:{color:'#f0883e'}},{name:'Agile',value:4,itemStyle:{color:'#db6d28'}},
-          {name:'Excel',value:2,itemStyle:{color:'#bd561d'}},
-        ]},
-      ],
-      label:{fontSize:10,color:'#e6edf3'},roam:false,visibleMin:4,
-    }]
-  });
-
-  // 4. Scatter — demand growth vs wage premium
-  const scatterSkills = [
-    {name:'Python',growth:22,premium:28,supply:95},
-    {name:'LLMs/GenAI',growth:85,premium:42,supply:22},
-    {name:'Cloud',growth:38,premium:32,supply:65},
-    {name:'Deep Learning',growth:45,premium:38,supply:38},
-    {name:'SQL',growth:5,premium:12,supply:78},
-    {name:'JavaScript',growth:8,premium:15,supply:75},
-    {name:'Docker',growth:28,premium:22,supply:58},
-    {name:'Agile',growth:4,premium:8,supply:48},
-    {name:'Excel',growth:-2,premium:10,supply:82},
-    {name:'NLP',growth:52,premium:35,supply:32},
-    {name:'Statistics',growth:18,premium:24,supply:62},
-    {name:'Communication',growth:2,premium:6,supply:65},
-  ];
-  const c4 = mkChart('c-scatter-wage');
-  // Regression line
-  const xs = scatterSkills.map(d=>d.growth), ys = scatterSkills.map(d=>d.premium);
-  const n = xs.length, sumx = xs.reduce((a,b)=>a+b), sumy = ys.reduce((a,b)=>a+b);
-  const sumxy = xs.reduce((s,x,i)=>s+x*ys[i],0), sumx2 = xs.reduce((s,x)=>s+x*x,0);
-  const slope = (n*sumxy - sumx*sumy)/(n*sumx2 - sumx*sumx);
-  const intercept = (sumy - slope*sumx)/n;
-  const xMin = Math.min(...xs)-5, xMax = Math.max(...xs)+5;
-  c4.setOption({...BASE,
-    tooltip:{...BASE.tooltip,formatter:p=>p.seriesIndex===0?`<b>${p.data.name}</b><br>Demand growth: ${p.data.value[0]}%<br>Wage premium: ${p.data.value[1]}%<br>Supply: ${p.data.value[2]}`:undefined},
-    grid:{...BASE.grid,bottom:30},
-    xAxis:{type:'value',name:'Demand growth YoY (%)',nameLocation:'middle',nameGap:22,nameTextStyle:{color:'#8b949e',fontSize:10},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
-    yAxis:{type:'value',name:'Wage premium (%)',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
-    series:[
-      {type:'scatter',data:scatterSkills.map(d=>({...d,value:[d.growth,d.premium,d.supply],label:{show:true,formatter:d=>d.data.name,fontSize:8.5,color:'#8b949e',position:'top'}})),
-       symbolSize:d=>Math.sqrt(d.value[2])*1.8+6,itemStyle:{color:'#2f81f7',opacity:.8},
-       label:{show:true,formatter:p=>p.data.name,fontSize:8.5,color:'#8b949e',position:'top'},
-      },
-      {type:'line',data:[[xMin,xMin*slope+intercept],[xMax,xMax*slope+intercept]],
-       lineStyle:{color:'#f0883e',type:'dashed',width:1.5},symbol:'none',tooltip:{show:false}},
-    ]
-  });
-};
-
-// ══════════════════════════════════════════════════════════════════════ POLICY ANALYST
-RENDERERS.policy = function(){
-
-  // 1. Small multiples (6 countries)
-  const countries = [{name:'Greece',data:[56.5,57.2,58.1,59.4,60.2,58.9,60.8,62.5,64.1,65.8,66.9]},
-    {name:'Italy',data:[57.2,57.8,58.0,58.5,58.9,57.8,58.5,59.2,60.1,60.8,61.4]},
-    {name:'Spain',data:[60.5,61.2,62.1,62.8,63.4,62.2,63.5,65.2,66.1,67.2,68.1]},
-    {name:'Serbia',data:[52.1,53.4,54.8,56.2,57.5,58.2,59.8,61.2,62.5,63.8,65.1]},
-    {name:'Montenegro',data:[55.2,56.1,57.4,58.8,60.1,59.2,61.2,62.8,63.5,64.8,66.2]},
-    {name:'EU-27 avg',data:[66.6,67.1,67.4,68.1,68.4,67.2,68.5,69.2,70.1,70.8,71.2]},
-  ];
-  const yrs = ['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025'];
-  const c1 = mkChart('c-small-multiples');
-  c1.setOption({...BASE,
-    tooltip:{...BASE.tooltip,trigger:'axis'},
-    legend:{show:false},
-    grid:countries.map((c,i)=>({left:`${(i%3)*34+2}%`,width:'30%',top:`${Math.floor(i/3)*50+16}%`,height:'35%',containLabel:false})),
-    xAxis:countries.map((c,i)=>({gridIndex:i,type:'category',data:yrs,show:true,axisLabel:{show:i>=3,interval:4,fontSize:8},axisLine:{lineStyle:{color:'#30363d'}},axisTick:{show:false}})),
-    yAxis:countries.map((c,i)=>({gridIndex:i,type:'value',min:50,max:75,show:true,axisLabel:{show:i%3===0,fontSize:7.5,formatter:v=>`${v}%`},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d',type:'dashed'}}})),
-    series:countries.map((c,i)=>({name:c.name,type:'line',data:c.data,xAxisIndex:i,yAxisIndex:i,smooth:true,
-      lineStyle:{color:i<5?COLORS[i]:'#f0883e',width:i===5?1.5:2,type:i===5?'dashed':'solid'},
-      itemStyle:{color:COLORS[i]||'#f0883e'},showSymbol:false,
-      markArea:{itemStyle:{color:'rgba(47,129,247,0.04)'},data:[[{xAxis:'2020'},{xAxis:'2021'}]]},
-      label:{show:true,position:'insideTopLeft',formatter:c.name,fontSize:9,color:COLORS[i]||'#f0883e',offset:[2,2]},
-    }))
-  });
-
-  // 2. Bubble — automation risk matrix
-  const c2 = mkChart('c-automation');
-  const autoData = [
-    {name:'Software Dev.',risk:25,emp:3.2,wage:48000,growth:18},
-    {name:'Data Scientist',risk:18,emp:1.8,wage:58000,growth:32},
-    {name:'Nurse',risk:12,emp:5.4,wage:31000,growth:8},
-    {name:'Logistics',risk:62,emp:4.1,wage:30000,growth:-5},
-    {name:'Marketing Mgr',risk:45,emp:2.9,wage:42000,growth:6},
-    {name:'Cashier',risk:88,emp:3.8,wage:18000,growth:-18},
-    {name:'Teacher',risk:15,emp:4.5,wage:34000,growth:5},
-    {name:'Accountant',risk:70,emp:2.2,wage:38000,growth:-8},
-  ];
-  c2.setOption({...BASE,
-    tooltip:{...BASE.tooltip,formatter:p=>`<b>${p.data.name}</b><br>Automation risk: ${p.data.value[0]}/100<br>Employment: ${p.data.value[1]}%<br>Median wage: €${p.data.value[2].toLocaleString()}<br>Growth: ${p.data.value[3]}%`},
-    grid:{...BASE.grid,bottom:30},
-    xAxis:{type:'value',name:'Automation Risk Score (0–100)',nameLocation:'middle',nameGap:22,nameTextStyle:{color:'#8b949e',fontSize:10},min:0,max:100,axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
-    yAxis:{type:'value',name:'Employment Share (%)',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
-    visualMap:{show:false,min:-20,max:35,dimension:3,inRange:{color:['#f85149','#8b949e','#56d364']}},
-    series:[{type:'scatter',
-      data:autoData.map(d=>({name:d.name,value:[d.risk,d.emp,d.wage,d.growth]})),
-      symbolSize:d=>Math.sqrt(d[2])*0.012+12,
-      label:{show:true,formatter:p=>p.data.name,fontSize:8.5,color:'#e6edf3',position:'top'},
-      emphasis:{label:{show:true}},
-    }]
-  });
-
-  // 3. Stacked area — contract types
-  const c3 = mkChart('c-contract-types');
-  const cYrs = ['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025'];
-  c3.setOption({...BASE,
-    tooltip:{...BASE.tooltip,trigger:'axis',axisPointer:{type:'cross'}},
-    legend:{top:2,textStyle:{color:'#8b949e',fontSize:10},itemWidth:10},
-    xAxis:{type:'category',data:cYrs,axisLabel:{fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},boundaryGap:false},
-    yAxis:{type:'value',name:'Employment (000s)',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
-    series:[
-      {name:'Full-time Perm.',type:'line',stack:'total',data:[2850,2920,3010,3120,3250,3100,3280,3450,3580,3680,3780],areaStyle:{color:'rgba(47,129,247,0.6)'},lineStyle:{width:0},itemStyle:{color:'#2f81f7'},showSymbol:false},
-      {name:'Fixed-term',type:'line',stack:'total',data:[380,405,430,460,490,440,510,560,590,610,630],areaStyle:{color:'rgba(240,136,62,0.6)'},lineStyle:{width:0},itemStyle:{color:'#f0883e'},showSymbol:false},
-      {name:'Part-time',type:'line',stack:'total',data:[420,435,448,462,478,490,508,522,535,548,558],areaStyle:{color:'rgba(86,211,100,0.5)'},lineStyle:{width:0},itemStyle:{color:'#56d364'},showSymbol:false},
-      {name:'Self-employed',type:'line',stack:'total',data:[680,695,708,722,738,750,762,775,788,800,812],areaStyle:{color:'rgba(188,140,255,0.5)'},lineStyle:{width:0},itemStyle:{color:'#bc8cff'},showSymbol:false},
-    ]
-  });
-
-  // 4. NEET annotated line
-  const c4 = mkChart('c-neet');
-  const neetYrs = ['2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025'];
-  const neetGR = [22.4,24.8,27.1,28.2,26.5,23.8,21.2,19.5,17.8,16.9,18.2,17.1,15.8,15.0,14.2,13.8];
-  const neetEU = [15.2,15.8,16.1,16.2,16.0,15.5,14.9,14.2,13.5,12.8,13.5,13.0,12.2,11.8,11.2,10.8];
-  c4.setOption({...BASE,
-    tooltip:{...BASE.tooltip,trigger:'axis'},
-    legend:{top:2,textStyle:{color:'#8b949e',fontSize:10},itemWidth:12,itemHeight:3},
-    grid:{...BASE.grid,bottom:20},
-    xAxis:{type:'category',data:neetYrs,axisLabel:{fontSize:9},axisLine:{lineStyle:{color:'#30363d'}}},
-    yAxis:{type:'value',name:'NEET rate (%)',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
-    series:[
-      {name:'Greece',type:'line',data:neetGR,smooth:true,lineStyle:{color:'#2f81f7',width:2.5},itemStyle:{color:'#2f81f7'},showSymbol:false,
-        markPoint:{data:[
-          {coord:['2013',28.2],value:'Peak\n28.2%',label:{fontSize:8,color:'#f85149'}},
-        ],symbol:'pin',symbolSize:28,itemStyle:{color:'#f85149'},label:{fontSize:7,color:'#fff'}},
-        markLine:{data:[
-          {xAxis:'2016',label:{formatter:'Youth\nGuarantee',fontSize:8,color:'#56d364'},lineStyle:{color:'#56d364',type:'dashed',width:1}},
-          {xAxis:'2019',label:{formatter:'ESF\nApprentice',fontSize:8,color:'#56d364'},lineStyle:{color:'#56d364',type:'dashed',width:1}},
-          {xAxis:'2022',label:{formatter:'Post-COVID\nStimulus',fontSize:8,color:'#56d364'},lineStyle:{color:'#56d364',type:'dashed',width:1}},
-        ]}},
-      {name:'EU-27',type:'line',data:neetEU,smooth:true,lineStyle:{color:'#8b949e',width:1.5,type:'dashed'},itemStyle:{color:'#8b949e'},showSymbol:false},
-    ]
-  });
-};
-
-// ══════════════════════════════════════════════════════════════════════ CAREER ADVISOR
-RENDERERS.career = function(){
-
-  // 1. Box plot — salary by occupation
-  const c1 = mkChart('c-boxplot');
-  const boxData = [
-    {name:'Software Dev.',p10:28,p25:35,med:48,p75:65,p90:88},
-    {name:'Data Scientist',p10:32,p25:42,med:58,p75:78,p90:105},
-    {name:'Nurse',p10:22,p25:26,med:31,p75:38,p90:45},
-    {name:'Logistics',p10:20,p25:25,med:30,p75:37,p90:44},
-    {name:'Marketing Mgr',p10:25,p25:32,med:42,p75:58,p90:78},
-  ];
-  c1.setOption({...BASE,
-    tooltip:{...BASE.tooltip,formatter:p=>{const d=boxData[p.dataIndex];return `<b>${d.name}</b><br>P90: €${d.p90}k<br>P75: €${d.p75}k<br>Median: €${d.med}k<br>P25: €${d.p25}k<br>P10: €${d.p10}k`;}},
-    grid:{...BASE.grid,bottom:30},
-    xAxis:{type:'category',data:boxData.map(d=>d.name),axisLabel:{fontSize:9},axisLine:{lineStyle:{color:'#30363d'}}},
-    yAxis:{type:'value',name:'Annual gross (€k)',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
-    series:[
-      {type:'candlestick',data:boxData.map(d=>[d.p25,d.p90,d.p10,d.p75]),
-       itemStyle:{color:'#2f81f7',color0:'#2f81f7',borderColor:'#2f81f7',borderColor0:'#56d364'},barMaxWidth:28},
-      {type:'scatter',data:boxData.map(d=>[d.name,d.med]),symbolSize:8,
-       itemStyle:{color:'#f0883e'},tooltip:{show:false},
-       label:{show:true,formatter:p=>`€${p.value[1]}k`,fontSize:9,color:'#f0883e',position:'right'}},
-    ]
-  });
-
-  // 2. Sankey — career transitions
-  const c2 = mkChart('c-transitions');
-  c2.setOption({...BASE,
-    tooltip:{...BASE.tooltip,trigger:'item'},
-    series:[{type:'sankey',nodeGap:14,nodeWidth:14,
-      emphasis:{focus:'adjacency'},
-      data:[
-        {name:'From: Software Dev.',itemStyle:{color:'#2f81f7'}},{name:'From: Data Scientist',itemStyle:{color:'#56d364'}},
-        {name:'From: Marketing Mgr',itemStyle:{color:'#f0883e'}},{name:'From: Logistics',itemStyle:{color:'#d2a8ff'}},
-        {name:'To: Software Dev.',itemStyle:{color:'#388bfd'}},{name:'To: Data Scientist',itemStyle:{color:'#3fb950'}},
-        {name:'To: Marketing Mgr',itemStyle:{color:'#db6d28'}},{name:'To: Other',itemStyle:{color:'#8b949e'}},
-      ],
-      links:[
-        {source:'From: Software Dev.',target:'To: Data Scientist',value:45},
-        {source:'From: Software Dev.',target:'To: Marketing Mgr',value:8},
-        {source:'From: Software Dev.',target:'To: Other',value:12},
-        {source:'From: Data Scientist',target:'To: Software Dev.',value:25},
-        {source:'From: Data Scientist',target:'To: Marketing Mgr',value:12},
-        {source:'From: Data Scientist',target:'To: Other',value:8},
-        {source:'From: Marketing Mgr',target:'To: Data Scientist',value:18},
-        {source:'From: Marketing Mgr',target:'To: Software Dev.',value:10},
-        {source:'From: Marketing Mgr',target:'To: Other',value:14},
-        {source:'From: Logistics',target:'To: Marketing Mgr',value:14},
-        {source:'From: Logistics',target:'To: Data Scientist',value:8},
-        {source:'From: Logistics',target:'To: Other',value:22},
-      ],
-      lineStyle:{color:'gradient',opacity:.45},
-      label:{color:'#e6edf3',fontSize:9},
-    }]
-  });
-
-  // 3. Forecast line with CI
-  const fYrs = ['2020Q1','2021Q1','2022Q1','2023Q1','2024Q1','2025Q1','2026Q1','2027Q1','2028Q1'];
-  const hist = {
-    'Software Dev.': [100,128,170,198,235,302,null,null,null],
-    'Data Scientist': [100,125,218,282,352,445,null,null,null],
-  };
-  const forecast = {
-    'Software Dev.': {mid:[null,null,null,null,null,302,338,378,420],lo:[null,null,null,null,null,302,308,328,348],hi:[null,null,null,null,null,302,365,425,492]},
-    'Data Scientist': {mid:[null,null,null,null,null,445,502,568,638],lo:[null,null,null,null,null,445,458,495,522],hi:[null,null,null,null,null,445,548,645,762]},
-  };
-  const c3 = mkChart('c-forecast');
-  c3.setOption({...BASE,
-    tooltip:{...BASE.tooltip,trigger:'axis'},
-    legend:{top:2,textStyle:{color:'#8b949e',fontSize:10},itemWidth:12,itemHeight:3,
-      data:['Software Dev.','Data Scientist','Forecast: SW Dev','Forecast: Data Sci']},
-    grid:{...BASE.grid,bottom:20},
-    xAxis:{type:'category',data:fYrs,axisLabel:{fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},boundaryGap:false},
-    yAxis:{type:'value',name:'Demand Index',nameTextStyle:{color:'#8b949e',fontSize:9},axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}}},
-    series:[
-      {name:'Software Dev.',type:'line',data:hist['Software Dev.'],smooth:true,lineStyle:{color:'#2f81f7',width:2.5},itemStyle:{color:'#2f81f7'},showSymbol:false,connectNulls:false},
-      {name:'Data Scientist',type:'line',data:hist['Data Scientist'],smooth:true,lineStyle:{color:'#56d364',width:2.5},itemStyle:{color:'#56d364'},showSymbol:false,connectNulls:false},
-      // Confidence bands as area between hi/lo
-      {name:'CI: SW hi',type:'line',data:forecast['Software Dev.'].hi,lineStyle:{opacity:0},itemStyle:{color:'transparent'},areaStyle:{color:'rgba(47,129,247,0.15)'},showSymbol:false,stack:'sw',tooltip:{show:false},legendHoverLink:false},
-      {name:'CI: SW lo',type:'line',data:forecast['Software Dev.'].lo,lineStyle:{opacity:0},itemStyle:{color:'transparent'},areaStyle:{color:'rgba(13,17,23,1)'},showSymbol:false,stack:'sw',tooltip:{show:false},legendHoverLink:false},
-      {name:'Forecast: SW Dev',type:'line',data:forecast['Software Dev.'].mid,smooth:true,lineStyle:{color:'#2f81f7',type:'dashed',width:1.5},itemStyle:{color:'#2f81f7'},showSymbol:false,connectNulls:false},
-      {name:'CI: DS hi',type:'line',data:forecast['Data Scientist'].hi,lineStyle:{opacity:0},itemStyle:{color:'transparent'},areaStyle:{color:'rgba(86,211,100,0.15)'},showSymbol:false,stack:'ds',tooltip:{show:false},legendHoverLink:false},
-      {name:'CI: DS lo',type:'line',data:forecast['Data Scientist'].lo,lineStyle:{opacity:0},itemStyle:{color:'transparent'},areaStyle:{color:'rgba(13,17,23,1)'},showSymbol:false,stack:'ds',tooltip:{show:false},legendHoverLink:false},
-      {name:'Forecast: Data Sci',type:'line',data:forecast['Data Scientist'].mid,smooth:true,lineStyle:{color:'#56d364',type:'dashed',width:1.5},itemStyle:{color:'#56d364'},showSymbol:false,connectNulls:false},
-    ]
-  });
-
-  // 4. Personal skills radar (career advisor)
-  const c4 = mkChart('c-personal-radar');
-  const pIndicators = ['Python','ML','SQL','Statistics','Deep Learning','NLP','Data Viz','LLMs/GenAI'];
-  const marketDemand = [95,91,85,82,74,68,52,72];
-  const candidateSkills = [75,42,80,65,28,25,60,18];
-  c4.setOption({...BASE,
-    legend:{top:2,textStyle:{color:'#8b949e',fontSize:10},itemWidth:10},
-    radar:{indicator:pIndicators.map(n=>({name:n,max:100})),
-      axisLine:{lineStyle:{color:'#30363d'}},splitLine:{lineStyle:{color:'#21262d'}},splitArea:{show:false},
-      nameGap:4,axisName:{color:'#8b949e',fontSize:9}},
-    series:[{type:'radar',data:[
-      {name:'Market Demand',value:marketDemand,lineStyle:{color:'#2f81f7',width:2},areaStyle:{color:'rgba(47,129,247,0.12)'},itemStyle:{color:'#2f81f7'}},
-      {name:'Your Skills',value:candidateSkills,lineStyle:{color:'#f0883e',width:2},areaStyle:{color:'rgba(240,136,62,0.2)'},itemStyle:{color:'#f0883e'}},
-    ]}]
-  });
-};
-
-// ══════════════════════════════════════════════════════════════════════ INIT
-window.addEventListener('DOMContentLoaded', ()=>{
-  renderRole('hiring');
-  window.addEventListener('resize', ()=>{
-    document.querySelectorAll('[id^="c-"]').forEach(el=>{
-      const chart = echarts.getInstanceByDom(el);
-      if(chart) chart.resize();
-    });
-  });
-});
-</script>
+<script src="js/viz_core.js"></script>
+<script src="js/viz_demand.js"></script>
+<script src="js/viz_roles.js"></script>
 </body>
 </html>

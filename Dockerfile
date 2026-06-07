@@ -20,4 +20,4 @@ COPY config/ ./config/
 ENV PYTHONUNBUFFERED=1
 EXPOSE 8766
 
-CMD ["python", "main.py"]
+CMD ["uvicorn", "scripts.serve:app", "--host", "0.0.0.0", "--port", "8766"]
