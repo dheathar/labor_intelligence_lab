@@ -9,7 +9,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY scripts/ ./scripts/
 COPY portal/ ./portal/
-COPY sources/ ./sources/
 COPY main.py .
 
 # knowledge/, data/, config/ are mounted as volumes at runtime
