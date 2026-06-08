@@ -1,5 +1,15 @@
 # Labor Intelligence Virtual Lab — Claude Code Context
 
+## Session Resume Protocol
+
+**At the start of every session in this folder**, before doing anything else:
+
+1. Read the memory files in `/Users/panos/.claude/projects/-Users-panos-Workspace-labor-market-sourced-lab/memory/`
+2. Ask the user: **"Welcome back to LIVLAB. Want to resume from last session? Here's where we left off: [1-line summary from memory]"**
+3. Wait for their answer before proceeding
+
+This is a standing instruction — do not skip it, even if the user's first message looks like a direct task.
+
 ## What this project is
 
 This is the **Labor Intelligence Virtual Lab (LIVLAB)** — a research environment for labor market demand and supply analysis. It has:
