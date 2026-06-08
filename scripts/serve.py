@@ -66,7 +66,9 @@ def _build_catalog() -> None:
         "benchmarks": _load_yaml_dir(KNOWLEDGE_DIR / "benchmarks"),
     }
     # Write catalog.json for offline use
-    (REPO_ROOT / "data" / "catalog.json").write_text(
+    catalog_path = REPO_ROOT / "data" / "catalog.json"
+    catalog_path.parent.mkdir(parents=True, exist_ok=True)
+    catalog_path.write_text(
         json.dumps(_catalog, indent=2, ensure_ascii=False), encoding="utf-8"
     )
 
