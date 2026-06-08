@@ -96,3 +96,52 @@ The server hot-reloads and will pick up new files automatically.
 - **TRAIN4BLUE** (2025–2027): Training for the blue economy
 
 Full constitution: `config/constitution.md`
+
+## Production Deployment (Dokploy)
+
+**Live URL**: `https://lmlivlab.labor-innovation.com`
+**Auth**: BasicAuth — username `dmlab`, password stored securely (ask user)
+**Dokploy**: `https://hz01.scytales.dev` · Application ID: `tST0rys5R33iFqkNdYXgh`
+**Server IP**: `157.180.108.84` · DNS: `*.labor-innovation.com → 157.180.108.84` (wildcard, no DNS config needed for new subdomains)
+**GitHub**: `https://github.com/dheathar/labor_intelligence_lab` (branch: main)
+
+### Deploy a new project (repeatable recipe)
+
+Auth header for all calls: `x-api-key: <token>` (ask user for token each session)
+
+```
+POST /api/project.create          → {name, description}
+POST /api/application.create      → {name, projectId, environmentId, appName}
+POST /api/application.saveGitProvider → {applicationId, customGitUrl, customGitBranch, customGitBuildPath, enableSubmodules:false, customGitSSHKeyId:null, watchPaths:null}
+POST /api/application.update      → {applicationId, sourceType:"git", buildType:"dockerfile", dockerfile:"Dockerfile", githubId:null}
+POST /api/application.saveEnvironment → {applicationId, env:"KEY=val\n...", buildArgs:"", buildSecrets:"", createEnvFile:true}
+POST /api/domain.create           → {applicationId, host:"<sub>.labor-innovation.com", port:<n>, https:true, path:"/", certificateType:"letsencrypt"}
+POST /api/application.deploy      → {applicationId}
+```
+
+No DNS step needed — wildcard covers all `*.labor-innovation.com` subdomains automatically.
+
+### Add BasicAuth to any app
+
+```
+GET  /api/application.readTraefikConfig?applicationId=<id>   → read current config
+POST /api/application.updateTraefikConfig                     → patch in middleware
+```
+
+Middleware block to add under `http:`:
+```yaml
+middlewares:
+  <appname>-basicauth:
+    basicAuth:
+      users:
+        - "username:$2y$05$<bcrypt-hash>"
+```
+
+Generate hash: `htpasswd -nbB username password`
+
+### Known gotchas
+
+- Empty directories not tracked by git → Docker `COPY` fails. Check with `git ls-files <dir>/`
+- `data/` is in `.dockerignore` → any code that writes to `data/` must call `mkdir(parents=True, exist_ok=True)` first
+- Traefik config changes take effect immediately — no redeploy needed
+- Dokploy API uses `x-api-key` header (not `Authorization: Bearer`, not `x-dokploy-token`)
