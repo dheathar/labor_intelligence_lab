@@ -164,6 +164,7 @@
       <div class="tab-dropdown">
         <div class="dropdown-item" data-tab="playground" onclick="activateTab('playground'); closeAllGroups(); event.stopPropagation()">🐀 Interaction <span class="di-counter pulse" id="dc-playground">AI</span></div>
         <div class="dropdown-item" data-tab="map" onclick="activateTab('map'); closeAllGroups(); event.stopPropagation()">🗾 Map</div>
+        <div class="dropdown-item" data-tab="knowledge_graph" onclick="activateTab('knowledge_graph'); closeAllGroups(); event.stopPropagation()">🕸️ Knowledge Graph</div>
       </div>
     </div>
 
@@ -642,7 +643,14 @@
     </div>
   </div>
 
-  <!-- 15. IMPL — CRAWLING PORTALS -->
+  <!-- 15. KNOWLEDGE GRAPH -->
+  <div class="tab-pane" id="pane-knowledge_graph">
+    <h2 class="section-h">🕸️ Knowledge Graph <span class="section-domain-label">OKF-aligned</span></h2>
+    <p class="section-sub">Concept graph across papers, datasets, methods, applications, benchmarks, and wiki. Click a node to inspect; drag to rearrange; scroll to zoom. Edges derived from existing slug references and wiki citations.</p>
+    <iframe id="kg-iframe" style="width:100%;height:calc(100vh - 220px);min-height:600px;border:1px solid var(--border);border-radius:8px;background:var(--bg-2)" title="Knowledge Graph"></iframe>
+  </div>
+
+  <!-- 16. IMPL — CRAWLING PORTALS -->
   <div class="tab-pane" id="pane-impl_portals">
     <h2 class="section-h">🕷 Crawling Portals</h2>
     <p class="section-sub">Active OJA crawling infrastructure across DMLab projects. 41 portals monitored across 9 countries.</p>

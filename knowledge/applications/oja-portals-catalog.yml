@@ -7,6 +7,10 @@ description: |
   the primary sources for labor demand intelligence via OJA analysis. Each portal
   can be scraped (where permitted) or accessed via API for skill extraction,
   occupational demand analysis, and real-time labor market intelligence.
+data_sources:
+  - wih-oja-microdata
+  - nlx-job-postings
+  - dypa-ergani
 
 portals:
   global:

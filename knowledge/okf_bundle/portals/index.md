@@ -1,0 +1,45 @@
+# Portals
+
+OJA crawling portals monitored across 9 countries.
+
+- [Adecco](adecco.md) - Italy job portal.
+- [Adzuna Italy](adzuna-italy.md) - Italy job portal — Job aggregator (Puglia).
+- [Apliciraj.mk](apliciraj-mk.md) - North Macedonia job portal.
+- [av.gov.mk](av-gov-mk.md) - North Macedonia job portal — Redirects to e-rabota.
+- [Careerjet](careerjet.md) - Greece job portal.
+- [Careerjet Montenegro](careerjet-montenegro.md) - Montenegro job portal.
+- [Careernet](careernet.md) - Greece job portal.
+- [Carierista](carierista.md) - Cyprus job portal — IP blocked — works from home IP, not server IP.
+- [Gi Group](gi-group.md) - Italy job portal.
+- [Infoempleo](infoempleo.md) - Spain job portal.
+- [Infojobs](infojobs.md) - Spain job portal — Unable to scrape.
+- [Infostud](infostud.md) - Serbia job portal — Dedup issue fixed — ~3.5K postings/day with URL changes.
+- [IT-Jobbank](it-jobbank.md) - Denmark job portal.
+- [Jobfind](jobfind.md) - Greece job portal.
+- [Jobleads](jobleads.md) - Italy job portal.
+- [JobNet.dk](jobnet-dk.md) - Denmark job portal.
+- [Jobseeker](jobseeker.md) - Greece job portal.
+- [Kariera.com.cy](kariera-com-cy.md) - Cyprus job portal — Unable to scrape.
+- [Kariera.gr](kariera-gr.md) - Greece job portal.
+- [LavoroPerTe Calabria](lavoroperte-calabria.md) - Italy job portal — Regional portal.
+- [LavoroPerTe Puglia](lavoroperte-puglia.md) - Italy job portal — Regional portal.
+- [Manpower Italy](manpower-italy.md) - Italy job portal — Private Employment Agency.
+- [Marineria](marineria.md) - Italy job portal — Crawling stopped 27/02/2026.
+- [Mojedelo.com](mojedelo-com.md) - Slovenia job portal — Migrated to JS — fixed.
+- [NSZ Portal](nsz-portal.md) - Serbia job portal.
+- [Ofir.dk](ofir-dk.md) - Denmark job portal — Not crawled — low priority vs.
+- [OglasizaRabota](oglasizarabota.md) - North Macedonia job portal.
+- [Optius.com](optius-com.md) - Slovenia job portal.
+- [Prekoveze.me](prekoveze-me.md) - Montenegro job portal.
+- [Radnik.me](radnik-me.md) - Montenegro job portal.
+- [Randstad Italia](randstad-italia.md) - Italy job portal.
+- [Skywalker](skywalker.md) - Greece job portal.
+- [StepStone DK](stepstone-dk.md) - Denmark job portal.
+- [Talent Italy](talent-italy.md) - Italy job portal — Inconsistent job results.
+- [Turijobs](turijobs.md) - Spain job portal.
+- [Vraboti.se](vraboti-se.md) - North Macedonia job portal.
+- [Vrabotuvanje.mk](vrabotuvanje-mk.md) - North Macedonia job portal.
+- [WhatJobs Italy](whatjobs-italy.md) - Italy job portal.
+- [WorkinDenmark](workindenmark.md) - Denmark job portal — Not crawled — superseded by JobNet.dk as primary Danish source.
+- [Zaposli.me](zaposli-me.md) - Montenegro job portal.
+- [ZZZCG Portal](zzzcg-portal.md) - Montenegro job portal.

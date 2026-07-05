@@ -27,7 +27,7 @@ const PORTALS_DATA = [
   { name:'Marineria',       status:true,  url:'https://www.marineria.it/It/default.aspx', start:'02/10/2026', country:'Italy', metadata:false, comment:'Crawling stopped 27/02/2026', projects:['TRAIN4BLUE'] },
   { name:'Adzuna Italy',    status:true,  url:'https://www.adzuna.it/search', start:'02/09/2026', country:'Italy',         metadata:false, comment:'Job aggregator (Puglia). Redirects to source portals.', projects:['TRAIN4BLUE'] },
   { name:'WhatJobs Italy',  status:true,  url:'https://it.whatjobs.com/jobs', start:'02/09/2026', country:'Italy',         metadata:false, comment:null,                                   projects:['TRAIN4BLUE'] },
-  { name:'Talent Italy',    status:false, url:'https://it.talent.com/jobs',   start:'02/09/2026', country:'Italy',         metadata:false, comment:'Inconsistent job results',             projects:[] },
+  { name:'Talent Italy',    status:false, url:'https://it.talent.com/jobs',   start:'02/09/2026', country:'Italy',         metadata:false, comment:'Inconsistent job results',             projects:['TRAIN4BLUE'] },
   { name:'Manpower Italy',  status:false, url:'https://www.manpower.it',      start:null,         country:'Italy',         metadata:false, comment:'Private Employment Agency',            projects:['EU-ALMPO'] },
   { name:'Mojedelo.com',    status:true,  url:'https://www.mojedelo.com/',    start:'06/10/2025', country:'Slovenia',      metadata:true,  comment:'Migrated to JS — fixed',               projects:['GROWTH4BLUE'] },
   { name:'Optius.com',      status:true,  url:'https://www.optius.com/',      start:'06/10/2025', country:'Slovenia',      metadata:true,  comment:null,                                   projects:['GROWTH4BLUE'] },
@@ -44,8 +44,8 @@ const PORTALS_DATA = [
   { name:'Apliciraj.mk',    status:true,  url:'https://apliciraj.mk/',        start:'06/09/2025', country:'North Macedonia', metadata:true, comment:null,                                 projects:['GROWTH4BLUE'] },
   { name:'OglasizaRabota',  status:true,  url:'https://www.oglasizarabota.mk/', start:'01/11/2024', country:'North Macedonia', metadata:true, comment:null,                               projects:['GROWTH4BLUE'] },
   { name:'JobNet.dk',       status:true,  url:'https://job.jobnet.dk/CV/FindWork', start:'26/11/2025', country:'Denmark',  metadata:false, comment:null,                                   projects:['EU-ALMPO'] },
-  { name:'WorkinDenmark',   status:false, url:'https://www.workindenmark.dk/FindVacancies', start:null, country:'Denmark', metadata:false, comment:null,                                  projects:['EU-ALMPO'] },
-  { name:'Ofir.dk',         status:false, url:'https://www.ofir.dk/jobsoegning/', start:null,      country:'Denmark',       metadata:false, comment:null,                                   projects:['EU-ALMPO'] },
+  { name:'WorkinDenmark',   status:false, url:'https://www.workindenmark.dk/FindVacancies', start:null, country:'Denmark', metadata:false, comment:'Not crawled — superseded by JobNet.dk as primary Danish source', projects:['EU-ALMPO'] },
+  { name:'Ofir.dk',         status:false, url:'https://www.ofir.dk/jobsoegning/', start:null,      country:'Denmark',       metadata:false, comment:'Not crawled — low priority vs. JobNet.dk and StepStone DK', projects:['EU-ALMPO'] },
   { name:'IT-Jobbank',      status:true,  url:'https://www.it-jobbank.dk/jobs', start:'26/11/2025', country:'Denmark',     metadata:false, comment:null,                                   projects:['EU-ALMPO'] },
   { name:'StepStone DK',    status:true,  url:'https://www.stepstone.dk/jobsoegning/', start:'26/11/2025', country:'Denmark', metadata:false, comment:null,                               projects:['EU-ALMPO'] },
 ];
@@ -91,7 +91,7 @@ const TAB_GROUP = {
   applications: 'knowledge', benchmarks: 'knowledge',
   sources: 'data', insights: 'data', lab_exp: 'data',
   projects: 'research', oja: 'research', lmi_research: 'research',
-  playground: 'explore', map: 'explore',
+  playground: 'explore', map: 'explore', knowledge_graph: 'explore',
   impl_portals: 'implementation', impl_deliverables: 'implementation',
 };
 
@@ -242,6 +242,10 @@ function refreshActiveTab() {
   else if (t === 'projects') renderProjects();
   else if (t === 'oja') renderOJAFromPortals();
   else if (t === 'map') renderMap();
+  else if (t === 'knowledge_graph') {
+    const frame = document.getElementById('kg-iframe');
+    if (frame && frame.dataset.loaded !== '1') { frame.src = 'knowledge_graph.html'; frame.dataset.loaded = '1'; }
+  }
   else if (t === 'constitution') renderConstitution();
   else if (t === 'impl_portals') renderImplPortals();
   else if (t === 'impl_deliverables') renderImplDeliverables();

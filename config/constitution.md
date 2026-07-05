@@ -67,4 +67,16 @@ The lab participates in four active projects:
 
 ---
 
+## Concept Population
+
+Every entry in the LIVLAB knowledge graph — papers, datasets, methods, applications, benchmarks, wiki, projects, portals, deliverables, work packages, roles, and occupations — must conform to the **Concept Population Charter** (`config/concept_charter.md`). The charter defines required fields, minimum edges, and quality gates per type. New concept types must be registered in the charter before entries are created.
+
+Validate with:
+```bash
+python scripts/check_okf.py           # OKF v0.1 conformance
+python scripts/validate_concepts.py   # LIVLAB structural rules
+```
+
+---
+
 *This constitution is a living document. It evolves as the lab's scope and methods evolve.*

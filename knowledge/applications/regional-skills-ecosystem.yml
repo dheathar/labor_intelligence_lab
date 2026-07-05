@@ -34,4 +34,8 @@ priority_regions:
   - "Belgrade + Vojvodina (Serbia)"
   - "Adriatic coastal zones (Montenegro, Albania)"
 projects: [eu-almpo, growth4blue]
+data_sources:
+  - eurostat-labour
+  - wih-oja-microdata
+  - cedefop-skills-forecast
 references: [cedefop-harnessing-web-data-2026, cedefop-skills-ovate]
